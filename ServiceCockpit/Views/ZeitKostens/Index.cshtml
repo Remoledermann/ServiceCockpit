@@ -22,7 +22,13 @@
             @Html.DisplayNameFor(model => model.Verrechnungsart.Name)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.ZeitKostenUeberzeitFaktor.Name)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.AnzahlStunden)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AnzahlStundenTotal)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.KostenTotal)
@@ -42,7 +48,13 @@
             @Html.DisplayFor(modelItem => item.Verrechnungsart.Name)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.ZeitKostenUeberzeitFaktor.Name)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.AnzahlStunden)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnzahlStundenTotal)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.KostenTotal)

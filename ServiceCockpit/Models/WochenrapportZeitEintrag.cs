@@ -20,9 +20,6 @@ namespace ServiceCockpit.Models
 
         public decimal? Zeit { get; set; }
 
-        public WochenrapportUeberzeitFaktor WochenrapportUeberzeitFaktor { get; set; }
-        public int? WochenrapportUeberzeitFaktorId { get; set; }
-
         [ForeignKey("WochenrapportFK")]
         public Wochenrapport Wochenrapport { get; set; }
         public int? WochenrapportFK { get; set; }

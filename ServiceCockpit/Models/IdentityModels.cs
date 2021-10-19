@@ -33,7 +33,7 @@ namespace ServiceCockpit.Models
         public DbSet<Organisation> Organisation { get; set; }
         public DbSet<Projekt> Projekt { get; set; }
         public DbSet<Verrechnungsart> Verrechnungsart { get; set; }
-        public DbSet<WochenrapportUeberzeitFaktor> WochenrapportUeberzeitFaktor { get; set; }
+        public DbSet<ZeitKostenUeberzeitFaktor> ZeitKostenUeberzeitFaktor { get; set; }
         public DbSet<Material> Material { get; set; }
 
         //Servicrapport------------------------------------------------------------------------

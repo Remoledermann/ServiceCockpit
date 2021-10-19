@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ServiceCockpit.Models
 {
-    public class WochenrapportUeberzeitFaktor
+    public class ZeitKostenUeberzeitFaktor
     {
         public int Id { get; set; }
 

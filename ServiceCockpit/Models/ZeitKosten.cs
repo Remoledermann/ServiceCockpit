@@ -11,7 +11,9 @@ namespace ServiceCockpit.Models
     {
         public int Id { get; set; }
 
-        public decimal AnzahlStunden { get; set; }
+        public decimal? AnzahlStunden { get; set; }
+
+        public decimal? AnzahlStundenTotal { get; set; }
 
         public decimal? KostenTotal { get; set; }
 
@@ -23,6 +25,12 @@ namespace ServiceCockpit.Models
         //Referenz
         public Mitarbeiter Mitarbeiter { get; set; }
         public int? MitarbeiterId { get; set; }
+
+
+        //Referenz
+        public ZeitKostenUeberzeitFaktor ZeitKostenUeberzeitFaktor { get; set; }
+        public int? ZeitKostenUeberzeitFaktorId { get; set; }
+
 
 
         //FK Rapport

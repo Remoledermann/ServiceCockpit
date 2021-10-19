@@ -183,15 +183,23 @@
     <Compile Include="Controllers\VerrechnungsartsController.cs" />
     <Compile Include="Controllers\WochenrapportsController.cs" />
     <Compile Include="Controllers\WochenrapportSpesenEintragsController.cs" />
-    <Compile Include="Controllers\WochenrapportUeberzeitFaktorsController.cs" />
     <Compile Include="Controllers\WochenrapportZeitEintragsController.cs" />
     <Compile Include="Controllers\ZeitKostensController.cs" />
+    <Compile Include="Controllers\ZeitKostenUeberzeitFaktorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\202110191901034_DatenbankMitAllenModelsErstellen.cs" />
     <Compile Include="Migrations\202110191901034_DatenbankMitAllenModelsErstellen.Designer.cs">
       <DependentUpon>202110191901034_DatenbankMitAllenModelsErstellen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110192009200_AddUeberzeitDemServicRapport.cs" />
+    <Compile Include="Migrations\202110192009200_AddUeberzeitDemServicRapport.Designer.cs">
+      <DependentUpon>202110192009200_AddUeberzeitDemServicRapport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110192010343_AddUeberzeitDemServicRapport2.cs" />
+    <Compile Include="Migrations\202110192010343_AddUeberzeitDemServicRapport2.Designer.cs">
+      <DependentUpon>202110192010343_AddUeberzeitDemServicRapport2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -202,6 +210,7 @@
     <Compile Include="Models\Material.cs" />
     <Compile Include="Models\MaterialKosten.cs" />
     <Compile Include="Models\Mitarbeiter.cs" />
+    <Compile Include="Models\ModleViewStammdaten.cs" />
     <Compile Include="Models\Organisation.cs" />
     <Compile Include="Models\Projekt.cs" />
     <Compile Include="Models\Rechnungsadresse.cs" />
@@ -209,7 +218,7 @@
     <Compile Include="Models\WochenrapportSpesenEintrag.cs" />
     <Compile Include="Models\Verrechnungsart.cs" />
     <Compile Include="Models\Wochenrapport.cs" />
-    <Compile Include="Models\WochenrapportUeberzeitFaktor.cs" />
+    <Compile Include="Models\ZeitKostenUeberzeitFaktor.cs" />
     <Compile Include="Models\WochenrapportZeitEintrag.cs" />
     <Compile Include="Models\ZeitKosten.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -311,11 +320,6 @@
     <Content Include="Views\Rechnungsadresses\Details.cshtml" />
     <Content Include="Views\Rechnungsadresses\Edit.cshtml" />
     <Content Include="Views\Rechnungsadresses\Index.cshtml" />
-    <Content Include="Views\Servicerapports\Create.cshtml" />
-    <Content Include="Views\Servicerapports\Delete.cshtml" />
-    <Content Include="Views\Servicerapports\Details.cshtml" />
-    <Content Include="Views\Servicerapports\Edit.cshtml" />
-    <Content Include="Views\Servicerapports\Index.cshtml" />
     <Content Include="Views\Verrechnungsarts\Create.cshtml" />
     <Content Include="Views\Verrechnungsarts\Delete.cshtml" />
     <Content Include="Views\Verrechnungsarts\Details.cshtml" />
@@ -331,21 +335,26 @@
     <Content Include="Views\WochenrapportSpesenEintrags\Details.cshtml" />
     <Content Include="Views\WochenrapportSpesenEintrags\Edit.cshtml" />
     <Content Include="Views\WochenrapportSpesenEintrags\Index.cshtml" />
+    <Content Include="Views\Servicerapports\Create.cshtml" />
+    <Content Include="Views\Servicerapports\Delete.cshtml" />
+    <Content Include="Views\Servicerapports\Details.cshtml" />
+    <Content Include="Views\Servicerapports\Edit.cshtml" />
+    <Content Include="Views\Servicerapports\Index.cshtml" />
     <Content Include="Views\WochenrapportZeitEintrags\Create.cshtml" />
     <Content Include="Views\WochenrapportZeitEintrags\Delete.cshtml" />
     <Content Include="Views\WochenrapportZeitEintrags\Details.cshtml" />
     <Content Include="Views\WochenrapportZeitEintrags\Edit.cshtml" />
     <Content Include="Views\WochenrapportZeitEintrags\Index.cshtml" />
-    <Content Include="Views\WochenrapportUeberzeitFaktors\Create.cshtml" />
-    <Content Include="Views\WochenrapportUeberzeitFaktors\Delete.cshtml" />
-    <Content Include="Views\WochenrapportUeberzeitFaktors\Details.cshtml" />
-    <Content Include="Views\WochenrapportUeberzeitFaktors\Edit.cshtml" />
-    <Content Include="Views\WochenrapportUeberzeitFaktors\Index.cshtml" />
     <Content Include="Views\ZeitKostens\Create.cshtml" />
     <Content Include="Views\ZeitKostens\Delete.cshtml" />
     <Content Include="Views\ZeitKostens\Details.cshtml" />
     <Content Include="Views\ZeitKostens\Edit.cshtml" />
     <Content Include="Views\ZeitKostens\Index.cshtml" />
+    <Content Include="Views\ZeitKostenUeberzeitFaktors\Create.cshtml" />
+    <Content Include="Views\ZeitKostenUeberzeitFaktors\Delete.cshtml" />
+    <Content Include="Views\ZeitKostenUeberzeitFaktors\Details.cshtml" />
+    <Content Include="Views\ZeitKostenUeberzeitFaktors\Edit.cshtml" />
+    <Content Include="Views\ZeitKostenUeberzeitFaktors\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -367,6 +376,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202110191901034_DatenbankMitAllenModelsErstellen.resx">
       <DependentUpon>202110191901034_DatenbankMitAllenModelsErstellen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110192009200_AddUeberzeitDemServicRapport.resx">
+      <DependentUpon>202110192009200_AddUeberzeitDemServicRapport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110192010343_AddUeberzeitDemServicRapport2.resx">
+      <DependentUpon>202110192010343_AddUeberzeitDemServicRapport2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

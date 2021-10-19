@@ -17,7 +17,7 @@ namespace ServiceCockpit.Controllers
         // GET: WochenrapportZeitEintrags
         public ActionResult Index()
         {
-            var wochenrapportZeitEintrag = db.WochenrapportZeitEintrag.Include(w => w.Wochenrapport).Include(w => w.WochenrapportUeberzeitFaktor);
+            var wochenrapportZeitEintrag = db.WochenrapportZeitEintrag.Include(w => w.Wochenrapport);
             return View(wochenrapportZeitEintrag.ToList());
         }
 
@@ -40,7 +40,6 @@ namespace ServiceCockpit.Controllers
         public ActionResult Create()
         {
             ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Kalenderwoche");
-            ViewBag.WochenrapportUeberzeitFaktorId = new SelectList(db.WochenrapportUeberzeitFaktor, "Id", "Name");
             return View();
         }
 
@@ -49,7 +48,7 @@ namespace ServiceCockpit.Controllers
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Datum,ProjektnNummer,ServicrapportNummer,Ausführungsadresse,Zeit,WochenrapportUeberzeitFaktorId,WochenrapportFK")] WochenrapportZeitEintrag wochenrapportZeitEintrag)
+        public ActionResult Create([Bind(Include = "Id,Datum,ProjektnNummer,ServicrapportNummer,Ausführungsadresse,Zeit,WochenrapportFK")] WochenrapportZeitEintrag wochenrapportZeitEintrag)
         {
             if (ModelState.IsValid)
             {
@@ -59,7 +58,6 @@ namespace ServiceCockpit.Controllers
             }
 
             ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Kalenderwoche", wochenrapportZeitEintrag.WochenrapportFK);
-            ViewBag.WochenrapportUeberzeitFaktorId = new SelectList(db.WochenrapportUeberzeitFaktor, "Id", "Name", wochenrapportZeitEintrag.WochenrapportUeberzeitFaktorId);
             return View(wochenrapportZeitEintrag);
         }
 
@@ -76,7 +74,6 @@ namespace ServiceCockpit.Controllers
                 return HttpNotFound();
             }
             ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Kalenderwoche", wochenrapportZeitEintrag.WochenrapportFK);
-            ViewBag.WochenrapportUeberzeitFaktorId = new SelectList(db.WochenrapportUeberzeitFaktor, "Id", "Name", wochenrapportZeitEintrag.WochenrapportUeberzeitFaktorId);
             return View(wochenrapportZeitEintrag);
         }
 
@@ -85,7 +82,7 @@ namespace ServiceCockpit.Controllers
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Datum,ProjektnNummer,ServicrapportNummer,Ausführungsadresse,Zeit,WochenrapportUeberzeitFaktorId,WochenrapportFK")] WochenrapportZeitEintrag wochenrapportZeitEintrag)
+        public ActionResult Edit([Bind(Include = "Id,Datum,ProjektnNummer,ServicrapportNummer,Ausführungsadresse,Zeit,WochenrapportFK")] WochenrapportZeitEintrag wochenrapportZeitEintrag)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +91,6 @@ namespace ServiceCockpit.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Kalenderwoche", wochenrapportZeitEintrag.WochenrapportFK);
-            ViewBag.WochenrapportUeberzeitFaktorId = new SelectList(db.WochenrapportUeberzeitFaktor, "Id", "Name", wochenrapportZeitEintrag.WochenrapportUeberzeitFaktorId);
             return View(wochenrapportZeitEintrag);
         }
 

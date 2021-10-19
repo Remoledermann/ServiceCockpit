@@ -10,107 +10,107 @@ using ServiceCockpit.Models;
 
 namespace ServiceCockpit.Controllers
 {
-    public class WochenrapportUeberzeitFaktorsController : Controller
+    public class ZeitKostenUeberzeitFaktorsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: WochenrapportUeberzeitFaktors
+        // GET: ZeitKostenUeberzeitFaktors
         public ActionResult Index()
         {
-            return View(db.WochenrapportUeberzeitFaktor.ToList());
+            return View(db.ZeitKostenUeberzeitFaktor.ToList());
         }
 
-        // GET: WochenrapportUeberzeitFaktors/Details/5
+        // GET: ZeitKostenUeberzeitFaktors/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WochenrapportUeberzeitFaktor wochenrapportUeberzeitFaktor = db.WochenrapportUeberzeitFaktor.Find(id);
-            if (wochenrapportUeberzeitFaktor == null)
+            ZeitKostenUeberzeitFaktor zeitKostenUeberzeitFaktor = db.ZeitKostenUeberzeitFaktor.Find(id);
+            if (zeitKostenUeberzeitFaktor == null)
             {
                 return HttpNotFound();
             }
-            return View(wochenrapportUeberzeitFaktor);
+            return View(zeitKostenUeberzeitFaktor);
         }
 
-        // GET: WochenrapportUeberzeitFaktors/Create
+        // GET: ZeitKostenUeberzeitFaktors/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: WochenrapportUeberzeitFaktors/Create
+        // POST: ZeitKostenUeberzeitFaktors/Create
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Faktor")] WochenrapportUeberzeitFaktor wochenrapportUeberzeitFaktor)
+        public ActionResult Create([Bind(Include = "Id,Name,Faktor")] ZeitKostenUeberzeitFaktor zeitKostenUeberzeitFaktor)
         {
             if (ModelState.IsValid)
             {
-                db.WochenrapportUeberzeitFaktor.Add(wochenrapportUeberzeitFaktor);
+                db.ZeitKostenUeberzeitFaktor.Add(zeitKostenUeberzeitFaktor);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(wochenrapportUeberzeitFaktor);
+            return View(zeitKostenUeberzeitFaktor);
         }
 
-        // GET: WochenrapportUeberzeitFaktors/Edit/5
+        // GET: ZeitKostenUeberzeitFaktors/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WochenrapportUeberzeitFaktor wochenrapportUeberzeitFaktor = db.WochenrapportUeberzeitFaktor.Find(id);
-            if (wochenrapportUeberzeitFaktor == null)
+            ZeitKostenUeberzeitFaktor zeitKostenUeberzeitFaktor = db.ZeitKostenUeberzeitFaktor.Find(id);
+            if (zeitKostenUeberzeitFaktor == null)
             {
                 return HttpNotFound();
             }
-            return View(wochenrapportUeberzeitFaktor);
+            return View(zeitKostenUeberzeitFaktor);
         }
 
-        // POST: WochenrapportUeberzeitFaktors/Edit/5
+        // POST: ZeitKostenUeberzeitFaktors/Edit/5
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Faktor")] WochenrapportUeberzeitFaktor wochenrapportUeberzeitFaktor)
+        public ActionResult Edit([Bind(Include = "Id,Name,Faktor")] ZeitKostenUeberzeitFaktor zeitKostenUeberzeitFaktor)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(wochenrapportUeberzeitFaktor).State = EntityState.Modified;
+                db.Entry(zeitKostenUeberzeitFaktor).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(wochenrapportUeberzeitFaktor);
+            return View(zeitKostenUeberzeitFaktor);
         }
 
-        // GET: WochenrapportUeberzeitFaktors/Delete/5
+        // GET: ZeitKostenUeberzeitFaktors/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WochenrapportUeberzeitFaktor wochenrapportUeberzeitFaktor = db.WochenrapportUeberzeitFaktor.Find(id);
-            if (wochenrapportUeberzeitFaktor == null)
+            ZeitKostenUeberzeitFaktor zeitKostenUeberzeitFaktor = db.ZeitKostenUeberzeitFaktor.Find(id);
+            if (zeitKostenUeberzeitFaktor == null)
             {
                 return HttpNotFound();
             }
-            return View(wochenrapportUeberzeitFaktor);
+            return View(zeitKostenUeberzeitFaktor);
         }
 
-        // POST: WochenrapportUeberzeitFaktors/Delete/5
+        // POST: ZeitKostenUeberzeitFaktors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            WochenrapportUeberzeitFaktor wochenrapportUeberzeitFaktor = db.WochenrapportUeberzeitFaktor.Find(id);
-            db.WochenrapportUeberzeitFaktor.Remove(wochenrapportUeberzeitFaktor);
+            ZeitKostenUeberzeitFaktor zeitKostenUeberzeitFaktor = db.ZeitKostenUeberzeitFaktor.Find(id);
+            db.ZeitKostenUeberzeitFaktor.Remove(zeitKostenUeberzeitFaktor);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

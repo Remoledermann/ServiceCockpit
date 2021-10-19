@@ -17,7 +17,7 @@ namespace ServiceCockpit.Controllers
         // GET: ZeitKostens
         public ActionResult Index()
         {
-            var zeitKosten = db.ZeitKosten.Include(z => z.Mitarbeiter).Include(z => z.Servicerapport).Include(z => z.Verrechnungsart);
+            var zeitKosten = db.ZeitKosten.Include(z => z.Mitarbeiter).Include(z => z.Servicerapport).Include(z => z.Verrechnungsart).Include(z => z.ZeitKostenUeberzeitFaktor);
             return View(zeitKosten.ToList());
         }
 
@@ -42,6 +42,7 @@ namespace ServiceCockpit.Controllers
             ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName");
             ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName");
             ViewBag.VerrechnungsartId = new SelectList(db.Verrechnungsart, "Id", "Name");
+            ViewBag.ZeitKostenUeberzeitFaktorId = new SelectList(db.ZeitKostenUeberzeitFaktor, "Id", "Name");
             return View();
         }
 
@@ -50,7 +51,7 @@ namespace ServiceCockpit.Controllers
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AnzahlStunden,KostenTotal,VerrechnungsartId,MitarbeiterId,ServicerapportFK")] ZeitKosten zeitKosten)
+        public ActionResult Create([Bind(Include = "Id,AnzahlStunden,AnzahlStundenTotal,KostenTotal,VerrechnungsartId,MitarbeiterId,ZeitKostenUeberzeitFaktorId,ServicerapportFK")] ZeitKosten zeitKosten)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +63,7 @@ namespace ServiceCockpit.Controllers
             ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", zeitKosten.MitarbeiterId);
             ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", zeitKosten.ServicerapportFK);
             ViewBag.VerrechnungsartId = new SelectList(db.Verrechnungsart, "Id", "Name", zeitKosten.VerrechnungsartId);
+            ViewBag.ZeitKostenUeberzeitFaktorId = new SelectList(db.ZeitKostenUeberzeitFaktor, "Id", "Name", zeitKosten.ZeitKostenUeberzeitFaktorId);
             return View(zeitKosten);
         }
 
@@ -80,6 +82,7 @@ namespace ServiceCockpit.Controllers
             ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", zeitKosten.MitarbeiterId);
             ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", zeitKosten.ServicerapportFK);
             ViewBag.VerrechnungsartId = new SelectList(db.Verrechnungsart, "Id", "Name", zeitKosten.VerrechnungsartId);
+            ViewBag.ZeitKostenUeberzeitFaktorId = new SelectList(db.ZeitKostenUeberzeitFaktor, "Id", "Name", zeitKosten.ZeitKostenUeberzeitFaktorId);
             return View(zeitKosten);
         }
 
@@ -88,7 +91,7 @@ namespace ServiceCockpit.Controllers
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AnzahlStunden,KostenTotal,VerrechnungsartId,MitarbeiterId,ServicerapportFK")] ZeitKosten zeitKosten)
+        public ActionResult Edit([Bind(Include = "Id,AnzahlStunden,AnzahlStundenTotal,KostenTotal,VerrechnungsartId,MitarbeiterId,ZeitKostenUeberzeitFaktorId,ServicerapportFK")] ZeitKosten zeitKosten)
         {
             if (ModelState.IsValid)
             {
@@ -99,6 +102,7 @@ namespace ServiceCockpit.Controllers
             ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", zeitKosten.MitarbeiterId);
             ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", zeitKosten.ServicerapportFK);
             ViewBag.VerrechnungsartId = new SelectList(db.Verrechnungsart, "Id", "Name", zeitKosten.VerrechnungsartId);
+            ViewBag.ZeitKostenUeberzeitFaktorId = new SelectList(db.ZeitKostenUeberzeitFaktor, "Id", "Name", zeitKosten.ZeitKostenUeberzeitFaktorId);
             return View(zeitKosten);
         }
 
