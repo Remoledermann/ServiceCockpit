@@ -36,8 +36,16 @@ namespace ServiceCockpit.Controllers
         }
 
         // GET: Organisations/Create
-        public ActionResult Create()
+        public ActionResult Create(bool IsFromOrganisations = true)
         {
+            if (IsFromOrganisations)
+            {
+                ViewBag.ControllerNameBack = "Organisation";
+            }
+            else
+            {
+                ViewBag.ControllerNameBack = "StammDaten";
+            }
             return View();
         }
 
@@ -50,9 +58,10 @@ namespace ServiceCockpit.Controllers
         {
             if (ModelState.IsValid)
             {
+               
                 db.Organisation.Add(organisation);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
 
             return View(organisation);
@@ -84,7 +93,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Entry(organisation).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
             return View(organisation);
         }

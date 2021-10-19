@@ -19,8 +19,8 @@ namespace ServiceCockpit.Models
             = new List<Verrechnungsart>();
         public List<Mitarbeiter> Mitarbeiter { get; set; } 
             = new List<Mitarbeiter>();
-        public Organisation Organisation { get; set; } 
-            = new Organisation();
+        public List<Organisation> Organisation { get; set; } 
+            = new List<Organisation>();
         public List<Projekt> Projekt { get; set; } 
             = new List<Projekt>();
         public List<ZeitKostenUeberzeitFaktor> ZeitKostenUeberzeitFaktor { get; set; }

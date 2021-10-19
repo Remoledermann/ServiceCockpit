@@ -201,6 +201,10 @@
     <Compile Include="Migrations\202110192010343_AddUeberzeitDemServicRapport2.Designer.cs">
       <DependentUpon>202110192010343_AddUeberzeitDemServicRapport2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110192116256_WechselnDerStatusIntZuString.cs" />
+    <Compile Include="Migrations\202110192116256_WechselnDerStatusIntZuString.Designer.cs">
+      <DependentUpon>202110192116256_WechselnDerStatusIntZuString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Ausführungsadresse.cs" />
@@ -355,10 +359,10 @@
     <Content Include="Views\ZeitKostenUeberzeitFaktors\Details.cshtml" />
     <Content Include="Views\ZeitKostenUeberzeitFaktors\Edit.cshtml" />
     <Content Include="Views\ZeitKostenUeberzeitFaktors\Index.cshtml" />
+    <Content Include="Views\StammDaten\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\StammDaten\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -382,6 +386,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110192010343_AddUeberzeitDemServicRapport2.resx">
       <DependentUpon>202110192010343_AddUeberzeitDemServicRapport2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110192116256_WechselnDerStatusIntZuString.resx">
+      <DependentUpon>202110192116256_WechselnDerStatusIntZuString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

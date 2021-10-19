@@ -14,7 +14,7 @@ namespace ServiceCockpit.Models
 
         public int Nummer { get; set; }
 
-        public int? Status { get; set; }
+        public string Status { get; set; }
 
         public decimal? KostenZeit { get; set; }
 

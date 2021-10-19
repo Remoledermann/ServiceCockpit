@@ -21,7 +21,7 @@ namespace ServiceCockpit.Models
 
         public int? VoranmeldungNummer { get; set; }
 
-        public int? Status { get; set; }
+        public string Status { get; set; }
 
         public string Beschreibung { get; set; }
 

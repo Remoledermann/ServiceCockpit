@@ -16,7 +16,7 @@ namespace ServiceCockpit.Models
        
         public DateTime? EndDate { get; set; }
         
-        public int? Status { get; set; }
+        public string Status { get; set; }
 
         public decimal? StundenTotal { get; set; }
 
