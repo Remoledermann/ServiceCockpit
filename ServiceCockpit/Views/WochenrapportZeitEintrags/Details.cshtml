@@ -1,0 +1,75 @@
+﻿@model ServiceCockpit.Models.WochenrapportZeitEintrag
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>WochenrapportZeitEintrag</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Wochenrapport.Kalenderwoche)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Wochenrapport.Kalenderwoche)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WochenrapportUeberzeitFaktor.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WochenrapportUeberzeitFaktor.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Datum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Datum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjektnNummer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjektnNummer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServicrapportNummer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServicrapportNummer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ausführungsadresse)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ausführungsadresse)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Zeit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Zeit)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

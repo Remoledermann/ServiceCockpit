@@ -1,0 +1,59 @@
+﻿@model ServiceCockpit.Models.ZeitKosten
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ZeitKosten</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Mitarbeiter.VorName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mitarbeiter.VorName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Servicerapport.VoranmeldungName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Servicerapport.VoranmeldungName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Verrechnungsart.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Verrechnungsart.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnzahlStunden)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnzahlStunden)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.KostenTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KostenTotal)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

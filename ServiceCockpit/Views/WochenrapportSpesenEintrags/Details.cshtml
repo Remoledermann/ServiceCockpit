@@ -1,0 +1,43 @@
+﻿@model ServiceCockpit.Models.WochenrapportSpesenEintrag
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>WochenrapportSpesenEintrag</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Wochenrapport.Kalenderwoche)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Wochenrapport.Kalenderwoche)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Beschreibung)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Beschreibung)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Kosten)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kosten)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

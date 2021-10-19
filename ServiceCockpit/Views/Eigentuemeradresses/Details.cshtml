@@ -1,0 +1,75 @@
+﻿@model ServiceCockpit.Models.Eigentuemeradresse
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Eigentuemeradresse</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Vornamne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vornamne)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Strasse)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Strasse)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Plz)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Plz)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ort)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ort)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TelefonGeschäft)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TelefonGeschäft)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TelefonPrivat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TelefonPrivat)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
