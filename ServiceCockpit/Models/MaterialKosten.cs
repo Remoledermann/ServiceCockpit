@@ -16,8 +16,8 @@ namespace ServiceCockpit.Models
 
 
         // Referenz 
-        public Material Verrechnungsart { get; set; }
-        public int? VerrechnungsartId { get; set; }
+        public Material Material { get; set; }
+        public int? MaterialId { get; set; }
 
 
         //FK Rapport

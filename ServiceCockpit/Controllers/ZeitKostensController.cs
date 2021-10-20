@@ -40,7 +40,7 @@ namespace ServiceCockpit.Controllers
         public ActionResult Create()
         {
             ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName");
-            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName");
+            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id");
             ViewBag.VerrechnungsartId = new SelectList(db.Verrechnungsart, "Id", "Name");
             ViewBag.ZeitKostenUeberzeitFaktorId = new SelectList(db.ZeitKostenUeberzeitFaktor, "Id", "Name");
             return View();

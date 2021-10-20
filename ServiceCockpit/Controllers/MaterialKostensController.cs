@@ -17,7 +17,7 @@ namespace ServiceCockpit.Controllers
         // GET: MaterialKostens
         public ActionResult Index()
         {
-            var materialKosten = db.MaterialKosten.Include(m => m.Servicerapport).Include(m => m.Verrechnungsart);
+            var materialKosten = db.MaterialKosten.Include(m => m.Material).Include(m => m.Servicerapport);
             return View(materialKosten.ToList());
         }
 
@@ -39,8 +39,8 @@ namespace ServiceCockpit.Controllers
         // GET: MaterialKostens/Create
         public ActionResult Create()
         {
-            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName");
-            ViewBag.VerrechnungsartId = new SelectList(db.Material, "Id", "Name");
+            ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name");
+            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id");
             return View();
         }
 
@@ -49,7 +49,7 @@ namespace ServiceCockpit.Controllers
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AnzahlMaterial,KostenTotal,VerrechnungsartId,ServicerapportFK")] MaterialKosten materialKosten)
+        public ActionResult Create([Bind(Include = "Id,AnzahlMaterial,KostenTotal,MaterialId,ServicerapportFK")] MaterialKosten materialKosten)
         {
             if (ModelState.IsValid)
             {
@@ -58,8 +58,8 @@ namespace ServiceCockpit.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name", materialKosten.MaterialId);
             ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", materialKosten.ServicerapportFK);
-            ViewBag.VerrechnungsartId = new SelectList(db.Material, "Id", "Name", materialKosten.VerrechnungsartId);
             return View(materialKosten);
         }
 
@@ -75,8 +75,8 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", materialKosten.ServicerapportFK);
-            ViewBag.VerrechnungsartId = new SelectList(db.Material, "Id", "Name", materialKosten.VerrechnungsartId);
+            ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name", materialKosten.MaterialId);
+            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id", materialKosten.ServicerapportFK);
             return View(materialKosten);
         }
 
@@ -85,7 +85,7 @@ namespace ServiceCockpit.Controllers
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AnzahlMaterial,KostenTotal,VerrechnungsartId,ServicerapportFK")] MaterialKosten materialKosten)
+        public ActionResult Edit([Bind(Include = "Id,AnzahlMaterial,KostenTotal,MaterialId,ServicerapportFK")] MaterialKosten materialKosten)
         {
             if (ModelState.IsValid)
             {
@@ -93,8 +93,8 @@ namespace ServiceCockpit.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name", materialKosten.MaterialId);
             ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", materialKosten.ServicerapportFK);
-            ViewBag.VerrechnungsartId = new SelectList(db.Material, "Id", "Name", materialKosten.VerrechnungsartId);
             return View(materialKosten);
         }
 

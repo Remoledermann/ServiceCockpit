@@ -1,8 +1,186 @@
 ﻿
+@using ServiceCockpit.Models
+@model ModelViewServiceCockpit
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>
+    @Html.ActionLink("Neuer Servicerapport erfassen", "Create", "Servicerapports", new { IsFromOrganisations = false }, null)
+</h2>
 
+
+@{
+    var BearbeitenRapporte = new ModelViewServiceCockpit();
+    var offeneRapport = new ModelViewServiceCockpit();
+    ;
+
+    
+    foreach (var rapport in Model.Servicerapports)
+    {
+        if (rapport.Status == "Offen")
+        {
+            offeneRapport.Servicerapports.Add(rapport);
+        }
+        else if(rapport.Status == "Bearbeiten")
+        {
+            BearbeitenRapporte.Servicerapports.Add(rapport);
+        }
+    }
+}
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading1">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                    <h3 class="active">Offene Servicerapporte</h3>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+            <div class="panel-body">
+                
+                <table class="table">
+                    <tr>
+                        <th>
+                            Ausführungsadresse
+                        </th>
+                        <th>
+                            Projekt Nr.
+                        </th>
+                        <th>
+                            Termin
+                        </th>
+                        <th>
+                            Rapport Nummer
+                        </th>
+                        <th>
+                            Voranmeldung Nr.
+                        </th>
+                        <th>
+                            Beschreibung
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in offeneRapport.Servicerapports)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ausführungsadresse.Anzeigeadresse)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Projekt.Nummer)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KundenTerminZeit)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VoranmeldungNummer)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Beschreibung)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+
+                            <td>
+                                @Html.ActionLink("Übertragen", "Edit", "Servicerapports",new {id = item.Id},null)
+                            </td>
+                        </tr>
+
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading2">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                    <h3 class="active">Meine Servicerapporte</h3>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <th>
+                            Ausführungsadresse
+                        </th>
+                        <th>
+                            Projekt Nr.
+                        </th>
+                        <th>
+                            Termin
+                        </th>
+                        <th>
+                            Raportnummer
+                        </th>
+                        <th>
+                            Voranmeldung Nr.
+                        </th>
+                        <th>
+                            Beschreibung
+                        </th>
+                        <th>
+                            Verantwortlicher Mitarbeiter
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in BearbeitenRapporte.Servicerapports)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ausführungsadresse.Anzeigeadresse)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Projekt.Nummer)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KundenTerminZeit)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VoranmeldungNummer)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Beschreibung)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Mitarbeiter.VollerName)
+                            </td>
+
+                            <td>
+                                @Html.ActionLink("Bearbeiten", "Edit","Servicerapports", new { id = item.Id },null)
+                            </td>
+                        </tr>
+
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

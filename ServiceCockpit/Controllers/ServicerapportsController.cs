@@ -39,11 +39,11 @@ namespace ServiceCockpit.Controllers
         // GET: Servicerapports/Create
         public ActionResult Create()
         {
-            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Name");
-            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Name");
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName");
-            ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Name");
-            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Name");
+            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse");
+            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse");
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName");
+            ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Nummer");
+            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse");
             return View();
         }
 
@@ -56,9 +56,17 @@ namespace ServiceCockpit.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (servicerapport.MitarbeiterId == 3)
+                {
+                    servicerapport.Status = "Offen";
+                }
+                else
+                {
+                    servicerapport.Status = "Bearbeiten";
+                }
                 db.Servicerapport.Add(servicerapport);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "ServicerapportDashboards");
             }
 
             ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Name", servicerapport.AusführungsadresseId);
@@ -86,6 +94,13 @@ namespace ServiceCockpit.Controllers
             ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", servicerapport.MitarbeiterId);
             ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Name", servicerapport.ProjektFK);
             ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Name", servicerapport.RechnungsadresseId);
+
+            var zeitKosten = db.ZeitKosten.Include(z => z.Mitarbeiter).Include(z => z.Servicerapport).Include(z => z.Verrechnungsart).Include(z => z.ZeitKostenUeberzeitFaktor).Where(z=>servicerapport.Id == id);
+            servicerapport.ZeitKosten = zeitKosten.ToList();
+
+            var materialKosten = db.MaterialKosten.Include(m => m.Servicerapport).Include(m => m.Material);
+            servicerapport.MaterialKosten = materialKosten.ToList();
+
             return View(servicerapport);
         }
 
@@ -98,9 +113,19 @@ namespace ServiceCockpit.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (servicerapport.MitarbeiterId == 3)
+                {
+                    servicerapport.Status = "Offen";
+                }
+                else
+                {
+                    servicerapport.Status = "Bearbeiten";
+                }
+
                 db.Entry(servicerapport).State = EntityState.Modified;
+             
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "ServicerapportDashboards");
             }
             ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Name", servicerapport.AusführungsadresseId);
             ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Name", servicerapport.EigentuemeradresseId);
@@ -133,7 +158,7 @@ namespace ServiceCockpit.Controllers
             Servicerapport servicerapport = db.Servicerapport.Find(id);
             db.Servicerapport.Remove(servicerapport);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "ServicerapportDashboards");
         }
 
         protected override void Dispose(bool disposing)

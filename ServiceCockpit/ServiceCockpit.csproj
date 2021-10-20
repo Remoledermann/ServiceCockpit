@@ -211,6 +211,18 @@
     <Compile Include="Migrations\202110192135068_OrganisationsStatusIntzuString.Designer.cs">
       <DependentUpon>202110192135068_OrganisationsStatusIntzuString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110201724187_ProjektNummernichtmehrerforderlich.cs" />
+    <Compile Include="Migrations\202110201724187_ProjektNummernichtmehrerforderlich.Designer.cs">
+      <DependentUpon>202110201724187_ProjektNummernichtmehrerforderlich.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110201838010_ServicrapportnummerändernzuString.cs" />
+    <Compile Include="Migrations\202110201838010_ServicrapportnummerändernzuString.Designer.cs">
+      <DependentUpon>202110201838010_ServicrapportnummerändernzuString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110202109375_MaterialzeitFix.cs" />
+    <Compile Include="Migrations\202110202109375_MaterialzeitFix.Designer.cs">
+      <DependentUpon>202110202109375_MaterialzeitFix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Ausführungsadresse.cs" />
@@ -220,6 +232,7 @@
     <Compile Include="Models\Material.cs" />
     <Compile Include="Models\MaterialKosten.cs" />
     <Compile Include="Models\Mitarbeiter.cs" />
+    <Compile Include="Models\ModelViewServiceCockpit.cs" />
     <Compile Include="Models\ModleViewStammdaten.cs" />
     <Compile Include="Models\Organisation.cs" />
     <Compile Include="Models\Projekt.cs" />
@@ -300,11 +313,6 @@
     <Content Include="Views\Materials\Details.cshtml" />
     <Content Include="Views\Materials\Edit.cshtml" />
     <Content Include="Views\Materials\Index.cshtml" />
-    <Content Include="Views\MaterialKostens\Create.cshtml" />
-    <Content Include="Views\MaterialKostens\Delete.cshtml" />
-    <Content Include="Views\MaterialKostens\Details.cshtml" />
-    <Content Include="Views\MaterialKostens\Edit.cshtml" />
-    <Content Include="Views\MaterialKostens\Index.cshtml" />
     <Content Include="Views\Ausführungsadresses\Create.cshtml" />
     <Content Include="Views\Ausführungsadresses\Delete.cshtml" />
     <Content Include="Views\Ausführungsadresses\Details.cshtml" />
@@ -369,6 +377,11 @@
     <Content Include="Views\StammDaten\Create.cshtml" />
     <Content Include="Views\ServicerapportDashboards\Index.cshtml" />
     <Content Include="Views\WochenrapportDashboards\Index.cshtml" />
+    <Content Include="Views\MaterialKostens\Create.cshtml" />
+    <Content Include="Views\MaterialKostens\Delete.cshtml" />
+    <Content Include="Views\MaterialKostens\Details.cshtml" />
+    <Content Include="Views\MaterialKostens\Edit.cshtml" />
+    <Content Include="Views\MaterialKostens\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -401,6 +414,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110192135068_OrganisationsStatusIntzuString.resx">
       <DependentUpon>202110192135068_OrganisationsStatusIntzuString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110201724187_ProjektNummernichtmehrerforderlich.resx">
+      <DependentUpon>202110201724187_ProjektNummernichtmehrerforderlich.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110201838010_ServicrapportnummerändernzuString.resx">
+      <DependentUpon>202110201838010_ServicrapportnummerändernzuString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110202109375_MaterialzeitFix.resx">
+      <DependentUpon>202110202109375_MaterialzeitFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

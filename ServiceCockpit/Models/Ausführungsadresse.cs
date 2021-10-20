@@ -27,7 +27,7 @@ namespace ServiceCockpit.Models
         [NotMapped]
         public string Anzeigeadresse
         {
-            get { return Strasse + " " + Plz + " " + Ort; }
+            get { return Name +", "+ Strasse + ", " + Plz + ", " + Ort; }
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ServiceCockpit.Models
 
         public string Name { get; set; }
 
-        public int Nummer { get; set; }
+        public int? Nummer { get; set; }
 
         public string Status { get; set; }
 
