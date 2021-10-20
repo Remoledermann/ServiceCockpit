@@ -52,7 +52,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Eigentuemeradresse.Add(eigentuemeradresse);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
 
             return View(eigentuemeradresse);
@@ -84,7 +84,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Entry(eigentuemeradresse).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
             return View(eigentuemeradresse);
         }
@@ -112,7 +112,7 @@ namespace ServiceCockpit.Controllers
             Eigentuemeradresse eigentuemeradresse = db.Eigentuemeradresse.Find(id);
             db.Eigentuemeradresse.Remove(eigentuemeradresse);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "StammDaten");
         }
 
         protected override void Dispose(bool disposing)

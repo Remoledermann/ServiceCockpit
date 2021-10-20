@@ -52,7 +52,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Material.Add(material);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
 
             return View(material);
@@ -84,7 +84,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Entry(material).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
             return View(material);
         }
@@ -112,7 +112,7 @@ namespace ServiceCockpit.Controllers
             Material material = db.Material.Find(id);
             db.Material.Remove(material);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "StammDaten");
         }
 
         protected override void Dispose(bool disposing)

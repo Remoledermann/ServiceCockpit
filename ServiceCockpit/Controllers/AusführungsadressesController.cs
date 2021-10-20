@@ -52,7 +52,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Ausführungsadresse.Add(ausführungsadresse);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
 
             return View(ausführungsadresse);
@@ -84,7 +84,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Entry(ausführungsadresse).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
             return View(ausführungsadresse);
         }
@@ -112,7 +112,7 @@ namespace ServiceCockpit.Controllers
             Ausführungsadresse ausführungsadresse = db.Ausführungsadresse.Find(id);
             db.Ausführungsadresse.Remove(ausführungsadresse);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "StammDaten");
         }
 
         protected override void Dispose(bool disposing)

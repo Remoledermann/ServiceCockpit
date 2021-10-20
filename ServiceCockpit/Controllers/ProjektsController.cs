@@ -37,9 +37,18 @@ namespace ServiceCockpit.Controllers
         }
 
         // GET: Projekts/Create
-        public ActionResult Create()
+        public ActionResult Create(bool IsFromProjekts = true)
         {
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName");
+            if (IsFromProjekts)
+            {
+                ViewBag.ControllerNameBack = "Projekts";
+            }
+            else
+            {
+                ViewBag.ControllerNameBack = "StammDaten";
+            }
+
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName");
             ViewBag.OrganisationFK = new SelectList(db.Organisation, "Id", "Name");
             return View();
         }
@@ -53,12 +62,14 @@ namespace ServiceCockpit.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (projekt.Status == null || projekt.Status.Length < 1)
+                    projekt.Status = "Offen";
                 db.Projekt.Add(projekt);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
 
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", projekt.MitarbeiterId);
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", projekt.MitarbeiterId);
             ViewBag.OrganisationFK = new SelectList(db.Organisation, "Id", "Name", projekt.OrganisationFK);
             return View(projekt);
         }
@@ -75,7 +86,7 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", projekt.MitarbeiterId);
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", projekt.MitarbeiterId);
             ViewBag.OrganisationFK = new SelectList(db.Organisation, "Id", "Name", projekt.OrganisationFK);
             return View(projekt);
         }
@@ -91,9 +102,9 @@ namespace ServiceCockpit.Controllers
             {
                 db.Entry(projekt).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", projekt.MitarbeiterId);
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", projekt.MitarbeiterId);
             ViewBag.OrganisationFK = new SelectList(db.Organisation, "Id", "Name", projekt.OrganisationFK);
             return View(projekt);
         }
@@ -121,7 +132,7 @@ namespace ServiceCockpit.Controllers
             Projekt projekt = db.Projekt.Find(id);
             db.Projekt.Remove(projekt);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "StammDaten");
         }
 
         protected override void Dispose(bool disposing)

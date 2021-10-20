@@ -52,7 +52,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Verrechnungsart.Add(verrechnungsart);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
 
             return View(verrechnungsart);
@@ -84,7 +84,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Entry(verrechnungsart).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
             return View(verrechnungsart);
         }
@@ -112,7 +112,7 @@ namespace ServiceCockpit.Controllers
             Verrechnungsart verrechnungsart = db.Verrechnungsart.Find(id);
             db.Verrechnungsart.Remove(verrechnungsart);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "StammDaten");
         }
 
         protected override void Dispose(bool disposing)

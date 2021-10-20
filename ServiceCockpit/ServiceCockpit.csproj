@@ -178,9 +178,11 @@
     <Compile Include="Controllers\OrganisationsController.cs" />
     <Compile Include="Controllers\ProjektsController.cs" />
     <Compile Include="Controllers\RechnungsadressesController.cs" />
+    <Compile Include="Controllers\ServicerapportDashboardsController.cs" />
     <Compile Include="Controllers\ServicerapportsController.cs" />
     <Compile Include="Controllers\StammDatenController.cs" />
     <Compile Include="Controllers\VerrechnungsartsController.cs" />
+    <Compile Include="Controllers\WochenrapportDashboardsController.cs" />
     <Compile Include="Controllers\WochenrapportsController.cs" />
     <Compile Include="Controllers\WochenrapportSpesenEintragsController.cs" />
     <Compile Include="Controllers\WochenrapportZeitEintragsController.cs" />
@@ -204,6 +206,10 @@
     <Compile Include="Migrations\202110192116256_WechselnDerStatusIntZuString.cs" />
     <Compile Include="Migrations\202110192116256_WechselnDerStatusIntZuString.Designer.cs">
       <DependentUpon>202110192116256_WechselnDerStatusIntZuString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110192135068_OrganisationsStatusIntzuString.cs" />
+    <Compile Include="Migrations\202110192135068_OrganisationsStatusIntzuString.Designer.cs">
+      <DependentUpon>202110192135068_OrganisationsStatusIntzuString.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -360,6 +366,9 @@
     <Content Include="Views\ZeitKostenUeberzeitFaktors\Edit.cshtml" />
     <Content Include="Views\ZeitKostenUeberzeitFaktors\Index.cshtml" />
     <Content Include="Views\StammDaten\Index.cshtml" />
+    <Content Include="Views\StammDaten\Create.cshtml" />
+    <Content Include="Views\ServicerapportDashboards\Index.cshtml" />
+    <Content Include="Views\WochenrapportDashboards\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -389,6 +398,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110192116256_WechselnDerStatusIntZuString.resx">
       <DependentUpon>202110192116256_WechselnDerStatusIntZuString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110192135068_OrganisationsStatusIntzuString.resx">
+      <DependentUpon>202110192135068_OrganisationsStatusIntzuString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

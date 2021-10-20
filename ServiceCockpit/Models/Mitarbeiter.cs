@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using Microsoft.Owin.Security;
@@ -23,5 +24,12 @@ namespace ServiceCockpit.Models
         public string GfeNummer { get; set; }
 
         public string Email { get; set; }
+
+        [NotMapped]
+        public string VollerName
+        {
+            get { return VorName + " " + NachName ; }
+        }
+
     }
 }

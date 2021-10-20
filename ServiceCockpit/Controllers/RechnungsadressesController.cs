@@ -52,7 +52,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Rechnungsadresse.Add(rechnungsadresse);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
 
             return View(rechnungsadresse);
@@ -84,7 +84,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Entry(rechnungsadresse).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
             return View(rechnungsadresse);
         }
@@ -112,7 +112,7 @@ namespace ServiceCockpit.Controllers
             Rechnungsadresse rechnungsadresse = db.Rechnungsadresse.Find(id);
             db.Rechnungsadresse.Remove(rechnungsadresse);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "StammDaten");
         }
 
         protected override void Dispose(bool disposing)

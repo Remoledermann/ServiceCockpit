@@ -52,7 +52,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.ZeitKostenUeberzeitFaktor.Add(zeitKostenUeberzeitFaktor);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
 
             return View(zeitKostenUeberzeitFaktor);
@@ -84,7 +84,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Entry(zeitKostenUeberzeitFaktor).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
             return View(zeitKostenUeberzeitFaktor);
         }
@@ -112,7 +112,7 @@ namespace ServiceCockpit.Controllers
             ZeitKostenUeberzeitFaktor zeitKostenUeberzeitFaktor = db.ZeitKostenUeberzeitFaktor.Find(id);
             db.ZeitKostenUeberzeitFaktor.Remove(zeitKostenUeberzeitFaktor);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "StammDaten");
         }
 
         protected override void Dispose(bool disposing)

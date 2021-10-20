@@ -36,8 +36,16 @@ namespace ServiceCockpit.Controllers
         }
 
         // GET: Mitarbeiters/Create
-        public ActionResult Create()
+        public ActionResult Create(bool IsFromMitarbeiters = true)
         {
+            if (IsFromMitarbeiters)
+            {
+                ViewBag.ControllerNameBack = "Mitarbeiters";
+            }
+            else
+            {
+                ViewBag.ControllerNameBack = "StammDaten";
+            }
             return View();
         }
 
@@ -52,7 +60,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Mitarbeiter.Add(mitarbeiter);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
 
             return View(mitarbeiter);
@@ -84,7 +92,7 @@ namespace ServiceCockpit.Controllers
             {
                 db.Entry(mitarbeiter).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "StammDaten");
             }
             return View(mitarbeiter);
         }
@@ -112,7 +120,7 @@ namespace ServiceCockpit.Controllers
             Mitarbeiter mitarbeiter = db.Mitarbeiter.Find(id);
             db.Mitarbeiter.Remove(mitarbeiter);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "StammDaten");
         }
 
         protected override void Dispose(bool disposing)

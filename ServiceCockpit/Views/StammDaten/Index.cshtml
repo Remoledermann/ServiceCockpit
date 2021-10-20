@@ -4,21 +4,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Stammdaten erfassen</h2>
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Organisation Info
+                    <h3 class="active">Organisation</h3>
                 </a>
             </h4>
         </div>
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
                 <p>
-                    @Html.ActionLink("Create New", "Create", "Organisations",new { IsFromOrganisations = false }, null))
+                    @Html.ActionLink("Create New", "Create", "Organisations", new { IsFromOrganisations = false }, null))
                 </p>
                 <table class="table">
                     <tr>
@@ -26,19 +26,20 @@
                             Firmen Name
                         </th>
                         <th>
-                            Rapportierte Stunden Kosten
+                            Rapportierte Stunden in CHF
                         </th>
                         <th>
-                            Rapportierte Material Kosten
+                            Rapportierte Material in CHF
                         </th>
                         <th>
                             Umsatz
                         </th>
-                       
+
                         <th></th>
                     </tr>
 
-                    @foreach (var item in Model.Organisation) {
+                    @foreach (var item in Model.Organisation)
+                    {
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
@@ -52,9 +53,9 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.KostenTotal)
                             </td>
-                           
+
                             <td>
-                                @Html.ActionLink("Edit", "Edit", "Organisations", new { id=item.Id }, null) |
+                                @Html.ActionLink("Edit", "Edit", "Organisations", new { id = item.Id }, null) |
                                 @Html.ActionLink("Details", "Details", "Organisations", new { id = item.Id }, null) |
                                 @Html.ActionLink("Delete", "Delete", "Organisations", new { id = item.Id }, null)
                             </td>
@@ -69,13 +70,74 @@
         <div class="panel-heading" role="tab" id="headingTwo">
             <h4 class="panel-title">
                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Collapsible Group Item #2
+                    <h3 class="active">Projekt</h3>
                 </a>
             </h4>
         </div>
         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
             <div class="panel-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                <p>
+                    @Html.ActionLink("Create New", "Create", "Projekts", new { IsFromProjekts = false }, null)
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Projektleiter
+                        </th>
+                        <th>
+                            Organisation
+                        </th>
+                        <th>
+                            Projektname
+                        </th>
+                        <th>
+                            Projektnummer
+                        </th>
+                        <th>
+                            Rapportierte Stunden in CHF
+                        </th>
+                        <th>
+                            Rapportierte Material in CHF
+                        </th>
+                        <th>
+                            Umsatz in CHF
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model.Projekt)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Mitarbeiter.VorName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Organisation.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nummer)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KostenZeit)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KostenMaterial)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KostenTotal)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "Projekts", new { id = item.Id }, null) |
+                                @Html.ActionLink("Details", "Details", "Projekts", new { id = item.Id }, null) |
+                                @Html.ActionLink("Delete", "Delete", "Projekts", new { id = item.Id }, null)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
             </div>
         </div>
     </div>
@@ -83,14 +145,438 @@
         <div class="panel-heading" role="tab" id="headingThree">
             <h4 class="panel-title">
                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Collapsible Group Item #3
+                    <h3 class="active">Mitarbeiter</h3>
                 </a>
             </h4>
         </div>
         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
             <div class="panel-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                <p>
+                    @Html.ActionLink("Create New", "Create", "Mitarbeiters")
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Vorname
+                        </th>
+                        <th>
+                            Nachname
+                        </th>
+                        <th>
+                            Telefon Geschäft
+                        </th>
+                        <th>
+                            Telefon Privat
+                        </th>
+                        <th>
+                            Kürzel
+                        </th>
+                        <th>
+                            GFE Nummer
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model.Mitarbeiter)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VorName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NachName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TelefonGeschäft)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TelefonPrivat)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Kürzel)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GfeNummer)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "Mitarbeiters", new { id = item.Id }, null) |
+                                @Html.ActionLink("Details", "Details", "Mitarbeiters", new { id = item.Id }, null) |
+                                @Html.ActionLink("Delete", "Delete", "Mitarbeiters", new { id = item.Id }, null)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
             </div>
         </div>
     </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading4">
+            <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="false" aria-controls="collapseThree">
+                    <h3 class="active">Material</h3>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+            <div class="panel-body">
+                <p>
+                    @Html.ActionLink("Create New", "Create", "Materials")
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Beschreibung
+                        </th>
+                        <th>
+                            EM-Nr.
+                        </th>
+                        <th>
+                            Kosten
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model.Material)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nummer)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KostenProMaterial)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "Materials", new { id = item.Id }, null) |
+                                @Html.ActionLink("Details", "Details", "Materials", new { id = item.Id }, null) |
+                                @Html.ActionLink("Delete", "Delete", "Materials", new { id = item.Id }, null)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading5">
+            <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                    <h3 class="active">Verrechnungsarten</h3>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading5">
+            <div class="panel-body">
+                <p>
+                    @Html.ActionLink("Create New", "Create", "Verrechnungsarts")
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Nummer
+                        </th>
+                        <th>
+                            Kosten Pro Stunde
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model.Verrechnungsart)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nummer)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KostenProStunde)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "Verrechnungsarts", new { id = item.Id }, null) |
+                                @Html.ActionLink("Details", "Details", "Verrechnungsarts", new { id = item.Id }, null) |
+                                @Html.ActionLink("Delete", "Delete", "Verrechnungsarts", new { id = item.Id }, null)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading8>
+            <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                    <h3 class="active">Überzeitfacktor</h3>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse8" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading8">
+            <div class="panel-body">
+                <p>
+                    @Html.ActionLink("Create New", "Create", "ZeitKostenUeberzeitFaktors")
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Faktor
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model.ZeitKostenUeberzeitFaktor)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Faktor)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "ZeitKostenUeberzeitFaktors", new { id = item.Id }, null) |
+                                @Html.ActionLink("Details", "Details", "ZeitKostenUeberzeitFaktors", new { id = item.Id }, null) |
+                                @Html.ActionLink("Delete", "Delete", "ZeitKostenUeberzeitFaktors", new { id = item.Id }, null)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading9>
+            <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                    <h3 class="active">Adressen</h3>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse9" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading9">
+            <div class="panel-body">
+            <h2>Für alle Adressen</h2>
+                @Html.ActionLink("Create New", "Create", "StammDaten")
+
+                <h2>Ausführungsadressen</h2>
+
+                <p>
+                    @Html.ActionLink("Create New", "Create", "Ausführungsadresses")
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Vorname
+                        </th>
+                        <th>
+                            Strasse
+                        </th>
+                        <th>
+                            Plz
+                        </th>
+                        <th>
+                            Ort
+                        </th>
+                        <th>
+                            Telefon Geschäft
+                        </th>
+                        <th>
+                            Telefon Privat
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var itemAusführungsadresses in Model.Ausführungsadresse)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemAusführungsadresses.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemAusführungsadresses.Vornamne)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemAusführungsadresses.Strasse)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemAusführungsadresses.Plz)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemAusführungsadresses.Ort)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemAusführungsadresses.TelefonGeschäft)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemAusführungsadresses.TelefonPrivat)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "Ausführungsadresses", new { id = itemAusführungsadresses.Id }, null) |
+                                @Html.ActionLink("Details", "Details", "Ausführungsadresses", new { id = itemAusführungsadresses.Id }, null) |
+                                @Html.ActionLink("Delete", "Delete", "Ausführungsadresses", new { id = itemAusführungsadresses.Id }, null)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+                <hr />
+                <h2>Eigentümeradressen</h2>
+
+                <p>
+                    @Html.ActionLink("Create New", "Create", "Eigentuemeradresses")
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Vorname
+                        </th>
+                        <th>
+                            Strasse
+                        </th>
+                        <th>
+                            Plz
+                        </th>
+                        <th>
+                            Ort
+                        </th>
+                        <th>
+                            Telefon Geschäft
+                        </th>
+                        <th>
+                            Telefon Privat
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var itemEigentuemeradress in Model.Eigentuemeradresse)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemEigentuemeradress.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemEigentuemeradress.Vornamne)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemEigentuemeradress.Strasse)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemEigentuemeradress.Plz)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemEigentuemeradress.Ort)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemEigentuemeradress.TelefonGeschäft)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemEigentuemeradress.TelefonPrivat)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "Eigentuemeradresses", new { id = itemEigentuemeradress.Id }, null) |
+                                @Html.ActionLink("Details", "Details", "Eigentuemeradresses", new { id = itemEigentuemeradress.Id }, null) |
+                                @Html.ActionLink("Delete", "Delete", "Eigentuemeradresses", new { id = itemEigentuemeradress.Id }, null)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+                <hr class="h1"/>
+                <h2>Rechnungsadressen</h2>
+
+                <p>
+                    @Html.ActionLink("Create New", "Create", "Rechnungsadresses")
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Vorname
+                        </th>
+                        <th>
+                            Strasse
+                        </th>
+                        <th>
+                            Plz
+                        </th>
+                        <th>
+                            Ort
+                        </th>
+                        <th>
+                            Telefon Geschäft
+                        </th>
+                        <th>
+                            Telefon Privat
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var itemRechnungsadresse in Model.Rechnungsadresse)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemRechnungsadresse.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemRechnungsadresse.Vornamne)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemRechnungsadresse.Strasse)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemRechnungsadresse.Plz)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemRechnungsadresse.Ort)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemRechnungsadresse.TelefonGeschäft)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemRechnungsadresse.TelefonPrivat)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", "Rechnungsadresses", new { id = itemRechnungsadresse.Id }, null) |
+                                @Html.ActionLink("Details", "Details", "Rechnungsadresses", new { id = itemRechnungsadresse.Id }, null) |
+                                @Html.ActionLink("Delete", "Delete", "Rechnungsadresses", new { id = itemRechnungsadresse.Id }, null)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+
+    </div>
 </div>
+
+
+

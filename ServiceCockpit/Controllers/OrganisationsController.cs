@@ -58,7 +58,11 @@ namespace ServiceCockpit.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+                if (organisation.Status == null || organisation.Status.Length < 1)
+                    organisation.Status = "Offen";
+                
+                    
+                
                 db.Organisation.Add(organisation);
                 db.SaveChanges();
                 return RedirectToAction("Index", "StammDaten");
@@ -121,7 +125,7 @@ namespace ServiceCockpit.Controllers
             Organisation organisation = db.Organisation.Find(id);
             db.Organisation.Remove(organisation);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "StammDaten");
         }
 
         protected override void Dispose(bool disposing)

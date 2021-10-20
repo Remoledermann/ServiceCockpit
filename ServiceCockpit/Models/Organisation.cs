@@ -18,7 +18,7 @@ namespace ServiceCockpit.Models
 
         public decimal? KostenTotal { get; set; }
 
-        public int? Status { get; set; }
+        public string Status { get; set; }
 
         [ForeignKey("OrganisationFK")]
         public List<Projekt> Projekte { get; set; }
