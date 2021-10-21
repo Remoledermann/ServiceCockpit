@@ -13,6 +13,6 @@ namespace ServiceCockpit.Models
 
         public string Nummer { get; set; }
 
-        public decimal KostenProStunde { get; set; }
+        public decimal? KostenProStunde { get; set; }
     }
 }

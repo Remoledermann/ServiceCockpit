@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ServiceCockpit.Migrations;
 using ServiceCockpit.Models;
 
 namespace ServiceCockpit.Controllers
@@ -24,6 +25,12 @@ namespace ServiceCockpit.Controllers
         // GET: Projekts/Details/5
         public ActionResult Details(int? id)
         {
+
+
+
+            List<decimal> listStunden = new List<decimal>();
+            List<decimal> listeMaterial = new List<decimal>();
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -33,6 +40,44 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
+            else
+            {
+               
+
+
+                var rapport = db.Servicerapport.ToList().Where(s => s.ProjektFK == id);
+
+                foreach (var VARIABLE in rapport)
+                {
+                    if (VARIABLE.KostenZeit == null)
+                    {
+                        
+                    }
+                    else
+                    {
+                        listStunden.Add(VARIABLE.KostenZeit.Value);
+                        
+                        
+                    }
+                    if(VARIABLE.KostenMaterial == null)
+                    {
+                        
+                    }
+                    else
+                    {
+                        listeMaterial.Add(VARIABLE.KostenMaterial.Value);
+                    }
+                        
+                   
+                }
+            }
+
+            projekt.KostenZeit = listStunden.Sum();
+            projekt.KostenMaterial = listeMaterial.Sum();
+            projekt.KostenTotal = projekt.KostenMaterial + projekt.KostenZeit;
+
+            db.SaveChanges();
+
             return View(projekt);
         }
 
@@ -86,8 +131,47 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
+
+            List<decimal> listStunden = new List<decimal>();
+            List<decimal> listeMaterial = new List<decimal>();
+
+
+                var rapport = db.Servicerapport.ToList().Where(s => s.ProjektFK == id);
+
+                foreach (var VARIABLE in rapport)
+                {
+                    if (VARIABLE.KostenZeit == null)
+                    {
+
+                    }
+                    else
+                    {
+                        listStunden.Add(VARIABLE.KostenZeit.Value);
+
+
+                    }
+                    if (VARIABLE.KostenMaterial == null)
+                    {
+
+                    }
+                    else
+                    {
+                        listeMaterial.Add(VARIABLE.KostenMaterial.Value);
+                    }
+
+
+                }
+            
+
+            projekt.KostenZeit = listStunden.Sum();
+            projekt.KostenMaterial = listeMaterial.Sum();
+            projekt.KostenTotal = projekt.KostenMaterial + projekt.KostenZeit;
+
+            db.SaveChanges();
             ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", projekt.MitarbeiterId);
             ViewBag.OrganisationFK = new SelectList(db.Organisation, "Id", "Name", projekt.OrganisationFK);
+
+
             return View(projekt);
         }
 
@@ -112,6 +196,9 @@ namespace ServiceCockpit.Controllers
         // GET: Projekts/Delete/5
         public ActionResult Delete(int? id)
         {
+            List<decimal> listStunden = new List<decimal>();
+            List<decimal> listeMaterial = new List<decimal>();
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -121,6 +208,26 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
+            else
+            {
+
+
+
+                var rapport = db.Servicerapport.ToList().Where(s => s.ProjektFK == id);
+
+                foreach (var VARIABLE in rapport)
+                {
+                    listStunden.Add(VARIABLE.KostenZeit.Value);
+                    listeMaterial.Add(VARIABLE.KostenMaterial.Value);
+                }
+            }
+
+            projekt.KostenZeit = listStunden.Sum();
+            projekt.KostenMaterial = listeMaterial.Sum();
+            projekt.KostenTotal = projekt.KostenMaterial + projekt.KostenZeit;
+
+            db.SaveChanges();
+
             return View(projekt);
         }
 

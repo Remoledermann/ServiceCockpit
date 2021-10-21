@@ -53,13 +53,20 @@ namespace ServiceCockpit.Controllers
         {
             if (ModelState.IsValid)
             {
+                var material = db.Material.SingleOrDefault(c =>
+                    c.Id == materialKosten.MaterialId);
+                materialKosten.Material = material;
+
+                materialKosten.KostenTotal = materialKosten.Material.KostenProMaterial * materialKosten.AnzahlMaterial;
+
+
                 db.MaterialKosten.Add(materialKosten);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name", materialKosten.MaterialId);
-            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", materialKosten.ServicerapportFK);
+            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id", materialKosten.ServicerapportFK);
             return View(materialKosten);
         }
 
@@ -89,12 +96,18 @@ namespace ServiceCockpit.Controllers
         {
             if (ModelState.IsValid)
             {
+                var material = db.Material.SingleOrDefault(c =>
+                    c.Id == materialKosten.MaterialId);
+                materialKosten.Material = material;
+
+                materialKosten.KostenTotal = materialKosten.Material.KostenProMaterial * materialKosten.AnzahlMaterial;
+
                 db.Entry(materialKosten).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name", materialKosten.MaterialId);
-            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", materialKosten.ServicerapportFK);
+            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id", materialKosten.ServicerapportFK);
             return View(materialKosten);
         }
 

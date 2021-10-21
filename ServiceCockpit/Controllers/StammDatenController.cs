@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using ServiceCockpit.Migrations;
 using ServiceCockpit.Models;
 
 namespace ServiceCockpit.Controllers
@@ -26,6 +27,7 @@ namespace ServiceCockpit.Controllers
             stammdaten.Ausführungsadresse = db.Ausführungsadresse.ToList();
             stammdaten.Rechnungsadresse = db.Rechnungsadresse.ToList();
             stammdaten.Eigentuemeradresse = db.Eigentuemeradresse.ToList();
+
 
             return View(stammdaten);
         }

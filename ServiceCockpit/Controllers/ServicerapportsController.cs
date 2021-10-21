@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Schema;
 using ServiceCockpit.Models;
 
 namespace ServiceCockpit.Controllers
@@ -18,6 +19,7 @@ namespace ServiceCockpit.Controllers
         public ActionResult Index()
         {
             var servicerapport = db.Servicerapport.Include(s => s.Ausführungsadresse).Include(s => s.Eigentuemeradresse).Include(s => s.Mitarbeiter).Include(s => s.Projekt).Include(s => s.Rechnungsadresse);
+
             return View(servicerapport.ToList());
         }
 
@@ -69,11 +71,11 @@ namespace ServiceCockpit.Controllers
                 return RedirectToAction("Index", "ServicerapportDashboards");
             }
 
-            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Name", servicerapport.AusführungsadresseId);
-            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Name", servicerapport.EigentuemeradresseId);
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", servicerapport.MitarbeiterId);
-            ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Name", servicerapport.ProjektFK);
-            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Name", servicerapport.RechnungsadresseId);
+            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse", servicerapport.AusführungsadresseId);
+            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse", servicerapport.EigentuemeradresseId);
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", servicerapport.MitarbeiterId);
+            ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Nummer", servicerapport.ProjektFK);
+            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse", servicerapport.RechnungsadresseId);
             return View(servicerapport);
         }
 
@@ -84,21 +86,64 @@ namespace ServiceCockpit.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            else
+            {
+                var rapport = db.Servicerapport.SingleOrDefault(s => s.Id == id);
+                
+                var zeiteinträge = db.ZeitKosten.Include(s => s.ZeitKostenUeberzeitFaktor)
+                    .Include(s => s.Verrechnungsart).Include(s => s.Mitarbeiter).Where(s => s.ServicerapportFK == id);
+                rapport.ZeitKosten = zeiteinträge.ToList();
+
+                var materialeinträge = db.MaterialKosten.Include(s => s.Material).Where(s => s.ServicerapportFK == id);
+                rapport.MaterialKosten = materialeinträge.ToList();
+
+                // Additon kosten
+                List<decimal> listAnzahlStunden = new List<decimal>();
+                foreach (var VARIABLE in rapport.ZeitKosten)
+                {
+                    if (VARIABLE.KostenTotal == null)
+                    {
+
+                    }
+                    else
+                    {
+                        listAnzahlStunden.Add(VARIABLE.KostenTotal.Value);
+                    }
+                  
+                } 
+                rapport.KostenZeit = listAnzahlStunden.Sum(); List<decimal> listAnzahlMaterial= new List<decimal>();
+                foreach (var VARIABLE in rapport.MaterialKosten)
+                {
+                    if (VARIABLE.KostenTotal == null)
+                    {
+                        
+                    }
+                    else
+                    {
+                        listAnzahlMaterial.Add(VARIABLE.KostenTotal.Value);
+                    }
+                }
+                rapport.KostenMaterial = listAnzahlMaterial.Sum();
+                rapport.KostenTotal = rapport.KostenMaterial + rapport.KostenZeit;
+                db.SaveChanges();
+
+
+            }
             Servicerapport servicerapport = db.Servicerapport.Find(id);
             if (servicerapport == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Name", servicerapport.AusführungsadresseId);
-            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Name", servicerapport.EigentuemeradresseId);
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", servicerapport.MitarbeiterId);
-            ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Name", servicerapport.ProjektFK);
-            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Name", servicerapport.RechnungsadresseId);
+            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse", servicerapport.AusführungsadresseId);
+            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse", servicerapport.EigentuemeradresseId);
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", servicerapport.MitarbeiterId);
+            ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Nummer", servicerapport.ProjektFK);
+            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse", servicerapport.RechnungsadresseId);
 
-            var zeitKosten = db.ZeitKosten.Include(z => z.Mitarbeiter).Include(z => z.Servicerapport).Include(z => z.Verrechnungsart).Include(z => z.ZeitKostenUeberzeitFaktor).Where(z=>servicerapport.Id == id);
+            var zeitKosten = db.ZeitKosten.Include(z => z.Mitarbeiter).Include(z => z.Servicerapport).Include(z => z.Verrechnungsart).Include(z => z.ZeitKostenUeberzeitFaktor).Where(z => z.ServicerapportFK == id);
             servicerapport.ZeitKosten = zeitKosten.ToList();
 
-            var materialKosten = db.MaterialKosten.Include(m => m.Servicerapport).Include(m => m.Material);
+            var materialKosten = db.MaterialKosten.Include(m => m.Servicerapport).Include(m => m.Material).Where(z => z.ServicerapportFK == id);
             servicerapport.MaterialKosten = materialKosten.ToList();
 
             return View(servicerapport);
@@ -123,15 +168,14 @@ namespace ServiceCockpit.Controllers
                 }
 
                 db.Entry(servicerapport).State = EntityState.Modified;
-             
                 db.SaveChanges();
                 return RedirectToAction("Index", "ServicerapportDashboards");
             }
-            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Name", servicerapport.AusführungsadresseId);
-            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Name", servicerapport.EigentuemeradresseId);
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", servicerapport.MitarbeiterId);
-            ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Name", servicerapport.ProjektFK);
-            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Name", servicerapport.RechnungsadresseId);
+            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse", servicerapport.AusführungsadresseId);
+            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse", servicerapport.EigentuemeradresseId);
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", servicerapport.MitarbeiterId);
+            ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Nummer", servicerapport.ProjektFK);
+            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse", servicerapport.RechnungsadresseId);
             return View(servicerapport);
         }
 
@@ -158,7 +202,7 @@ namespace ServiceCockpit.Controllers
             Servicerapport servicerapport = db.Servicerapport.Find(id);
             db.Servicerapport.Remove(servicerapport);
             db.SaveChanges();
-            return RedirectToAction("Index", "ServicerapportDashboards");
+            return RedirectToAction("Index", "Servicerapports");
         }
 
         protected override void Dispose(bool disposing)

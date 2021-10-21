@@ -39,7 +39,7 @@ namespace ServiceCockpit.Controllers
         // GET: ZeitKostens/Create
         public ActionResult Create()
         {
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName");
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName");
             ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id");
             ViewBag.VerrechnungsartId = new SelectList(db.Verrechnungsart, "Id", "Name");
             ViewBag.ZeitKostenUeberzeitFaktorId = new SelectList(db.ZeitKostenUeberzeitFaktor, "Id", "Name");
@@ -55,13 +55,28 @@ namespace ServiceCockpit.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                //ADD
+                var überzeit = db.ZeitKostenUeberzeitFaktor.SingleOrDefault(c =>
+                    c.Id == zeitKosten.ZeitKostenUeberzeitFaktorId);
+                zeitKosten.ZeitKostenUeberzeitFaktor = überzeit;
+
+                var verrechnungsart = db.Verrechnungsart.SingleOrDefault(c => c.Id == zeitKosten.VerrechnungsartId);
+                zeitKosten.Verrechnungsart = verrechnungsart;
+
+                zeitKosten.AnzahlStundenTotal = zeitKosten.AnzahlStunden * zeitKosten.ZeitKostenUeberzeitFaktor.Faktor;
+                zeitKosten.KostenTotal = zeitKosten.AnzahlStundenTotal * zeitKosten.Verrechnungsart.KostenProStunde;
+
                 db.ZeitKosten.Add(zeitKosten);
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", zeitKosten.MitarbeiterId);
-            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", zeitKosten.ServicerapportFK);
+               
+
+
+                return RedirectToAction("Index","ServicerapportDashboards");
+            }
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", zeitKosten.MitarbeiterId);
+            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id", zeitKosten.ServicerapportFK);
             ViewBag.VerrechnungsartId = new SelectList(db.Verrechnungsart, "Id", "Name", zeitKosten.VerrechnungsartId);
             ViewBag.ZeitKostenUeberzeitFaktorId = new SelectList(db.ZeitKostenUeberzeitFaktor, "Id", "Name", zeitKosten.ZeitKostenUeberzeitFaktorId);
             return View(zeitKosten);
@@ -79,8 +94,8 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", zeitKosten.MitarbeiterId);
-            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", zeitKosten.ServicerapportFK);
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", zeitKosten.MitarbeiterId);
+            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id", zeitKosten.ServicerapportFK);
             ViewBag.VerrechnungsartId = new SelectList(db.Verrechnungsart, "Id", "Name", zeitKosten.VerrechnungsartId);
             ViewBag.ZeitKostenUeberzeitFaktorId = new SelectList(db.ZeitKostenUeberzeitFaktor, "Id", "Name", zeitKosten.ZeitKostenUeberzeitFaktorId);
             return View(zeitKosten);
@@ -95,14 +110,25 @@ namespace ServiceCockpit.Controllers
         {
             if (ModelState.IsValid)
             {
+
+
+                var überzeit = db.ZeitKostenUeberzeitFaktor.SingleOrDefault(c =>
+                    c.Id == zeitKosten.ZeitKostenUeberzeitFaktorId);
+                zeitKosten.ZeitKostenUeberzeitFaktor = überzeit;
+
+                var verrechnungsart = db.Verrechnungsart.SingleOrDefault(c => c.Id == zeitKosten.VerrechnungsartId);
+                zeitKosten.Verrechnungsart = verrechnungsart;
+                zeitKosten.AnzahlStundenTotal = zeitKosten.AnzahlStunden * zeitKosten.ZeitKostenUeberzeitFaktor.Faktor;
+                zeitKosten.KostenTotal = zeitKosten.AnzahlStundenTotal * zeitKosten.Verrechnungsart.KostenProStunde;
+
                 db.Entry(zeitKosten).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "ServicerapportDashboards");
             }
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VorName", zeitKosten.MitarbeiterId);
-            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "VoranmeldungName", zeitKosten.ServicerapportFK);
-            ViewBag.VerrechnungsartId = new SelectList(db.Verrechnungsart, "Id", "Name", zeitKosten.VerrechnungsartId);
-            ViewBag.ZeitKostenUeberzeitFaktorId = new SelectList(db.ZeitKostenUeberzeitFaktor, "Id", "Name", zeitKosten.ZeitKostenUeberzeitFaktorId);
+            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName");
+            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id");
+            ViewBag.VerrechnungsartId = new SelectList(db.Verrechnungsart, "Id", "Name");
+            ViewBag.ZeitKostenUeberzeitFaktorId = new SelectList(db.ZeitKostenUeberzeitFaktor, "Id", "Name");
             return View(zeitKosten);
         }
 

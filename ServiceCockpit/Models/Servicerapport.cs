@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Migrations.Model;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace ServiceCockpit.Models
     {
         
         public int Id { get; set; }
-
+        [DisplayName("Termin am")]
         public DateTime? KundenTerminZeit { get; set; }
 
         public DateTime? RapportAbgechlossenZeit { get; set; }

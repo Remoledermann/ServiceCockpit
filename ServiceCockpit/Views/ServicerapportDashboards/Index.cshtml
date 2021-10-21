@@ -41,7 +41,8 @@
         <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
             <div class="panel-body">
                 
-                <table class="table">
+                <table id="AlleServicrapporte" class="display">
+                    <thead>
                     <tr>
                         <th>
                             Ausführungsadresse
@@ -66,7 +67,7 @@
                         </th>
                         <th></th>
                     </tr>
-
+                    </thead>
                     @foreach (var item in offeneRapport.Servicerapports)
                     {
 
@@ -97,16 +98,25 @@
                             </td>
 
                             <td>
-                                @Html.ActionLink("Übertragen", "Edit", "Servicerapports",new {id = item.Id},null)
+                                @Html.ActionLink("Übertragen", "Edit", "Servicerapports", new { id = item.Id }, null)
                             </td>
                         </tr>
 
                     }
-
+                    
                 </table>
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready( function () {
+            $('#AlleServicrapporte').DataTable();
+        });
+  
+
+
+
+    </script>
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading2">
             <h4 class="panel-title">
@@ -117,7 +127,8 @@
         </div>
         <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
             <div class="panel-body">
-                <table class="table">
+                <table id="MeineServicerapporte" class="display">
+                    <thead>
                     <tr>
                         <th>
                             Ausführungsadresse
@@ -142,7 +153,7 @@
                         </th>
                         <th></th>
                     </tr>
-
+                    </thead>
                     @foreach (var item in BearbeitenRapporte.Servicerapports)
                     {
 
@@ -173,7 +184,7 @@
                             </td>
 
                             <td>
-                                @Html.ActionLink("Bearbeiten", "Edit","Servicerapports", new { id = item.Id },null)
+                                @Html.ActionLink("Bearbeiten", "Edit", "Servicerapports", new {id = item.Id}, null)
                             </td>
                         </tr>
 
@@ -184,3 +195,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready( function () {
+        $('#MeineServicerapporte').DataTable();
+    });
+  
+
+
+
+</script>
