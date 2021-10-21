@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using System.Xml.Schema;
 using ServiceCockpit.Models;
 
@@ -18,7 +19,8 @@ namespace ServiceCockpit.Controllers
         // GET: Servicerapports
         public ActionResult Index()
         {
-            var servicerapport = db.Servicerapport.Include(s => s.Ausführungsadresse).Include(s => s.Eigentuemeradresse).Include(s => s.Mitarbeiter).Include(s => s.Projekt).Include(s => s.Rechnungsadresse);
+            var servicerapport = db.Servicerapport.Include(s => s.Ausführungsadresse).Include(s => s.Eigentuemeradresse)
+                .Include(s => s.Mitarbeiter).Include(s => s.Projekt).Include(s => s.Rechnungsadresse);
 
             return View(servicerapport.ToList());
         }
@@ -30,11 +32,13 @@ namespace ServiceCockpit.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Servicerapport servicerapport = db.Servicerapport.Find(id);
             if (servicerapport == null)
             {
                 return HttpNotFound();
             }
+
             return View(servicerapport);
         }
 
@@ -54,7 +58,10 @@ namespace ServiceCockpit.Controllers
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,KundenTerminZeit,RapportAbgechlossenZeit,VoranmeldungName,VoranmeldungNummer,Status,Beschreibung,Bemerkung,Unterschrift,KostenZeit,KostenMaterial,KostenTotal,EigentuemeradresseId,AusführungsadresseId,RechnungsadresseId,MitarbeiterId,ProjektFK")] Servicerapport servicerapport)
+        public ActionResult Create(
+            [Bind(Include =
+                "Id,KundenTerminZeit,RapportAbgechlossenZeit,VoranmeldungName,VoranmeldungNummer,Status,Beschreibung,EmailAdresse,Unterschrift,KostenZeit,KostenMaterial,KostenTotal,EigentuemeradresseId,AusführungsadresseId,RechnungsadresseId,MitarbeiterId,ProjektFK")]
+            Servicerapport servicerapport)
         {
             if (ModelState.IsValid)
             {
@@ -66,16 +73,22 @@ namespace ServiceCockpit.Controllers
                 {
                     servicerapport.Status = "Bearbeiten";
                 }
+
                 db.Servicerapport.Add(servicerapport);
                 db.SaveChanges();
                 return RedirectToAction("Index", "ServicerapportDashboards");
             }
 
-            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse", servicerapport.AusführungsadresseId);
-            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse", servicerapport.EigentuemeradresseId);
+            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse",
+                servicerapport.AusführungsadresseId);
+            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse",
+                servicerapport.EigentuemeradresseId);
             ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", servicerapport.MitarbeiterId);
             ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Nummer", servicerapport.ProjektFK);
-            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse", servicerapport.RechnungsadresseId);
+            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse",
+                servicerapport.RechnungsadresseId);
+
+
             return View(servicerapport);
         }
 
@@ -89,7 +102,7 @@ namespace ServiceCockpit.Controllers
             else
             {
                 var rapport = db.Servicerapport.SingleOrDefault(s => s.Id == id);
-                
+
                 var zeiteinträge = db.ZeitKosten.Include(s => s.ZeitKostenUeberzeitFaktor)
                     .Include(s => s.Verrechnungsart).Include(s => s.Mitarbeiter).Where(s => s.ServicerapportFK == id);
                 rapport.ZeitKosten = zeiteinträge.ToList();
@@ -109,41 +122,52 @@ namespace ServiceCockpit.Controllers
                     {
                         listAnzahlStunden.Add(VARIABLE.KostenTotal.Value);
                     }
-                  
-                } 
-                rapport.KostenZeit = listAnzahlStunden.Sum(); List<decimal> listAnzahlMaterial= new List<decimal>();
+
+                }
+
+                rapport.KostenZeit = listAnzahlStunden.Sum();
+                List<decimal> listAnzahlMaterial = new List<decimal>();
                 foreach (var VARIABLE in rapport.MaterialKosten)
                 {
                     if (VARIABLE.KostenTotal == null)
                     {
-                        
+
                     }
                     else
                     {
                         listAnzahlMaterial.Add(VARIABLE.KostenTotal.Value);
                     }
                 }
+
                 rapport.KostenMaterial = listAnzahlMaterial.Sum();
                 rapport.KostenTotal = rapport.KostenMaterial + rapport.KostenZeit;
                 db.SaveChanges();
 
 
             }
+
             Servicerapport servicerapport = db.Servicerapport.Find(id);
             if (servicerapport == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse", servicerapport.AusführungsadresseId);
-            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse", servicerapport.EigentuemeradresseId);
+
+            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse",
+                servicerapport.AusführungsadresseId);
+            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse",
+                servicerapport.EigentuemeradresseId);
             ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", servicerapport.MitarbeiterId);
             ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Nummer", servicerapport.ProjektFK);
-            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse", servicerapport.RechnungsadresseId);
+            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse",
+                servicerapport.RechnungsadresseId);
 
-            var zeitKosten = db.ZeitKosten.Include(z => z.Mitarbeiter).Include(z => z.Servicerapport).Include(z => z.Verrechnungsart).Include(z => z.ZeitKostenUeberzeitFaktor).Where(z => z.ServicerapportFK == id);
+            var zeitKosten = db.ZeitKosten.Include(z => z.Mitarbeiter).Include(z => z.Servicerapport)
+                .Include(z => z.Verrechnungsart).Include(z => z.ZeitKostenUeberzeitFaktor)
+                .Where(z => z.ServicerapportFK == id);
             servicerapport.ZeitKosten = zeitKosten.ToList();
 
-            var materialKosten = db.MaterialKosten.Include(m => m.Servicerapport).Include(m => m.Material).Where(z => z.ServicerapportFK == id);
+            var materialKosten = db.MaterialKosten.Include(m => m.Servicerapport).Include(m => m.Material)
+                .Where(z => z.ServicerapportFK == id);
             servicerapport.MaterialKosten = materialKosten.ToList();
 
             return View(servicerapport);
@@ -154,43 +178,82 @@ namespace ServiceCockpit.Controllers
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,KundenTerminZeit,RapportAbgechlossenZeit,VoranmeldungName,VoranmeldungNummer,Status,Beschreibung,Bemerkung,Unterschrift,KostenZeit,KostenMaterial,KostenTotal,EigentuemeradresseId,AusführungsadresseId,RechnungsadresseId,MitarbeiterId,ProjektFK")] Servicerapport servicerapport)
+        public ActionResult Edit(
+            [Bind(Include =
+                "Id,KundenTerminZeit,RapportAbgechlossenZeit,VoranmeldungName,VoranmeldungNummer,Status,Beschreibung,EmailAdresse,Unterschrift,KostenZeit,KostenMaterial,KostenTotal,EigentuemeradresseId,AusführungsadresseId,RechnungsadresseId,MitarbeiterId,ProjektFK")]
+            Servicerapport servicerapport, string rapportSpeichern, string mailSenden)
         {
-            if (ModelState.IsValid)
+
+            if (mailSenden == "MailSenden")
             {
-                if (servicerapport.MitarbeiterId == 3)
+
+                if (servicerapport.EmailAdresse == null || servicerapport.Unterschrift == null)
                 {
-                    servicerapport.Status = "Offen";
+                    servicerapport.Mitarbeiter =
+                        db.Mitarbeiter.SingleOrDefault(s => servicerapport.MitarbeiterId == s.Id);
+
+
+
+
+
+                    return RedirectToAction("Index", "ServicerapportDashboards");
                 }
                 else
                 {
-                    servicerapport.Status = "Bearbeiten";
+                    if (ModelState.IsValid)
+                    {
+                        if (servicerapport.MitarbeiterId == 3)
+                        {
+                            servicerapport.Status = "Offen";
+                        }
+                        else
+                        {
+                            servicerapport.Status = "Bearbeiten";
+                        }
+
+                        db.Entry(servicerapport).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index", "ServicerapportDashboards");
+                    }
+
+                    ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse",
+                        servicerapport.AusführungsadresseId);
+                    ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse",
+                        servicerapport.EigentuemeradresseId);
+                    ViewBag.MitarbeiterId =
+                        new SelectList(db.Mitarbeiter, "Id", "VollerName", servicerapport.MitarbeiterId);
+                    ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Nummer", servicerapport.ProjektFK);
+                    ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse",
+                        servicerapport.RechnungsadresseId);
+
+
+                    return View(servicerapport);
                 }
 
-                db.Entry(servicerapport).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index", "ServicerapportDashboards");
             }
-            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse", servicerapport.AusführungsadresseId);
-            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse", servicerapport.EigentuemeradresseId);
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", servicerapport.MitarbeiterId);
-            ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Nummer", servicerapport.ProjektFK);
-            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse", servicerapport.RechnungsadresseId);
-            return View(servicerapport);
-        }
 
-        // GET: Servicerapports/Delete/5
+            return RedirectToAction("Index", "ServicerapportDashboards");
+
+        }
+    
+
+
+
+
+// GET: Servicerapports/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Servicerapport servicerapport = db.Servicerapport.Find(id);
             if (servicerapport == null)
             {
                 return HttpNotFound();
             }
+
             return View(servicerapport);
         }
 
@@ -211,7 +274,9 @@ namespace ServiceCockpit.Controllers
             {
                 db.Dispose();
             }
+
             base.Dispose(disposing);
         }
+
     }
 }

@@ -227,6 +227,10 @@
     <Compile Include="Migrations\202110210737145_Verrechungsartenanspassen.Designer.cs">
       <DependentUpon>202110210737145_Verrechungsartenanspassen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110211622571_Verrechungsartenanspassen1.cs" />
+    <Compile Include="Migrations\202110211622571_Verrechungsartenanspassen1.Designer.cs">
+      <DependentUpon>202110211622571_Verrechungsartenanspassen1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Ausführungsadresse.cs" />
@@ -430,6 +434,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110210737145_Verrechungsartenanspassen.resx">
       <DependentUpon>202110210737145_Verrechungsartenanspassen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110211622571_Verrechungsartenanspassen1.resx">
+      <DependentUpon>202110211622571_Verrechungsartenanspassen1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

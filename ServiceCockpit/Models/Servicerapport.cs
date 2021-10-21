@@ -26,7 +26,7 @@ namespace ServiceCockpit.Models
 
         public string Beschreibung { get; set; }
 
-        public string Bemerkung { get; set; }
+        public string EmailAdresse { get; set; }
 
         public string Unterschrift { get; set; }
 
