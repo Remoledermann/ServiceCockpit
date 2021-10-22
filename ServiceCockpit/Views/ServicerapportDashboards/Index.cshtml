@@ -23,9 +23,17 @@
         {
             offeneRapport.Servicerapports.Add(rapport);
         }
-        else if(rapport.Status == "Bearbeiten")
+        else
+        {
+            
+        }
+        if(rapport.Status == "Bearbeiten")
         {
             BearbeitenRapporte.Servicerapports.Add(rapport);
+        }
+        else
+        {
+            
         }
     }
 }

@@ -9,6 +9,11 @@ using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using System.Xml.Schema;
 using ServiceCockpit.Models;
+using MailKit.Net.Smtp;
+using MailKit;
+using MimeKit;
+using MimeKit.Text;
+using ServiceCockpit.Migrations;
 
 namespace ServiceCockpit.Controllers
 {
@@ -187,14 +192,48 @@ namespace ServiceCockpit.Controllers
             if (mailSenden == "MailSenden")
             {
 
-                if (servicerapport.EmailAdresse == null || servicerapport.Unterschrift == null)
+                if (servicerapport.EmailAdresse != null && servicerapport.Unterschrift != null)
                 {
                     servicerapport.Mitarbeiter =
                         db.Mitarbeiter.SingleOrDefault(s => servicerapport.MitarbeiterId == s.Id);
 
+                    MimeMessage message = new MimeMessage();
+                    message.From.Add(new MailboxAddress("Gfeller Elektro", "gfellerelektroservicrapport@gmail.com"));
+                    message.To.Add(MailboxAddress.Parse(servicerapport.EmailAdresse));
+
+                    message.Subject = "Rapport Nr." + servicerapport.Id.ToString();
+                    message.Body = new TextPart(TextFormat.Html)
+                    {
+                        Text = $@"Wir bedanken uns bei Ihnen für den Aufrag.
 
 
+Die Materialkosten belaufen sich auf: {servicerapport.KostenMaterial.ToString()} 
+Die Arbeitskosten belaufen sich auf : {servicerapport.KostenMaterial.ToString()}
 
+Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
+                    };
+
+                    SmtpClient client = new SmtpClient();
+                    try
+                    {
+                        client.Connect("smtp.gmail.com", 465, true);
+                        client.Authenticate("gfellerelektroservicrapport@gmail.com", "Gfeller_1234");
+                        client.Send(message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        throw;
+                    }
+                    finally
+                    {
+                        client.Disconnect(true);
+                        client.Dispose();
+                        servicerapport.Status = "Abgeschlossen";
+                        servicerapport.KundenTerminZeit = DateTime.Now;
+                        db.Entry(servicerapport).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
 
                     return RedirectToAction("Index", "ServicerapportDashboards");
                 }
