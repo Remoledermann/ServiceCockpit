@@ -62,7 +62,7 @@ namespace ServiceCockpit.Controllers
 
                 db.MaterialKosten.Add(materialKosten);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", "Servicerapports", new { id = materialKosten.ServicerapportFK });
             }
 
             ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name", materialKosten.MaterialId);
@@ -104,7 +104,7 @@ namespace ServiceCockpit.Controllers
 
                 db.Entry(materialKosten).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", "Servicerapports", new { id = materialKosten.ServicerapportFK });
             }
             ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name", materialKosten.MaterialId);
             ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id", materialKosten.ServicerapportFK);
@@ -134,7 +134,7 @@ namespace ServiceCockpit.Controllers
             MaterialKosten materialKosten = db.MaterialKosten.Find(id);
             db.MaterialKosten.Remove(materialKosten);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", "Servicerapports", new { id = materialKosten.ServicerapportFK });
         }
 
         protected override void Dispose(bool disposing)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -68,21 +69,20 @@ namespace ServiceCockpit.Controllers
                 "Id,KundenTerminZeit,RapportAbgechlossenZeit,VoranmeldungName,VoranmeldungNummer,Status,Beschreibung,EmailAdresse,Unterschrift,KostenZeit,KostenMaterial,KostenTotal,EigentuemeradresseId,AusführungsadresseId,RechnungsadresseId,MitarbeiterId,ProjektFK")]
             Servicerapport servicerapport)
         {
-            if (ModelState.IsValid)
-            {
-                if (servicerapport.MitarbeiterId == 3)
-                {
-                    servicerapport.Status = "Offen";
-                }
-                else
-                {
-                    servicerapport.Status = "Bearbeiten";
-                }
 
-                db.Servicerapport.Add(servicerapport);
-                db.SaveChanges();
-                return RedirectToAction("Index", "ServicerapportDashboards");
+            if (servicerapport.MitarbeiterId == 3)
+            {
+                servicerapport.Status = "Offen";
             }
+            else
+            {
+                servicerapport.Status = "Bearbeiten";
+            }
+
+            db.Servicerapport.Add(servicerapport);
+            db.SaveChanges();
+            return RedirectToAction("Index", "ServicerapportDashboards");
+
 
             ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse",
                 servicerapport.AusführungsadresseId);
@@ -186,8 +186,11 @@ namespace ServiceCockpit.Controllers
         public ActionResult Edit(
             [Bind(Include =
                 "Id,KundenTerminZeit,RapportAbgechlossenZeit,VoranmeldungName,VoranmeldungNummer,Status,Beschreibung,EmailAdresse,Unterschrift,KostenZeit,KostenMaterial,KostenTotal,EigentuemeradresseId,AusführungsadresseId,RechnungsadresseId,MitarbeiterId,ProjektFK")]
-            Servicerapport servicerapport, string rapportSpeichern, string mailSenden)
+            Servicerapport servicerapport, string rapportSpeichern, string mailSenden, string rapportabschliessen)
         {
+
+
+
 
             if (mailSenden == "MailSenden")
             {
@@ -229,57 +232,50 @@ Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
                     {
                         client.Disconnect(true);
                         client.Dispose();
-                        servicerapport.Status = "Abgeschlossen";
-                        servicerapport.KundenTerminZeit = DateTime.Now;
                         db.Entry(servicerapport).State = EntityState.Modified;
                         db.SaveChanges();
                     }
+
+
+                    SaveServicrapportEinträgeInWochenrapport(servicerapport);
+
 
                     return RedirectToAction("Index", "ServicerapportDashboards");
                 }
+            }
+
+            if (rapportSpeichern == "RapportSpeichern")
+            {
+
+
+
+                if (servicerapport.MitarbeiterId == 3)
+                {
+                    servicerapport.Status = "Offen";
+                }
                 else
                 {
-                    if (ModelState.IsValid)
-                    {
-                        if (servicerapport.MitarbeiterId == 3)
-                        {
-                            servicerapport.Status = "Offen";
-                        }
-                        else
-                        {
-                            servicerapport.Status = "Bearbeiten";
-                        }
-
-                        db.Entry(servicerapport).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return RedirectToAction("Index", "ServicerapportDashboards");
-                    }
-
-                    ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse",
-                        servicerapport.AusführungsadresseId);
-                    ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse",
-                        servicerapport.EigentuemeradresseId);
-                    ViewBag.MitarbeiterId =
-                        new SelectList(db.Mitarbeiter, "Id", "VollerName", servicerapport.MitarbeiterId);
-                    ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Nummer", servicerapport.ProjektFK);
-                    ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse",
-                        servicerapport.RechnungsadresseId);
-
-
-                    return View(servicerapport);
+                    servicerapport.Status = "Bearbeiten";
                 }
 
+                db.Entry(servicerapport).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "ServicerapportDashboards");
             }
+
+
+
+
 
             return RedirectToAction("Index", "ServicerapportDashboards");
 
         }
-    
 
 
 
 
-// GET: Servicerapports/Delete/5
+
+        // GET: Servicerapports/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -317,5 +313,321 @@ Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
             base.Dispose(disposing);
         }
 
+        public void SaveServicrapportEinträgeInWochenrapport(Servicerapport servicerapport)
+        {
+            servicerapport.RapportAbgechlossenZeit = DateTime.Now;
+
+
+
+            Projekt projekt = db.Projekt.SingleOrDefault(c => c.Id == servicerapport.ProjektFK);
+
+
+            Ausführungsadresse ausführungsadresse =
+                db.Ausführungsadresse.SingleOrDefault(a => a.Id == servicerapport.AusführungsadresseId);
+
+            var zeitkostenvonDb = db.ZeitKosten.Include(z => z.Mitarbeiter).Where(z => z.ServicerapportFK == servicerapport.Id);
+
+            servicerapport.ZeitKosten = zeitkostenvonDb.ToList();
+
+            if (servicerapport.ZeitKosten != null)
+            {
+                foreach (var s in servicerapport.ZeitKosten)
+                {
+                    List<Wochenrapport> listWochenrapport = db.Wochenrapport
+                        .Include(sw => sw.WochenrapportSpesenEintrag)
+                        .Include(sw => sw.WochenrapportZeitEintrag)
+                        .Include(sw => sw.Mitarbeiter).ToList();
+
+                    List<Wochenrapport> gefundeneWr = listWochenrapport.Where(w => 
+                        s.Eintragsdatum >= w.StartDatum &&
+                        s.Eintragsdatum <= w.EndDate &&
+                        s.MitarbeiterId == w.MitarbeiterId).ToList();
+                    
+                    if (gefundeneWr.Count() == 1)
+                    {
+                        var w = gefundeneWr.First();
+                        WochenrapportZeitEintrag eintrag = new WochenrapportZeitEintrag();
+                        eintrag.WochenrapportFK = w.Id;
+                        eintrag.Zeit = s.AnzahlStundenTotal;
+                        eintrag.Ausführungsadresse = ausführungsadresse.Anzeigeadresse;
+                        eintrag.Datum = s.Eintragsdatum;
+                        eintrag.ProjektnNummer = projekt.Nummer;
+                        eintrag.ServicrapportNummer = servicerapport.Id;
+                        w.Status = "Offen";
+
+                        db.WochenrapportZeitEintrag.Add(eintrag);
+                        servicerapport.Status = "Abgeschlossen";
+
+                        db.SaveChanges();
+                    }
+                    else if (gefundeneWr.Count() > 1)
+                    {
+                        throw new Exception("Es kann nur ein Wochenrapport mit dem ZeitKosten Eintrag geben");
+                    }
+                    else
+                    {
+                        Wochenrapport neuerWochenrapport = new Wochenrapport();
+
+                        CultureInfo ciCurr = CultureInfo.CurrentCulture;
+
+                        int weekNum = ciCurr.Calendar.GetWeekOfYear(s.Eintragsdatum,
+                            CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+                        neuerWochenrapport.Kalenderwoche = weekNum.ToString();
+                        neuerWochenrapport.Mitarbeiter = s.Mitarbeiter;
+
+                        int GetIso8601WeekOfYear(DateTime time)
+                        {
+                            DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
+                            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+                            {
+                                time = time.AddDays(3);
+                            }
+
+                            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time,
+                                CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+                        }
+
+
+
+                        DateTime FirstDateOfWeek(int year, int weekOfYear,
+                            System.Globalization.CultureInfo us)
+                        {
+
+
+                            DateTime jan1 = new DateTime(year, 1, 1);
+                            int daysOffset = (int)us.DateTimeFormat.FirstDayOfWeek - (int)jan1.DayOfWeek;
+                            DateTime firstWeekDay = jan1.AddDays(daysOffset);
+                            int firstWeek = us.Calendar.GetWeekOfYear(jan1,
+                                us.DateTimeFormat.CalendarWeekRule,
+                                us.DateTimeFormat.FirstDayOfWeek);
+                            if ((firstWeek <= 1 || firstWeek >= 52) && daysOffset >= -3)
+                            {
+                                weekOfYear -= 1;
+                            }
+
+
+                            return firstWeekDay.AddDays(weekOfYear * 7);
+                        }
+
+
+                        int Jahr = DateTime.Now.Year;
+
+
+                        DateTime firstDayOfWeek = FirstDateOfWeek(s.Eintragsdatum.Year, weekNum,
+                            CultureInfo.CurrentCulture);
+                        DateTime lastDayofWeek = firstDayOfWeek.AddDays(6);
+
+                        string sdDate = firstDayOfWeek.ToString("dd/MM/yyyy");
+                        DateTime ddDate;
+                        string fnewDateFormat = String.Empty;
+                        if (DateTime.TryParseExact(sdDate, "dd/MM/yyyy", null, DateTimeStyles.None,
+                            out ddDate))
+                        {
+                            fnewDateFormat = string.Format("{0:MM/dd/yyyy}", ddDate);
+                        }
+
+                        string sDate = lastDayofWeek.ToString("dd/MM/yyyy");
+                        DateTime dDate;
+                        string lnewDateFormat = String.Empty;
+                        if (DateTime.TryParseExact(sDate, "dd/MM/yyyy", null, DateTimeStyles.None,
+                            out dDate))
+                        {
+                            lnewDateFormat = string.Format("{0:MM/dd/yyyy}", dDate);
+                        }
+
+
+
+
+                        System.Globalization.CultureInfo customCulture =
+                            new System.Globalization.CultureInfo("en-US", true);
+
+                        customCulture.DateTimeFormat.ShortDatePattern = "MM-dd-yyyy";
+
+                        System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+                        System.Threading.Thread.CurrentThread.CurrentUICulture = customCulture;
+
+                        DateTime newfirstDateTime =
+                            System.Convert.ToDateTime(firstDayOfWeek.ToString("MM/dd/yyyy"));
+
+
+                        neuerWochenrapport.StartDatum =
+                            System.Convert.ToDateTime(firstDayOfWeek.ToString("MM/dd/yyyy"));
+                        neuerWochenrapport.EndDate =
+                            System.Convert.ToDateTime(lastDayofWeek.ToString("MM/dd/yyyy"));
+
+                        const string IdGenerierenStatus = "ID_GENERIEREN";
+                        neuerWochenrapport.Status = IdGenerierenStatus;
+
+
+                        db.Wochenrapport.Add(neuerWochenrapport);
+                        db.SaveChanges();
+
+                        // Die DB generiert eine ID, welche wir brauchen
+                        neuerWochenrapport =
+                            db.Wochenrapport.SingleOrDefault(wr => wr.Status == IdGenerierenStatus);
+                        int neueWochenrapportId = neuerWochenrapport.Id;
+
+                        neuerWochenrapport.Status = "Offen";
+
+                        WochenrapportZeitEintrag eintrag = new WochenrapportZeitEintrag();
+                        eintrag.WochenrapportFK = neuerWochenrapport.Id;
+                        eintrag.Zeit = s.AnzahlStundenTotal;
+                        eintrag.Ausführungsadresse = ausführungsadresse.Anzeigeadresse;
+                        eintrag.Datum = s.Eintragsdatum;
+                        eintrag.ProjektnNummer = projekt.Nummer;
+                        eintrag.ServicrapportNummer = servicerapport.Id;
+
+                        db.WochenrapportZeitEintrag.Add(eintrag);
+
+                        servicerapport.Status = "Abgeschlossen";
+
+                        db.SaveChanges();
+                    }
+
+                    //foreach (var w in listWochenrapport)
+                    //{
+                    //    if (s.Servicerapport.RapportAbgechlossenZeit >= w.StartDatum &&
+                    //        s.Servicerapport.RapportAbgechlossenZeit <= w.EndDate &&
+                    //        s.MitarbeiterId == w.MitarbeiterId)
+                    //    {
+                    //        WochenrapportZeitEintrag eintrag = new WochenrapportZeitEintrag();
+                    //        eintrag.WochenrapportFK = w.Id;
+                    //        eintrag.Zeit = s.AnzahlStundenTotal;
+                    //        eintrag.Ausführungsadresse = ausführungsadresse.Anzeigeadresse;
+                    //        eintrag.Datum = s.Eintragsdatum;
+                    //        eintrag.ProjektnNummer = projekt.Nummer;
+                    //        eintrag.ServicrapportNummer = servicerapport.Id;
+                    //        w.Status = "Bearbeitet";
+
+                    //        db.WochenrapportZeitEintrag.Add(eintrag);
+                    //        servicerapport.Status = "Abgeschlossen";
+
+                    //        db.SaveChanges();
+
+                    //        break;
+                    //    }
+                    //    else
+                    //    {
+                    //            Wochenrapport neuerWochenrapport = new Wochenrapport();
+
+                    //            CultureInfo ciCurr = CultureInfo.CurrentCulture;
+
+                    //            int weekNum = ciCurr.Calendar.GetWeekOfYear(s.Eintragsdatum,
+                    //                CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+
+                    //            neuerWochenrapport.Mitarbeiter = s.Mitarbeiter;
+                    //            neuerWochenrapport.Status = "Offen";
+
+                    //            int kalenderwoche = weekNum;
+
+                    //            int GetIso8601WeekOfYear(DateTime time)
+                    //            {
+                    //                DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
+                    //                if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+                    //                {
+                    //                    time = time.AddDays(3);
+                    //                }
+
+                    //                return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time,
+                    //                    CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+                    //            }
+
+
+
+                    //            DateTime FirstDateOfWeek(int year, int weekOfYear,
+                    //                System.Globalization.CultureInfo us)
+                    //            {
+
+
+                    //                DateTime jan1 = new DateTime(year, 1, 1);
+                    //                int daysOffset = (int)us.DateTimeFormat.FirstDayOfWeek - (int)jan1.DayOfWeek;
+                    //                DateTime firstWeekDay = jan1.AddDays(daysOffset);
+                    //                int firstWeek = us.Calendar.GetWeekOfYear(jan1,
+                    //                    us.DateTimeFormat.CalendarWeekRule,
+                    //                    us.DateTimeFormat.FirstDayOfWeek);
+                    //                if ((firstWeek <= 1 || firstWeek >= 52) && daysOffset >= -3)
+                    //                {
+                    //                    weekOfYear -= 1;
+                    //                }
+
+
+                    //                return firstWeekDay.AddDays(weekOfYear * 7);
+                    //            }
+
+
+                    //            int Jahr = DateTime.Now.Year;
+
+
+                    //            DateTime firstDayOfWeek = FirstDateOfWeek(s.Eintragsdatum.Year, kalenderwoche,
+                    //                CultureInfo.CurrentCulture);
+                    //            DateTime lastDayofWeek = firstDayOfWeek.AddDays(6);
+
+                    //            string sdDate = firstDayOfWeek.ToString("dd/MM/yyyy");
+                    //            DateTime ddDate;
+                    //            string fnewDateFormat = String.Empty;
+                    //            if (DateTime.TryParseExact(sdDate, "dd/MM/yyyy", null, DateTimeStyles.None,
+                    //                out ddDate))
+                    //            {
+                    //                fnewDateFormat = string.Format("{0:MM/dd/yyyy}", ddDate);
+                    //            }
+
+                    //            string sDate = lastDayofWeek.ToString("dd/MM/yyyy");
+                    //            DateTime dDate;
+                    //            string lnewDateFormat = String.Empty;
+                    //            if (DateTime.TryParseExact(sDate, "dd/MM/yyyy", null, DateTimeStyles.None,
+                    //                out dDate))
+                    //            {
+                    //                lnewDateFormat = string.Format("{0:MM/dd/yyyy}", dDate);
+                    //            }
+
+
+
+
+                    //            System.Globalization.CultureInfo customCulture =
+                    //                new System.Globalization.CultureInfo("en-US", true);
+
+                    //            customCulture.DateTimeFormat.ShortDatePattern = "MM-dd-yyyy";
+
+                    //            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+                    //            System.Threading.Thread.CurrentThread.CurrentUICulture = customCulture;
+
+                    //            DateTime newfirstDateTime =
+                    //                System.Convert.ToDateTime(firstDayOfWeek.ToString("MM/dd/yyyy"));
+
+
+                    //            neuerWochenrapport.StartDatum =
+                    //                System.Convert.ToDateTime(firstDayOfWeek.ToString("MM/dd/yyyy"));
+                    //            neuerWochenrapport.EndDate =
+                    //                System.Convert.ToDateTime(lastDayofWeek.ToString("MM/dd/yyyy"));
+                    //            neuerWochenrapport.Status = "Offen";
+
+                    //            db.Wochenrapport.Add(neuerWochenrapport);
+                    //            db.SaveChanges();
+
+                    //            WochenrapportZeitEintrag eintrag = new WochenrapportZeitEintrag();
+                    //            eintrag.WochenrapportFK = w.Id;
+                    //            eintrag.Zeit = s.AnzahlStundenTotal;
+                    //            eintrag.Ausführungsadresse = ausführungsadresse.Anzeigeadresse;
+                    //            eintrag.Datum = s.Eintragsdatum;
+                    //            eintrag.ProjektnNummer = projekt.Nummer;
+                    //            eintrag.ServicrapportNummer = servicerapport.Id;
+
+                    //            db.WochenrapportZeitEintrag.Add(eintrag);
+
+                    //            servicerapport.Status = "Abgeschlossen";
+
+                    //            db.SaveChanges();
+
+                    //        }
+                    //}
+                }
+
+
+
+            }
+        }
     }
 }
+

@@ -39,7 +39,7 @@ namespace ServiceCockpit.Controllers
         // GET: WochenrapportZeitEintrags/Create
         public ActionResult Create()
         {
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Kalenderwoche");
+            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige");
             return View();
         }
 
@@ -52,12 +52,13 @@ namespace ServiceCockpit.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 db.WochenrapportZeitEintrag.Add(wochenrapportZeitEintrag);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Kalenderwoche", wochenrapportZeitEintrag.WochenrapportFK);
+            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige", wochenrapportZeitEintrag.WochenrapportFK);
             return View(wochenrapportZeitEintrag);
         }
 
@@ -73,7 +74,7 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Kalenderwoche", wochenrapportZeitEintrag.WochenrapportFK);
+            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige", wochenrapportZeitEintrag.WochenrapportFK);
             return View(wochenrapportZeitEintrag);
         }
 
@@ -90,7 +91,7 @@ namespace ServiceCockpit.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Kalenderwoche", wochenrapportZeitEintrag.WochenrapportFK);
+            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige", wochenrapportZeitEintrag.WochenrapportFK);
             return View(wochenrapportZeitEintrag);
         }
 

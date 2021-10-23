@@ -200,6 +200,7 @@
     <Compile Include="Controllers\WochenrapportSpesenEintragsController.cs" />
     <Compile Include="Controllers\WochenrapportZeitEintragsController.cs" />
     <Compile Include="Controllers\ZeitKostensController.cs" />
+    <Compile Include="Controllers\ZeitKostens3Controller.cs" />
     <Compile Include="Controllers\ZeitKostenUeberzeitFaktorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -243,6 +244,14 @@
     <Compile Include="Migrations\202110211622571_Verrechungsartenanspassen1.cs" />
     <Compile Include="Migrations\202110211622571_Verrechungsartenanspassen1.Designer.cs">
       <DependentUpon>202110211622571_Verrechungsartenanspassen1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110221118279_ZeitkostensAddDatetime.cs" />
+    <Compile Include="Migrations\202110221118279_ZeitkostensAddDatetime.Designer.cs">
+      <DependentUpon>202110221118279_ZeitkostensAddDatetime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110222154229_DatetimeServicrapportEintragGeändert.cs" />
+    <Compile Include="Migrations\202110222154229_DatetimeServicrapportEintragGeändert.Designer.cs">
+      <DependentUpon>202110222154229_DatetimeServicrapportEintragGeändert.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -384,11 +393,11 @@
     <Content Include="Views\WochenrapportZeitEintrags\Details.cshtml" />
     <Content Include="Views\WochenrapportZeitEintrags\Edit.cshtml" />
     <Content Include="Views\WochenrapportZeitEintrags\Index.cshtml" />
-    <Content Include="Views\ZeitKostens\Create.cshtml" />
-    <Content Include="Views\ZeitKostens\Delete.cshtml" />
-    <Content Include="Views\ZeitKostens\Details.cshtml" />
-    <Content Include="Views\ZeitKostens\Edit.cshtml" />
-    <Content Include="Views\ZeitKostens\Index.cshtml" />
+    <Content Include="Views\ZeitKostens2\Create.cshtml" />
+    <Content Include="Views\ZeitKostens2\Delete.cshtml" />
+    <Content Include="Views\ZeitKostens2\Details.cshtml" />
+    <Content Include="Views\ZeitKostens2\Edit.cshtml" />
+    <Content Include="Views\ZeitKostens2\Index.cshtml" />
     <Content Include="Views\ZeitKostenUeberzeitFaktors\Create.cshtml" />
     <Content Include="Views\ZeitKostenUeberzeitFaktors\Delete.cshtml" />
     <Content Include="Views\ZeitKostenUeberzeitFaktors\Details.cshtml" />
@@ -403,6 +412,11 @@
     <Content Include="Views\MaterialKostens\Details.cshtml" />
     <Content Include="Views\MaterialKostens\Edit.cshtml" />
     <Content Include="Views\MaterialKostens\Index.cshtml" />
+    <Content Include="Views\ZeitKostens\Create.cshtml" />
+    <Content Include="Views\ZeitKostens\Delete.cshtml" />
+    <Content Include="Views\ZeitKostens\Details.cshtml" />
+    <Content Include="Views\ZeitKostens\Edit.cshtml" />
+    <Content Include="Views\ZeitKostens\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -450,6 +464,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110211622571_Verrechungsartenanspassen1.resx">
       <DependentUpon>202110211622571_Verrechungsartenanspassen1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110221118279_ZeitkostensAddDatetime.resx">
+      <DependentUpon>202110221118279_ZeitkostensAddDatetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110222154229_DatetimeServicrapportEintragGeändert.resx">
+      <DependentUpon>202110222154229_DatetimeServicrapportEintragGeändert.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

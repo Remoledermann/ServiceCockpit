@@ -1,8 +1,196 @@
-﻿
+﻿@using Org.BouncyCastle.Crypto.Tls
+@using ServiceCockpit.Migrations
+@using ServiceCockpit.Models
+@model IEnumerable<ServiceCockpit.Models.Wochenrapport>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>
+    @Html.ActionLink("Create New", "Create","Wochenrapports")
+</h2>
+
+@{
+
+
+    var offeneServicrapporte = new List<Wochenrapport>();
+    var abgeschlosseneServicrapporte = new List<Wochenrapport>();
+
+    foreach (var VARIABLE in Model)
+    {
+        if (VARIABLE.Status == "Offen")
+        {
+            offeneServicrapporte.Add(VARIABLE);
+        }
+        if (VARIABLE.Status == "Abgeschlossen")
+        {
+            abgeschlosseneServicrapporte.Add(VARIABLE);
+        }
+    }
+
+
+}
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading1">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                    <h3 class="active">Offene Wochenrapporte</h3>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+            <div class="panel-body">
+                <table id="OffeneWochenrapporte" class="display">
+                    <thead>
+                        <tr>
+                            <th>
+                                Mitarbeiter
+
+                            </th>
+                            <th>
+                                Kalenderwoche
+                            </th>
+                            <th>
+                                Von
+                            </th>
+                            <th>
+                                Bis
+                            </th>
+                            <th>
+                                Totale Stunden
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var item in offeneServicrapporte)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Mitarbeiter.VollerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Kalenderwoche)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartDatum)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EndDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StundenTotal)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+
+                            <td>
+                                @Html.ActionLink("Bearbeiten", "Edit", "Wochenrapports", new {id = item.Id}, null)) |
+                                @Html.ActionLink("Löschen", "Delete", "Wochenrapports", new {id = item.Id}, null))
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready( function () {
+        $('#OffeneWochenrapporte').DataTable();
+    });
+  
+
+
+
+</script>
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading2">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                    <h3 class="active">Abgeschlossene Wochenrapporte</h3>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
+            <div class="panel-body">
+                <table id="AbgeschlosseneServicrapporte" class="display">
+                    <thead>
+                    <tr>
+                        <th>
+                            Mitarbeiter
+
+                        </th>
+                        <th>
+                            Kalenderwoche
+                        </th>
+                        <th>
+                            Von
+                        </th>
+                        <th>
+                            Bis
+                        </th>
+                        <th>
+                            Totale Stunden
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    @foreach (var item in abgeschlosseneServicrapporte)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Mitarbeiter.VollerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Kalenderwoche)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartDatum)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EndDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StundenTotal)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Bearbeiten", "Edit", "Wochenrapports", new {id = item.Id}, null) ||
+                                @Html.ActionLink("Löschen", "Delete", "Wochenrapports", new {id = item.Id}, null))
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+
+            </div>
+        </div>
+        <script>
+            $(document).ready( function () {
+                $('#AbgeschlosseneServicrapporte').DataTable();
+            });
+  
+
+
+
+        </script>
+    </div>
 

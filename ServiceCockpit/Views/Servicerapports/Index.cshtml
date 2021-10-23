@@ -13,6 +13,9 @@
 <table class="table">
     <tr>
         <th>
+            Servicrapport Nr.
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Ausführungsadresse.Name)
         </th>
         <th>
@@ -64,61 +67,64 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ausführungsadresse.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Eigentuemeradresse.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Mitarbeiter.VorName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Projekt.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Rechnungsadresse.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.KundenTerminZeit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RapportAbgechlossenZeit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VoranmeldungName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VoranmeldungNummer)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Beschreibung)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmailAdresse)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Unterschrift)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.KostenZeit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.KostenMaterial)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.KostenTotal)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Ausführungsadresse.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Eigentuemeradresse.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Mitarbeiter.VorName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Projekt.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Rechnungsadresse.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.KundenTerminZeit)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RapportAbgechlossenZeit)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.VoranmeldungName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.VoranmeldungNummer)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Status)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Beschreibung)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmailAdresse)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Unterschrift)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.KostenZeit)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.KostenMaterial)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.KostenTotal)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+    </td>
+</tr>
 }
 
 </table>

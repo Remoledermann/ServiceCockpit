@@ -11,73 +11,239 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Wochenrapport</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Kalenderwoche, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Kalenderwoche, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Kalenderwoche, "", new { @class = "text-danger" })
+
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading1">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                        <h3 class="active">Servicerapport Zeiten</h3>
+                    </a>
+                </h4>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.StartDatum, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDatum, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartDatum, "", new { @class = "text-danger" })
+            <div class="form-horizontal">
+                <h4>Wochenrapport</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Kalenderwoche, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Kalenderwoche, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Kalenderwoche, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StartDatum, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.StartDatum, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StartDatum, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StundenTotal, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.StundenTotal, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StundenTotal, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MitarbeiterId, "MitarbeiterId", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("MitarbeiterId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MitarbeiterId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+                <div class="panel-body">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.StundenTotal, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StundenTotal, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StundenTotal, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.MitarbeiterId, "MitarbeiterId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("MitarbeiterId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MitarbeiterId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                </div>
             </div>
         </div>
     </div>
+
+
+
+
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+
+
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading2">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                    <h3 class="active">Servicerapport Zeiten</h3>
+                </a>
+            </h4>
+        </div>
+       
+
+        <p>
+            @Html.ActionLink("Create New", "Create","WochenrapportZeitEintrags")
+        </p>
+        <table class="table">
+            <tr>
+                
+                <th>
+                    Datum
+                </th>
+                <th>
+                    Projektnummer
+                </th>
+                <th>
+                    Servicerapport nummer
+                </th>
+                <th>
+                    Ausführungsadresse
+                </th>
+                <th>
+                    Zeit
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.WochenrapportZeitEintrag) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Datum.Value.Date)
+                    </td>fYear
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjektnNummer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ServicrapportNummer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ausführungsadresse)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Zeit)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "WochenrapportZeitEintrags" ,new { id=item.Id },null) |
+                        @Html.ActionLink("Details", "Details", "WochenrapportZeitEintrags", new { id=item.Id }, null) |
+                        @Html.ActionLink("Delete", "Delete", "WochenrapportZeitEintrags", new { id=item.Id }, null)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading3">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                    <h3 class="active">Servicerapport Zeiten</h3>
+                </a>
+            </h4>
+        </div>
+       
+
+        <p>
+            @Html.ActionLink("Create New", "Create","WochenrapportSpesenEintrags")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    Beschreibung
+                </th>
+                <th>
+                    Beschreibung
+                </th>
+                <th>
+                    Betrag in CHF
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.WochenrapportSpesenEintrag) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Wochenrapport.Kalenderwoche)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Beschreibung)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Kosten)
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            
+            <td>
+                @Html.ActionLink("Edit", "Edit", "WochenrapportSpesenEintrags", new { id = item.Id }, null) |
+                @Html.ActionLink("Details", "Details", "WochenrapportSpesenEintrags", new { id = item.Id }, null) |
+                @Html.ActionLink("Delete", "Delete", "WochenrapportSpesenEintrags", new { id = item.Id }, null)
+            </td>
+        </tr>
+            }
+
+        </table>
+
+        <div id="collapse3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading3">
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

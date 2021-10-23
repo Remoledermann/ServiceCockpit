@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ServiceCockpit.Models
 {
@@ -29,5 +31,11 @@ namespace ServiceCockpit.Models
         [ForeignKey("WochenrapportFK")]
         public List<WochenrapportSpesenEintrag> WochenrapportSpesenEintrag { get; set; }
 
+        [NotMapped]
+        public string Anzeige
+        {
+
+            get { return Id + "  /  " + StartDatum.Value.ToString("M") + "  /  "+Kalenderwoche; }
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace ServiceCockpit.Models
 
         public decimal? KostenTotal { get; set; }
 
-        public DateTime? Eintragsdatum { get; set; }
+        public DateTime Eintragsdatum { get; set; }
 
         //Referenz
         public Verrechnungsart Verrechnungsart { get; set; }
