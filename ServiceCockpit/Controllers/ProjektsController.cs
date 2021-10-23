@@ -28,8 +28,7 @@ namespace ServiceCockpit.Controllers
 
 
 
-            List<decimal> listStunden = new List<decimal>();
-            List<decimal> listeMaterial = new List<decimal>();
+           
 
             if (id == null)
             {
@@ -40,43 +39,8 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
-            else
-            {
+           
                
-
-
-                var rapport = db.Servicerapport.ToList().Where(s => s.ProjektFK == id);
-
-                foreach (var VARIABLE in rapport)
-                {
-                    if (VARIABLE.KostenZeit == null)
-                    {
-                        
-                    }
-                    else
-                    {
-                        listStunden.Add(VARIABLE.KostenZeit.Value);
-                        
-                        
-                    }
-                    if(VARIABLE.KostenMaterial == null)
-                    {
-                        
-                    }
-                    else
-                    {
-                        listeMaterial.Add(VARIABLE.KostenMaterial.Value);
-                    }
-                        
-                   
-                }
-            }
-
-            projekt.KostenZeit = listStunden.Sum();
-            projekt.KostenMaterial = listeMaterial.Sum();
-            projekt.KostenTotal = projekt.KostenMaterial + projekt.KostenZeit;
-
-            db.SaveChanges();
 
             return View(projekt);
         }

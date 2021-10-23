@@ -8,7 +8,7 @@
 }
 
 <h2>
-    @Html.ActionLink("Create New", "Create","Wochenrapports")
+    @Html.ActionLink("Neuer Wochenrapport erfassen", "Create","Wochenrapports")
 </h2>
 
 @{
@@ -92,8 +92,8 @@
                             </td>
 
                             <td>
-                                @Html.ActionLink("Bearbeiten", "Edit", "Wochenrapports", new {id = item.Id}, null)) |
-                                @Html.ActionLink("Löschen", "Delete", "Wochenrapports", new {id = item.Id}, null))
+                                @Html.ActionLink("Bearbeiten", "Edit", "Wochenrapports", new {id = item.Id}, null)
+                                @Html.ActionLink("Löschen", "Delete", "Wochenrapports", new {id = item.Id}, null)
                             </td>
                         </tr>
                     }
@@ -106,7 +106,15 @@
 </div>
 <script>
     $(document).ready( function () {
-        $('#OffeneWochenrapporte').DataTable();
+        $('#OffeneWochenrapporte').DataTable({
+            "language": {
+                "lengthMenu": "Zeige _MENU_ Einträge",
+                "zeroRecords": "Keine Einträge vorhanden",
+                "info": "Seite _PAGE_ von _PAGES_",
+                "infoEmpty": "Keine Einträge Vorhanden",
+                "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+            }
+        });
     });
   
 
@@ -173,8 +181,8 @@
                                 @Html.DisplayFor(modelItem => item.StundenTotal)
                             </td>
                             <td>
-                                @Html.ActionLink("Bearbeiten", "Edit", "Wochenrapports", new {id = item.Id}, null) ||
-                                @Html.ActionLink("Löschen", "Delete", "Wochenrapports", new {id = item.Id}, null))
+                                @Html.ActionLink("Bearbeiten", "Edit", "Wochenrapports", new {id = item.Id}, null) 
+                                @Html.ActionLink("Löschen", "Delete", "Wochenrapports", new {id = item.Id}, null)
                             </td>
                         </tr>
                     }
@@ -185,7 +193,15 @@
         </div>
         <script>
             $(document).ready( function () {
-                $('#AbgeschlosseneServicrapporte').DataTable();
+                $('#AbgeschlosseneServicrapporte').DataTable({
+                    "language": {
+                        "lengthMenu": "Zeige _MENU_ Einträge",
+                        "zeroRecords": "Keine Einträge vorhanden",
+                        "info": "Seite _PAGE_ von _PAGES_",
+                        "infoEmpty": "Keine Einträge Vorhanden",
+                        "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                    }
+                });
             });
   
 

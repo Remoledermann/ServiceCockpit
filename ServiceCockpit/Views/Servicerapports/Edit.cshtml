@@ -80,7 +80,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.EigentuemeradresseId, "EigentuemeradresseId", htmlAttributes: new {@class = "control-label col-md-2"})
+                        @Html.LabelFor(model => model.EigentuemeradresseId, "Eigentuemeradresse", htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
                             @Html.DropDownList("EigentuemeradresseId", null, htmlAttributes: new {@class = "form-control"})
                             @Html.ValidationMessageFor(model => model.EigentuemeradresseId, "", new {@class = "text-danger"})
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.AusführungsadresseId, "AusführungsadresseId", htmlAttributes: new {@class = "control-label col-md-2"})
+                        @Html.LabelFor(model => model.AusführungsadresseId, "Ausführungsadresse", htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
                             @Html.DropDownList("AusführungsadresseId", null, htmlAttributes: new {@class = "form-control"})
                             @Html.ValidationMessageFor(model => model.AusführungsadresseId, "", new {@class = "text-danger"})
@@ -96,7 +96,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.RechnungsadresseId, "RechnungsadresseId", htmlAttributes: new {@class = "control-label col-md-2"})
+                        @Html.LabelFor(model => model.RechnungsadresseId, "Rechnungsadresse", htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
                             @Html.DropDownList("RechnungsadresseId", null, htmlAttributes: new {@class = "form-control"})
                             @Html.ValidationMessageFor(model => model.RechnungsadresseId, "", new {@class = "text-danger"})
@@ -104,7 +104,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.MitarbeiterId, "MitarbeiterId", htmlAttributes: new {@class = "control-label col-md-2"})
+                        @Html.LabelFor(model => model.MitarbeiterId, "Verantwortlicher Mitarbeiter", htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
                             @Html.DropDownList("MitarbeiterId", null, htmlAttributes: new {@class = "form-control"})
                             @Html.ValidationMessageFor(model => model.MitarbeiterId, "", new {@class = "text-danger"})
@@ -112,7 +112,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.ProjektFK, "ProjektFK", htmlAttributes: new {@class = "control-label col-md-2"})
+                        @Html.LabelFor(model => model.ProjektFK, "Projekt Nr.", htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
                             @Html.DropDownList("ProjektFK", null, htmlAttributes: new {@class = "form-control"})
                             @Html.ValidationMessageFor(model => model.ProjektFK, "", new {@class = "text-danger"})
@@ -160,19 +160,12 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="RapportSpeichern" name="rapportSpeichern" class="btn btn-default"/></div>
-                    </div>
-                    
-                    <div class="form-group">
+                            <input type="submit" value="Speichern" name="rapportSpeichern" class="btn btn-default" />
+                        </div>
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="MailSenden" name="mailSenden" class="btn btn-default"/></div>
+                            <input type="submit" value="Abschliessen" name="mailSenden" class="btn btn-default" />
+                        </div>
                     </div>
-                    
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Rapportabschliessen" name="rapportabschliessen" class="btn btn-default"/></div>
-                    </div>
-
                 </div>
             </div>
         </div>

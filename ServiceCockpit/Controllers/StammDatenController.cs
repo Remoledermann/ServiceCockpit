@@ -16,7 +16,10 @@ namespace ServiceCockpit.Controllers
         // GET: StammDaten
         public ActionResult Index()
         {
-            var stammdaten = new ModleViewStammdaten();
+            AddiereProjektStammdaten();
+            AddiereOrganisationsStammdaten();
+
+            ModleViewStammdaten stammdaten = new ModleViewStammdaten();
             //Stammdaten Laden
             stammdaten.Mitarbeiter = db.Mitarbeiter.ToList();
             stammdaten.Material = db.Material.ToList();
@@ -27,7 +30,7 @@ namespace ServiceCockpit.Controllers
             stammdaten.Ausführungsadresse = db.Ausführungsadresse.ToList();
             stammdaten.Rechnungsadresse = db.Rechnungsadresse.ToList();
             stammdaten.Eigentuemeradresse = db.Eigentuemeradresse.ToList();
-
+            
 
             return View(stammdaten);
         }
@@ -40,7 +43,9 @@ namespace ServiceCockpit.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Vornamne,Strasse,Plz,Ort,TelefonGeschäft,TelefonPrivat")] Ausführungsadresse ausführungsadresse)
+        public ActionResult Create(
+            [Bind(Include = "Id,Name,Vornamne,Strasse,Plz,Ort,TelefonGeschäft,TelefonPrivat")]
+            Ausführungsadresse ausführungsadresse)
         {
             if (ModelState.IsValid)
             {
@@ -82,6 +87,88 @@ namespace ServiceCockpit.Controllers
 
             return View();
         }
-    
+
+
+        public void AddiereOrganisationsStammdaten()
+        {
+
+            var organisation = db.Organisation.ToList();
+
+            foreach (var VARIABLE in organisation)
+            {
+                if (VARIABLE != null)
+                {
+
+
+
+                    List<decimal> listStunden = new List<decimal>();
+                    List<decimal> listeMaterial = new List<decimal>();
+
+
+                    var projekt = db.Projekt.Where(c => c.OrganisationFK == VARIABLE.Id).ToList();
+
+                    foreach (var p in projekt)
+                    {
+                        if (p.KostenMaterial != null)
+                        {
+                            listeMaterial.Add(p.KostenMaterial.Value);
+                        }
+
+                        if (p.KostenMaterial != null)
+                        {
+                            listeMaterial.Add(p.KostenZeit.Value);
+                        }
+                            
+                    }
+
+
+                    VARIABLE.KostenZeit = listStunden.Sum();
+                    VARIABLE.KostenMaterial = listeMaterial.Sum();
+                    VARIABLE.KostenTotal = VARIABLE.KostenMaterial + VARIABLE.KostenZeit;
+
+                    db.SaveChanges();
+                }
+
+            }
+        }
+
+        public void AddiereProjektStammdaten()
+        {
+
+            var projekt = db.Projekt.ToList();
+
+            foreach (var v in projekt)
+            {
+
+                List<decimal> listStunden = new List<decimal>();
+                List<decimal> listeMaterial = new List<decimal>();
+
+
+                var servicrapport = db.Servicerapport.Where(c => c.ProjektFK == v.Id).ToList();
+
+                foreach (var s in servicrapport)
+                {
+                    if (s.KostenMaterial != null)
+                    {
+                        listeMaterial.Add(s.KostenMaterial.Value);
+                    }
+                    if (s.KostenZeit != null)
+                    {
+                        listeMaterial.Add(s.KostenZeit.Value);
+                    }
+                }
+      
+
+
+
+                v.KostenZeit = listStunden.Sum();
+                v.KostenMaterial = listeMaterial.Sum();
+                v.KostenTotal = v.KostenMaterial + v.KostenZeit;
+
+                db.SaveChanges();
+
+            }
+
+        }
     }
 }

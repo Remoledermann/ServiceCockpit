@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+
 
 
 @using (Html.BeginForm())
@@ -19,13 +19,12 @@
             <div class="panel-heading" role="tab" id="heading1">
                 <h4 class="panel-title">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
-                        <h3 class="active">Servicerapport Zeiten</h3>
+                        <h3 class="active">Wochenrapport Daten</h3>
                     </a>
                 </h4>
             </div>
 
             <div class="form-horizontal">
-                <h4>Wochenrapport</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.Id)
@@ -71,7 +70,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.MitarbeiterId, "MitarbeiterId", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.MitarbeiterId, "Mitarbeiter", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownList("MitarbeiterId", null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.MitarbeiterId, "", new { @class = "text-danger" })
@@ -106,18 +105,17 @@
         <div class="panel-heading" role="tab" id="heading2">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
-                    <h3 class="active">Servicerapport Zeiten</h3>
+                    <h3 class="active">Zeiteinträge</h3>
                 </a>
             </h4>
         </div>
        
 
-        <p>
-            @Html.ActionLink("Create New", "Create","WochenrapportZeitEintrags")
-        </p>
+        <h3>
+            @Html.ActionLink("Neuer Zeiteintrag", "Create","WochenrapportZeitEintrags")
+        </h3>
         <table class="table">
             <tr>
-                
                 <th>
                     Datum
                 </th>
@@ -178,15 +176,15 @@
         <div class="panel-heading" role="tab" id="heading3">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
-                    <h3 class="active">Servicerapport Zeiten</h3>
+                    <h3 class="active">Speseneinträge</h3>
                 </a>
             </h4>
         </div>
        
 
-        <p>
-            @Html.ActionLink("Create New", "Create","WochenrapportSpesenEintrags")
-        </p>
+        <h3>
+            @Html.ActionLink("Neuer Speseneintrag", "Create","WochenrapportSpesenEintrags")
+        </h3>
         <table class="table">
             <tr>
                 <th>

@@ -64,7 +64,7 @@
                             Termin
                         </th>
                         <th>
-                            Rapport Nummer
+                            Rapport Nr.
                         </th>
                         <th>
                             Voranmeldung Nr.
@@ -75,7 +75,7 @@
                         <th>
                             Status
                         </th>
-                        <th></th>
+                        <th>Aktion</th>
                     </tr>
                     </thead>
                     @foreach (var item in offeneRapport.Servicerapports)
@@ -119,10 +119,18 @@
         </div>
     </div>
     <script>
-        $(document).ready( function () {
-            $('#AlleServicrapporte').DataTable();
+        $(document).ready(function () {
+            $('#AlleServicrapporte').DataTable({
+                "language": {
+                    "lengthMenu": "Zeige _MENU_ Einträge",
+                    "zeroRecords": "Keine Einträge vorhanden",
+                    "info": "Seite _PAGE_ von _PAGES_",
+                    "infoEmpty": "Keine Einträge Vorhanden",
+                    "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                }
+            });
         });
-  
+
 
 
 
@@ -150,10 +158,10 @@
                             Termin
                         </th>
                         <th>
-                            Raportnummer
+                            Rapport Nr.
                         </th>
                         <th>
-                            Voranmeldung Nr.
+                            Voranmeldung
                         </th>
                         <th>
                             Beschreibung
@@ -161,7 +169,7 @@
                         <th>
                             Verantwortlicher Mitarbeiter
                         </th>
-                        <th></th>
+                        <th>Aktion</th>
                     </tr>
                     </thead>
                     @foreach (var item in BearbeitenRapporte.Servicerapports)
@@ -208,7 +216,15 @@
 
 <script>
     $(document).ready( function () {
-        $('#MeineServicerapporte').DataTable();
+        $('#MeineServicerapporte').DataTable({
+            "language": {
+                "lengthMenu": "Zeige _MENU_ Einträge",
+                "zeroRecords": "Keine Einträge vorhanden",
+                "info": "Seite _PAGE_ von _PAGES_",
+                "infoEmpty": "Keine Einträge Vorhanden",
+                "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+            }
+        });
     });
   
 

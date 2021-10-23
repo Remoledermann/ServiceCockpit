@@ -118,39 +118,8 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
-            List<decimal> listStunden = new List<decimal>();
-            List<decimal> listeMaterial = new List<decimal>();
 
-
-            var projekt = db.Projekt.ToList().Where(s => s.OrganisationFK == id);
-
-            foreach (var VARIABLE in projekt)
-            {
-                if (VARIABLE.KostenZeit == null)
-                {
-
-                }
-                else
-                {
-                    listStunden.Add(VARIABLE.KostenZeit.Value);
-
-
-                }
-                if (VARIABLE.KostenMaterial == null)
-                {
-
-                }
-                else
-                {
-                    listeMaterial.Add(VARIABLE.KostenMaterial.Value);
-                }
-
-
-            }
-            organisation.KostenZeit = listStunden.Sum();
-            organisation.KostenMaterial = listeMaterial.Sum();
-            organisation.KostenTotal = organisation.KostenMaterial + organisation.KostenZeit;
-            db.SaveChanges();
+            
 
             return View(organisation);
         }
@@ -162,6 +131,12 @@ namespace ServiceCockpit.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,KostenZeit,KostenMaterial,KostenTotal,Status")] Organisation organisation)
         {
+            List<decimal> listStunden = new List<decimal>();
+            List<decimal> listeMaterial = new List<decimal>();
+
+
+           
+
             if (ModelState.IsValid)
             {
                 db.Entry(organisation).State = EntityState.Modified;

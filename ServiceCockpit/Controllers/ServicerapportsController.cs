@@ -104,53 +104,7 @@ namespace ServiceCockpit.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            else
-            {
-                var rapport = db.Servicerapport.SingleOrDefault(s => s.Id == id);
-
-                var zeiteinträge = db.ZeitKosten.Include(s => s.ZeitKostenUeberzeitFaktor)
-                    .Include(s => s.Verrechnungsart).Include(s => s.Mitarbeiter).Where(s => s.ServicerapportFK == id);
-                rapport.ZeitKosten = zeiteinträge.ToList();
-
-                var materialeinträge = db.MaterialKosten.Include(s => s.Material).Where(s => s.ServicerapportFK == id);
-                rapport.MaterialKosten = materialeinträge.ToList();
-
-                // Additon kosten
-                List<decimal> listAnzahlStunden = new List<decimal>();
-                foreach (var VARIABLE in rapport.ZeitKosten)
-                {
-                    if (VARIABLE.KostenTotal == null)
-                    {
-
-                    }
-                    else
-                    {
-                        listAnzahlStunden.Add(VARIABLE.KostenTotal.Value);
-                    }
-
-                }
-
-                rapport.KostenZeit = listAnzahlStunden.Sum();
-                List<decimal> listAnzahlMaterial = new List<decimal>();
-                foreach (var VARIABLE in rapport.MaterialKosten)
-                {
-                    if (VARIABLE.KostenTotal == null)
-                    {
-
-                    }
-                    else
-                    {
-                        listAnzahlMaterial.Add(VARIABLE.KostenTotal.Value);
-                    }
-                }
-
-                rapport.KostenMaterial = listAnzahlMaterial.Sum();
-                rapport.KostenTotal = rapport.KostenMaterial + rapport.KostenZeit;
-                db.SaveChanges();
-
-
-            }
-
+            
             Servicerapport servicerapport = db.Servicerapport.Find(id);
             if (servicerapport == null)
             {
@@ -192,74 +146,22 @@ namespace ServiceCockpit.Controllers
 
 
 
-            if (mailSenden == "MailSenden")
+            if (mailSenden == "Abschliessen")
             {
 
                 if (servicerapport.EmailAdresse != null && servicerapport.Unterschrift != null)
                 {
-                    servicerapport.Mitarbeiter =
-                        db.Mitarbeiter.SingleOrDefault(s => servicerapport.MitarbeiterId == s.Id);
-
-                    MimeMessage message = new MimeMessage();
-                    message.From.Add(new MailboxAddress("Gfeller Elektro", "gfellerelektroservicrapport@gmail.com"));
-                    message.To.Add(MailboxAddress.Parse(servicerapport.EmailAdresse));
-
-                    message.Subject = "Rapport Nr." + servicerapport.Id.ToString();
-                    message.Body = new TextPart(TextFormat.Html)
-                    {
-                        Text = $@"Wir bedanken uns bei Ihnen für den Aufrag.
-
-
-Die Materialkosten belaufen sich auf: {servicerapport.KostenMaterial.ToString()} 
-Die Arbeitskosten belaufen sich auf : {servicerapport.KostenMaterial.ToString()}
-
-Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
-                    };
-
-                    SmtpClient client = new SmtpClient();
-                    try
-                    {
-                        client.Connect("smtp.gmail.com", 465, true);
-                        client.Authenticate("gfellerelektroservicrapport@gmail.com", "Gfeller_1234");
-                        client.Send(message);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                        throw;
-                    }
-                    finally
-                    {
-                        client.Disconnect(true);
-                        client.Dispose();
-                        db.Entry(servicerapport).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-
-
-                    SaveServicrapportEinträgeInWochenrapport(servicerapport);
-
-
+                    Mailsenden(servicerapport);
                     return RedirectToAction("Index", "ServicerapportDashboards");
                 }
             }
 
-            if (rapportSpeichern == "RapportSpeichern")
+            if (rapportSpeichern == "Speichern")
             {
 
+                RapportSpeichernUndStatusSetzten(servicerapport);
 
 
-                if (servicerapport.MitarbeiterId == 3)
-                {
-                    servicerapport.Status = "Offen";
-                }
-                else
-                {
-                    servicerapport.Status = "Bearbeiten";
-                }
-
-                db.Entry(servicerapport).State = EntityState.Modified;
-                db.SaveChanges();
                 return RedirectToAction("Index", "ServicerapportDashboards");
             }
 
@@ -313,6 +215,9 @@ Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
             base.Dispose(disposing);
         }
 
+        
+        
+        
         public void SaveServicrapportEinträgeInWochenrapport(Servicerapport servicerapport)
         {
             servicerapport.RapportAbgechlossenZeit = DateTime.Now;
@@ -375,20 +280,6 @@ Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
 
                         neuerWochenrapport.Kalenderwoche = weekNum.ToString();
                         neuerWochenrapport.Mitarbeiter = s.Mitarbeiter;
-
-                        int GetIso8601WeekOfYear(DateTime time)
-                        {
-                            DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
-                            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
-                            {
-                                time = time.AddDays(3);
-                            }
-
-                            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time,
-                                CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-                        }
-
-
 
                         DateTime FirstDateOfWeek(int year, int weekOfYear,
                             System.Globalization.CultureInfo us)
@@ -485,148 +376,72 @@ Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
                         db.SaveChanges();
                     }
 
-                    //foreach (var w in listWochenrapport)
-                    //{
-                    //    if (s.Servicerapport.RapportAbgechlossenZeit >= w.StartDatum &&
-                    //        s.Servicerapport.RapportAbgechlossenZeit <= w.EndDate &&
-                    //        s.MitarbeiterId == w.MitarbeiterId)
-                    //    {
-                    //        WochenrapportZeitEintrag eintrag = new WochenrapportZeitEintrag();
-                    //        eintrag.WochenrapportFK = w.Id;
-                    //        eintrag.Zeit = s.AnzahlStundenTotal;
-                    //        eintrag.Ausführungsadresse = ausführungsadresse.Anzeigeadresse;
-                    //        eintrag.Datum = s.Eintragsdatum;
-                    //        eintrag.ProjektnNummer = projekt.Nummer;
-                    //        eintrag.ServicrapportNummer = servicerapport.Id;
-                    //        w.Status = "Bearbeitet";
-
-                    //        db.WochenrapportZeitEintrag.Add(eintrag);
-                    //        servicerapport.Status = "Abgeschlossen";
-
-                    //        db.SaveChanges();
-
-                    //        break;
-                    //    }
-                    //    else
-                    //    {
-                    //            Wochenrapport neuerWochenrapport = new Wochenrapport();
-
-                    //            CultureInfo ciCurr = CultureInfo.CurrentCulture;
-
-                    //            int weekNum = ciCurr.Calendar.GetWeekOfYear(s.Eintragsdatum,
-                    //                CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-
-
-                    //            neuerWochenrapport.Mitarbeiter = s.Mitarbeiter;
-                    //            neuerWochenrapport.Status = "Offen";
-
-                    //            int kalenderwoche = weekNum;
-
-                    //            int GetIso8601WeekOfYear(DateTime time)
-                    //            {
-                    //                DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
-                    //                if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
-                    //                {
-                    //                    time = time.AddDays(3);
-                    //                }
-
-                    //                return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time,
-                    //                    CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-                    //            }
-
-
-
-                    //            DateTime FirstDateOfWeek(int year, int weekOfYear,
-                    //                System.Globalization.CultureInfo us)
-                    //            {
-
-
-                    //                DateTime jan1 = new DateTime(year, 1, 1);
-                    //                int daysOffset = (int)us.DateTimeFormat.FirstDayOfWeek - (int)jan1.DayOfWeek;
-                    //                DateTime firstWeekDay = jan1.AddDays(daysOffset);
-                    //                int firstWeek = us.Calendar.GetWeekOfYear(jan1,
-                    //                    us.DateTimeFormat.CalendarWeekRule,
-                    //                    us.DateTimeFormat.FirstDayOfWeek);
-                    //                if ((firstWeek <= 1 || firstWeek >= 52) && daysOffset >= -3)
-                    //                {
-                    //                    weekOfYear -= 1;
-                    //                }
-
-
-                    //                return firstWeekDay.AddDays(weekOfYear * 7);
-                    //            }
-
-
-                    //            int Jahr = DateTime.Now.Year;
-
-
-                    //            DateTime firstDayOfWeek = FirstDateOfWeek(s.Eintragsdatum.Year, kalenderwoche,
-                    //                CultureInfo.CurrentCulture);
-                    //            DateTime lastDayofWeek = firstDayOfWeek.AddDays(6);
-
-                    //            string sdDate = firstDayOfWeek.ToString("dd/MM/yyyy");
-                    //            DateTime ddDate;
-                    //            string fnewDateFormat = String.Empty;
-                    //            if (DateTime.TryParseExact(sdDate, "dd/MM/yyyy", null, DateTimeStyles.None,
-                    //                out ddDate))
-                    //            {
-                    //                fnewDateFormat = string.Format("{0:MM/dd/yyyy}", ddDate);
-                    //            }
-
-                    //            string sDate = lastDayofWeek.ToString("dd/MM/yyyy");
-                    //            DateTime dDate;
-                    //            string lnewDateFormat = String.Empty;
-                    //            if (DateTime.TryParseExact(sDate, "dd/MM/yyyy", null, DateTimeStyles.None,
-                    //                out dDate))
-                    //            {
-                    //                lnewDateFormat = string.Format("{0:MM/dd/yyyy}", dDate);
-                    //            }
-
-
-
-
-                    //            System.Globalization.CultureInfo customCulture =
-                    //                new System.Globalization.CultureInfo("en-US", true);
-
-                    //            customCulture.DateTimeFormat.ShortDatePattern = "MM-dd-yyyy";
-
-                    //            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
-                    //            System.Threading.Thread.CurrentThread.CurrentUICulture = customCulture;
-
-                    //            DateTime newfirstDateTime =
-                    //                System.Convert.ToDateTime(firstDayOfWeek.ToString("MM/dd/yyyy"));
-
-
-                    //            neuerWochenrapport.StartDatum =
-                    //                System.Convert.ToDateTime(firstDayOfWeek.ToString("MM/dd/yyyy"));
-                    //            neuerWochenrapport.EndDate =
-                    //                System.Convert.ToDateTime(lastDayofWeek.ToString("MM/dd/yyyy"));
-                    //            neuerWochenrapport.Status = "Offen";
-
-                    //            db.Wochenrapport.Add(neuerWochenrapport);
-                    //            db.SaveChanges();
-
-                    //            WochenrapportZeitEintrag eintrag = new WochenrapportZeitEintrag();
-                    //            eintrag.WochenrapportFK = w.Id;
-                    //            eintrag.Zeit = s.AnzahlStundenTotal;
-                    //            eintrag.Ausführungsadresse = ausführungsadresse.Anzeigeadresse;
-                    //            eintrag.Datum = s.Eintragsdatum;
-                    //            eintrag.ProjektnNummer = projekt.Nummer;
-                    //            eintrag.ServicrapportNummer = servicerapport.Id;
-
-                    //            db.WochenrapportZeitEintrag.Add(eintrag);
-
-                    //            servicerapport.Status = "Abgeschlossen";
-
-                    //            db.SaveChanges();
-
-                    //        }
-                    //}
+                   
                 }
 
 
 
             }
+        }
+
+        public void Mailsenden(Servicerapport servicerapport)
+        {
+            servicerapport.Mitarbeiter =
+                db.Mitarbeiter.SingleOrDefault(s => servicerapport.MitarbeiterId == s.Id);
+
+            MimeMessage message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Gfeller Elektro", "gfellerelektroservicrapport@gmail.com"));
+            message.To.Add(MailboxAddress.Parse(servicerapport.EmailAdresse));
+
+            message.Subject = "Rapport Nr." + servicerapport.Id.ToString();
+            message.Body = new TextPart(TextFormat.Html)
+            {
+                Text = $@"Wir bedanken uns bei Ihnen für den Aufrag.
+
+
+Die Materialkosten belaufen sich auf: {servicerapport.KostenMaterial.ToString()} 
+Die Arbeitskosten belaufen sich auf : {servicerapport.KostenMaterial.ToString()}
+
+Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
+            };
+
+            SmtpClient client = new SmtpClient();
+            try
+            {
+                client.Connect("smtp.gmail.com", 465, true);
+                client.Authenticate("gfellerelektroservicrapport@gmail.com", "Gfeller_1234");
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+            finally
+            {
+                client.Disconnect(true);
+                client.Dispose();
+                db.Entry(servicerapport).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+
+            SaveServicrapportEinträgeInWochenrapport(servicerapport);
+        }
+
+        public void RapportSpeichernUndStatusSetzten(Servicerapport servicerapport)
+        {
+            if (servicerapport.MitarbeiterId == 3)
+            {
+                servicerapport.Status = "Offen";
+            }
+            else
+            {
+                servicerapport.Status = "Bearbeiten";
+            }
+
+            db.Entry(servicerapport).State = EntityState.Modified;
+            db.SaveChanges();
         }
     }
 }
