@@ -41,8 +41,10 @@ namespace ServiceCockpit.Controllers
         {
 
             List<Servicerapport> Servicer = db.Servicerapport.Where(c => c.Status == "Bearbeiten").ToList();
-
             ViewBag.ServicerapportFK = new SelectList(Servicer, "Id", "Id");
+
+
+
 
             ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName");
             //ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id");

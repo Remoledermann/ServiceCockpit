@@ -39,7 +39,8 @@ namespace ServiceCockpit.Controllers
         // GET: WochenrapportZeitEintrags/Create
         public ActionResult Create()
         {
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige");
+            List<Wochenrapport> wochenr = db.Wochenrapport.Where(c => c.Status == "Offen").ToList();
+            ViewBag.WochenrapportFK = new SelectList(wochenr, "Id", "Anzeige");
             return View();
         }
 
@@ -55,11 +56,10 @@ namespace ServiceCockpit.Controllers
 
                 db.WochenrapportZeitEintrag.Add(wochenrapportZeitEintrag);
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige", wochenrapportZeitEintrag.WochenrapportFK);
-            return View(wochenrapportZeitEintrag);
+                return RedirectToAction("Edit", "Wochenrapports", new {id = wochenrapportZeitEintrag.WochenrapportFK});
+            }
+            return RedirectToAction("Index", "WochenrapportDashboards");
         }
 
         // GET: WochenrapportZeitEintrags/Edit/5
@@ -74,8 +74,11 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige", wochenrapportZeitEintrag.WochenrapportFK);
-            return View(wochenrapportZeitEintrag);
+            List<Wochenrapport> wochenr = db.Wochenrapport.Where(c => c.Status == "Offen").ToList();
+            ViewBag.WochenrapportFK = new SelectList(wochenr, "Id", "Anzeige");
+
+
+            return RedirectToAction("Edit", "Wochenrapports", new { id = wochenrapportZeitEintrag.WochenrapportFK });
         }
 
         // POST: WochenrapportZeitEintrags/Edit/5
@@ -91,7 +94,7 @@ namespace ServiceCockpit.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige", wochenrapportZeitEintrag.WochenrapportFK);
+            
             return View(wochenrapportZeitEintrag);
         }
 

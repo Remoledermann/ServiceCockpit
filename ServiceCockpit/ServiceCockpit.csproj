@@ -190,6 +190,7 @@
     <Compile Include="Controllers\MitarbeitersController.cs" />
     <Compile Include="Controllers\OrganisationsController.cs" />
     <Compile Include="Controllers\ProjektsController.cs" />
+    <Compile Include="Controllers\RapporteUebertragenController.cs" />
     <Compile Include="Controllers\RechnungsadressesController.cs" />
     <Compile Include="Controllers\ServicerapportDashboardsController.cs" />
     <Compile Include="Controllers\ServicerapportsController.cs" />
@@ -261,6 +262,7 @@
     <Compile Include="Models\Material.cs" />
     <Compile Include="Models\MaterialKosten.cs" />
     <Compile Include="Models\Mitarbeiter.cs" />
+    <Compile Include="Models\ModelViewAlleRapporte.cs" />
     <Compile Include="Models\ModelViewServiceCockpit.cs" />
     <Compile Include="Models\ModleViewStammdaten.cs" />
     <Compile Include="Models\Organisation.cs" />
@@ -411,6 +413,7 @@
     <Content Include="Views\ZeitKostens\Details.cshtml" />
     <Content Include="Views\ZeitKostens\Edit.cshtml" />
     <Content Include="Views\ZeitKostens\Index.cshtml" />
+    <Content Include="Views\RapporteUebertragen\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -39,7 +39,10 @@ namespace ServiceCockpit.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Servicerapport servicerapport = db.Servicerapport.Find(id);
+            Servicerapport servicerapport = db.Servicerapport.Include(s => s.Mitarbeiter).Include(s => s.Rechnungsadresse).Include(s => s.Eigentuemeradresse)
+                .Include(s => s.Ausführungsadresse).Include(s => s.Rechnungsadresse).Include(s => s.Projekt)
+                .Include(s => s.ZeitKosten).Include(s => s.MaterialKosten).SingleOrDefault(s => s.Id == id);
+
             if (servicerapport == null)
             {
                 return HttpNotFound();
@@ -83,18 +86,6 @@ namespace ServiceCockpit.Controllers
             db.SaveChanges();
             return RedirectToAction("Index", "ServicerapportDashboards");
 
-
-            ViewBag.AusführungsadresseId = new SelectList(db.Ausführungsadresse, "Id", "Anzeigeadresse",
-                servicerapport.AusführungsadresseId);
-            ViewBag.EigentuemeradresseId = new SelectList(db.Eigentuemeradresse, "Id", "Anzeigeadresse",
-                servicerapport.EigentuemeradresseId);
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", servicerapport.MitarbeiterId);
-            ViewBag.ProjektFK = new SelectList(db.Projekt, "Id", "Nummer", servicerapport.ProjektFK);
-            ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse",
-                servicerapport.RechnungsadresseId);
-
-
-            return View(servicerapport);
         }
 
         // GET: Servicerapports/Edit/5
@@ -140,23 +131,27 @@ namespace ServiceCockpit.Controllers
         public ActionResult Edit(
             [Bind(Include =
                 "Id,KundenTerminZeit,RapportAbgechlossenZeit,VoranmeldungName,VoranmeldungNummer,Status,Beschreibung,EmailAdresse,Unterschrift,KostenZeit,KostenMaterial,KostenTotal,EigentuemeradresseId,AusführungsadresseId,RechnungsadresseId,MitarbeiterId,ProjektFK")]
-            Servicerapport servicerapport, string rapportSpeichern, string mailSenden, string rapportabschliessen)
+            Servicerapport servicerapport, string rapportSpeichern, string mailSenden, string übertragen)
         {
 
-
-
-
-            if (mailSenden == "Abschliessen")
+            if (mailSenden == "Abschliessen" && servicerapport.Status == "Bearbeiten")
             {
-
-                if (servicerapport.EmailAdresse != null && servicerapport.Unterschrift != null)
+                
+                if (servicerapport.EmailAdresse != null && servicerapport.Unterschrift != null &&  servicerapport.KostenTotal != null && servicerapport.Status == "Bearbeiten")
                 {
-                    Mailsenden(servicerapport);
+                    MailAnKundensenden(servicerapport);
+                    MailAmServicMitarbeiterSenden(servicerapport);
+                    SaveServicrapportEinträgeInWochenrapport(servicerapport);
+                   
+                    db.Entry(servicerapport).State = EntityState.Modified;
+                    db.SaveChanges();
+
                     return RedirectToAction("Index", "ServicerapportDashboards");
                 }
+                return RedirectToAction("Index", "ServicerapportDashboards");
             }
 
-            if (rapportSpeichern == "Speichern")
+            if (rapportSpeichern == "Speichern" && servicerapport.Status == "Bearbeiten" || servicerapport.Status == "Offen")
             {
 
                 RapportSpeichernUndStatusSetzten(servicerapport);
@@ -165,12 +160,19 @@ namespace ServiceCockpit.Controllers
                 return RedirectToAction("Index", "ServicerapportDashboards");
             }
 
+            if (übertragen == "Übertragen" && servicerapport.Status == "Abgeschlossen")
+            {
+                servicerapport.Status = "Übertragen";
+                db.Entry(servicerapport).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "RapporteUebertragen");
+            }
+            else
+            {
+                return RedirectToAction("Index", "ServicerapportDashboards");
+            }
 
-
-
-
-            return RedirectToAction("Index", "ServicerapportDashboards");
-
+            
         }
 
 
@@ -185,7 +187,9 @@ namespace ServiceCockpit.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Servicerapport servicerapport = db.Servicerapport.Find(id);
+            Servicerapport servicerapport = db.Servicerapport.Include(s => s.Mitarbeiter).Include(s => s.Rechnungsadresse).Include(s => s.Eigentuemeradresse)
+                .Include(s => s.Ausführungsadresse).Include(s => s.Rechnungsadresse).Include(s => s.Projekt)
+                .Include(s => s.ZeitKosten).Include(s => s.MaterialKosten).SingleOrDefault(s => s.Id == id);
             if (servicerapport == null)
             {
                 return HttpNotFound();
@@ -384,26 +388,20 @@ namespace ServiceCockpit.Controllers
             }
         }
 
-        public void Mailsenden(Servicerapport servicerapport)
+        public void MailAnKundensenden(Servicerapport servicerapport)
         {
-            servicerapport.Mitarbeiter =
-                db.Mitarbeiter.SingleOrDefault(s => servicerapport.MitarbeiterId == s.Id);
-
             MimeMessage message = new MimeMessage();
             message.From.Add(new MailboxAddress("Gfeller Elektro", "gfellerelektroservicrapport@gmail.com"));
             message.To.Add(MailboxAddress.Parse(servicerapport.EmailAdresse));
 
-            message.Subject = "Rapport Nr." + servicerapport.Id.ToString();
+            message.Subject = "Rapport Nr." + servicerapport.Id.ToString() + "ist abgeschlossen";
             message.Body = new TextPart(TextFormat.Html)
             {
-                Text = $@"Wir bedanken uns bei Ihnen für den Aufrag.
-
-
-Die Materialkosten belaufen sich auf: {servicerapport.KostenMaterial.ToString()} 
-Die Arbeitskosten belaufen sich auf : {servicerapport.KostenMaterial.ToString()}
-
-Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
+                Text = $@"Wir bedanken uns bei Ihnen für den Aufrag             
+                Die Kosten betragen: {servicerapport.KostenTotal} CHF
+                Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
             };
+
 
             SmtpClient client = new SmtpClient();
             try
@@ -427,6 +425,52 @@ Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
 
 
             SaveServicrapportEinträgeInWochenrapport(servicerapport);
+        }
+
+        public void MailAmServicMitarbeiterSenden(Servicerapport servicerapport)
+        {
+            servicerapport.Mitarbeiter =
+                db.Mitarbeiter.SingleOrDefault(s => servicerapport.MitarbeiterId == s.Id);
+            if (servicerapport.Mitarbeiter != null)
+            {
+                
+           
+
+            MimeMessage message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Gfeller Elektro", "gfellerelektroservicrapport@gmail.com"));
+            message.To.Add(MailboxAddress.Parse(servicerapport.Mitarbeiter.Email));
+
+            message.Subject = "Rapport Nr." + servicerapport.Id.ToString() + "ist abgeschlossen";
+            message.Body = new TextPart(TextFormat.Html)
+            {
+                Text = $@"Wir bedanken uns bei Ihnen für den Aufrag.
+                
+
+                Ausführungsadresse:           {servicerapport.Ausführungsadresse.Anzeigeadresse}
+                Die Materialkosten belaufen sich auf: {servicerapport.KostenMaterial.ToString()} 
+                Die Arbeitskosten belaufen sich auf : {servicerapport.KostenMaterial.ToString()}
+
+                Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
+            };
+
+            SmtpClient client = new SmtpClient();
+            try
+            {
+                client.Connect("smtp.gmail.com", 465, true);
+                client.Authenticate("gfellerelektroservicrapport@gmail.com", "Gfeller_1234");
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+            finally
+            {
+                client.Disconnect(true);
+                client.Dispose();
+            }
+        }
         }
 
         public void RapportSpeichernUndStatusSetzten(Servicerapport servicerapport)

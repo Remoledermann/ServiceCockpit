@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -20,8 +21,9 @@ namespace ServiceCockpit.Models
 
         public string Ort { get; set; }
 
+        [DisplayName("Telefon Geschäft")]
         public string TelefonGeschäft { get; set; }
-
+        [DisplayName("Telefon Privat")]
         public string TelefonPrivat { get; set; }
 
         [NotMapped]

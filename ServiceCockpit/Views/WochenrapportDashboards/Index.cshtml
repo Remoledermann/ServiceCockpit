@@ -23,7 +23,7 @@
         {
             offeneServicrapporte.Add(VARIABLE);
         }
-        if (VARIABLE.Status == "Abgeschlossen")
+        if (VARIABLE.Status == "Übertragen")
         {
             abgeschlosseneServicrapporte.Add(VARIABLE);
         }
@@ -65,7 +65,7 @@
                             <th>
                                 Status
                             </th>
-                            <th></th>
+                            <th>Aktion</th>
                         </tr>
                     </thead>
 
@@ -128,7 +128,7 @@
         <div class="panel-heading" role="tab" id="heading2">
             <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
-                    <h3 class="active">Abgeschlossene Wochenrapporte</h3>
+                    <h3 class="active">Meine Wochenrapporte</h3>
                 </a>
             </h4>
         </div>
@@ -156,7 +156,7 @@
                         <th>
                             Status
                         </th>
-                        <th></th>
+                        <th>Aktion</th>
                     </tr>
                     </thead>
                     @foreach (var item in abgeschlosseneServicrapporte)

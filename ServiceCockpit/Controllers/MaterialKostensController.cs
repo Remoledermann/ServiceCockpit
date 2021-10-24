@@ -39,7 +39,9 @@ namespace ServiceCockpit.Controllers
         // GET: MaterialKostens/Create
         public ActionResult Create()
         {
-            ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name");
+            List<Servicerapport> Servicer = db.Servicerapport.Where(c => c.Status == "Bearbeiten").ToList();
+            ViewBag.ServicerapportFK = new SelectList(Servicer, "Id", "Id");
+
             ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id");
             return View();
         }
@@ -83,7 +85,8 @@ namespace ServiceCockpit.Controllers
                 return HttpNotFound();
             }
             ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name", materialKosten.MaterialId);
-            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id", materialKosten.ServicerapportFK);
+            List<Servicerapport> Servicer = db.Servicerapport.Where(c => c.Status == "Bearbeiten").ToList();
+            ViewBag.ServicerapportFK = new SelectList(Servicer, "Id", "Id");
             return View(materialKosten);
         }
 
@@ -107,7 +110,8 @@ namespace ServiceCockpit.Controllers
                 return RedirectToAction("Edit", "Servicerapports", new { id = materialKosten.ServicerapportFK });
             }
             ViewBag.MaterialId = new SelectList(db.Material, "Id", "Name", materialKosten.MaterialId);
-            ViewBag.ServicerapportFK = new SelectList(db.Servicerapport, "Id", "Id", materialKosten.ServicerapportFK);
+            List<Servicerapport> Servicer = db.Servicerapport.Where(c => c.Status == "Bearbeiten").ToList();
+            ViewBag.ServicerapportFK = new SelectList(Servicer, "Id", "Id");
             return View(materialKosten);
         }
 

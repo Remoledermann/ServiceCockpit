@@ -15,25 +15,25 @@ namespace ServiceCockpit.Models
         public int Id { get; set; }
         [DisplayName("Termin am")]
         public DateTime? KundenTerminZeit { get; set; }
-
+        [DisplayName("Rapport Abgeschlossen am")]
         public DateTime? RapportAbgechlossenZeit { get; set; }
-
+        [DisplayName("Voranmeldung bei")]
         public string VoranmeldungName { get; set; }
-
+        [DisplayName("Voranmeldung Telefon Nr.")]
         public string VoranmeldungNummer { get; set; }
 
         public string Status { get; set; }
 
         public string Beschreibung { get; set; }
-
+        [DisplayName("E-Mail Adresse")]
         public string EmailAdresse { get; set; }
-
+        [DisplayName("Unterschrift Kunde")]
         public string Unterschrift { get; set; }
-
+        [DisplayName("Kosten der Arbeitszeiten")]
         public decimal? KostenZeit { get; set; }
-
+        [DisplayName("Kosten des Material")]
         public decimal? KostenMaterial { get; set; }
-
+        [DisplayName("Kosten Total")]
         public decimal? KostenTotal { get; set; }
 
 

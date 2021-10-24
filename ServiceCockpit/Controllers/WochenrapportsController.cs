@@ -51,23 +51,9 @@ namespace ServiceCockpit.Controllers
         [HttpPost]
         public ActionResult Create([Bind(Include = "Id,Kalenderwoche,StartDatum,EndDate,Status,StundenTotal,MitarbeiterId")] Wochenrapport wochenrapport)
         {
-            
-            
-                int kalenderwoche = Convert.ToInt32(wochenrapport.Kalenderwoche);
-
-                int GetIso8601WeekOfYear(DateTime time)
-                {
-                    DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
-                    if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
-                    {
-                        time = time.AddDays(3);
-                    }
-
-                    return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-                }
 
 
-
+            int kalenderwoche = Convert.ToInt32(wochenrapport.Kalenderwoche);
                  DateTime FirstDateOfWeek(int year, int weekOfYear, System.Globalization.CultureInfo us)
                  {
                     
@@ -126,11 +112,8 @@ namespace ServiceCockpit.Controllers
 
                 db.Wochenrapport.Add(wochenrapport);
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            
+                return RedirectToAction("Index", "WochenrapportDashboards");
 
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", wochenrapport.MitarbeiterId);
-            return View(wochenrapport);
         }
 
         // GET: Wochenrapports/Edit/5
@@ -179,15 +162,31 @@ namespace ServiceCockpit.Controllers
         // finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         
-        public ActionResult Edit([Bind(Include = "Id,Kalenderwoche,StartDatum,EndDate,Status,StundenTotal,MitarbeiterId")] Wochenrapport wochenrapport)
+        public ActionResult Edit([Bind(Include = "Id,Kalenderwoche,StartDatum,EndDate,Status,StundenTotal,MitarbeiterId")] Wochenrapport wochenrapport,string speichern, string uebertragen, string abschliessen)
         {
-           
+            wochenrapport.WochenrapportZeitEintrag = db.WochenrapportZeitEintrag
+                .Where(c => c.WochenrapportFK == wochenrapport.Id).ToList();
+
+
+            if (uebertragen == "Übertragen" && wochenrapport.WochenrapportZeitEintrag.Count >= 1 && wochenrapport.Status == "Abgeschlossen")
+            {
+                wochenrapport.Status = "Übertragen";
                 db.Entry(wochenrapport).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            
-            ViewBag.MitarbeiterId = new SelectList(db.Mitarbeiter, "Id", "VollerName", wochenrapport.MitarbeiterId);
-            return View(wochenrapport);
+                return RedirectToAction("Index", "RapporteUebertragen");
+
+            }
+
+            if (abschliessen == "Abschliessen")
+            {
+                wochenrapport.Status = "Abgeschlossen";
+                db.Entry(wochenrapport).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "RapporteUebertragen");
+            }
+           
+                
+                return RedirectToAction("Index", "WochenrapportDashboards");
         }
 
         // GET: Wochenrapports/Delete/5
@@ -213,7 +212,7 @@ namespace ServiceCockpit.Controllers
             Wochenrapport wochenrapport = db.Wochenrapport.Find(id);
             db.Wochenrapport.Remove(wochenrapport);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "WochenrapportDashboards");
         }
 
         protected override void Dispose(bool disposing)

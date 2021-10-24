@@ -39,7 +39,8 @@ namespace ServiceCockpit.Controllers
         // GET: WochenrapportSpesenEintrags/Create
         public ActionResult Create()
         {
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige");
+               List<Wochenrapport> wochenr = db.Wochenrapport.Where(c => c.Status == "Offen").ToList();
+            ViewBag.WochenrapportFK = new SelectList(wochenr, "Id", "Anzeige");
             return View();
         }
 
@@ -54,10 +55,11 @@ namespace ServiceCockpit.Controllers
             {
                 db.WochenrapportSpesenEintrag.Add(wochenrapportSpesenEintrag);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", "Wochenrapports", new { id = wochenrapportSpesenEintrag.WochenrapportFK });
             }
 
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige", wochenrapportSpesenEintrag.WochenrapportFK);
+            List<Wochenrapport> wochenr = db.Wochenrapport.Where(c => c.Status == "Offen").ToList();
+            ViewBag.WochenrapportFK = new SelectList(wochenr, "Id", "Anzeige");
             return View(wochenrapportSpesenEintrag);
         }
 
@@ -73,7 +75,8 @@ namespace ServiceCockpit.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige", wochenrapportSpesenEintrag.WochenrapportFK);
+            List<Wochenrapport> wochenr = db.Wochenrapport.Where(c => c.Status == "Offen").ToList();
+            ViewBag.WochenrapportFK = new SelectList(wochenr, "Id", "Id");
             return View(wochenrapportSpesenEintrag);
         }
 
@@ -88,9 +91,10 @@ namespace ServiceCockpit.Controllers
             {
                 db.Entry(wochenrapportSpesenEintrag).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", "Servicerapports", new { id = wochenrapportSpesenEintrag.WochenrapportFK });
             }
-            ViewBag.WochenrapportFK = new SelectList(db.Wochenrapport, "Id", "Anzeige", wochenrapportSpesenEintrag.WochenrapportFK);
+            List<Wochenrapport> wochenr = db.Wochenrapport.Where(c => c.Status == "Offen").ToList();
+            ViewBag.WochenrapportFK = new SelectList(wochenr, "Id", "Id");
             return View(wochenrapportSpesenEintrag);
         }
 

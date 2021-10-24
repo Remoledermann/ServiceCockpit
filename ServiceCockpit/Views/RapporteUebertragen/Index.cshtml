@@ -1,0 +1,196 @@
+﻿@using ServiceCockpit.Models
+@model ServiceCockpit.Models.ModelViewAlleRapporte
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading1">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                    <h3 class="active">Servicerapporte</h3>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading1">
+            <div class="panel-body">
+
+                <table id="AlleServicrapporte" class="display">
+                    <thead>
+                        <tr>
+                            <th>
+                                Ausführungsadresse
+                            </th>
+                            <th>
+                                Projekt Nr.
+                            </th>
+                            <th>
+                                Termin
+                            </th>
+                            <th>
+                                Rapport Nr.
+                            </th>
+                            <th>
+                                Voranmeldung Nr.
+                            </th>
+                            <th>
+                                Beschreibung
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>Aktion</th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.Servicerapports)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ausführungsadresse.Anzeigeadresse)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Projekt.Nummer)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KundenTerminZeit)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VoranmeldungNummer)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Beschreibung)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+
+                            <td>
+                                @Html.ActionLink("Übertragen", "Edit", "Servicerapports", new { id = item.Id }, null)
+                                @Html.ActionLink("Löschen", "Delete", "Servicerapports", new { id = item.Id }, null)
+                                @Html.ActionLink("Detais", "Details", "Servicerapports", new { id = item.Id }, null)
+                            </td>
+                        </tr>
+
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#AlleServicrapporte').DataTable({
+                "language": {
+                    "lengthMenu": "Zeige _MENU_ Einträge",
+                    "zeroRecords": "Keine Einträge vorhanden",
+                    "info": "Seite _PAGE_ von _PAGES_",
+                    "infoEmpty": "Keine Einträge Vorhanden",
+                    "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                    
+                }
+            });
+        });
+
+
+
+
+    </script>
+    <div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
+        <div class="panel-body">
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+        <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h3 class="active">Wochenrapporte</h3>
+            </a>
+        </h4>
+    </div>
+    <table class="display" id ="Wochenrapport">
+        <thead>
+        <tr>
+            <th>
+                Mitarbeiter
+            </th>
+            <th>
+                Kalenderwoche
+            </th>
+            <th>
+                Von
+            </th>
+            <th>
+                Bis
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Arbeitsstunden
+            </th>
+            <th>Aktion</th>
+        </tr>
+        </thead>
+
+        @foreach (var item in Model.Wochenrapports)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mitarbeiter.VollerName)
+                </td>
+                <td>
+                  KW.@Html.DisplayFor(modelItem => item.Kalenderwoche)
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDatum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StundenTotal)
+                </td>
+                <td>
+                    @Html.ActionLink("Bearbeiten", "Edit", "Wochenrapports", new { id = item.Id }, null)
+                    @Html.ActionLink("Löschen", "Delete", "Wochenrapports", new { id = item.Id }, null)
+
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+        <div class="panel-body">
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#Wochenrapport').DataTable({
+                "language": {
+                    "lengthMenu": "Zeige _MENU_ Einträge",
+                    "zeroRecords": "Keine Einträge vorhanden",
+                    "info": "Seite _PAGE_ von _PAGES_",
+                    "infoEmpty": "Keine Einträge Vorhanden",
+                    "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                }
+            });
+        });
+    </script>
+
+</div>

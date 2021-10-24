@@ -18,7 +18,7 @@
     var offeneRapport = new ModelViewServiceCockpit();
     ;
 
-    
+
     foreach (var rapport in Model.Servicerapports)
     {
         if (rapport.Status == "Offen")
@@ -27,15 +27,15 @@
         }
         else
         {
-            
+
         }
-        if(rapport.Status == "Bearbeiten")
+        if (rapport.Status == "Bearbeiten" || rapport.Status == "Übertragen")
         {
             BearbeitenRapporte.Servicerapports.Add(rapport);
         }
         else
         {
-            
+
         }
     }
 }
@@ -169,6 +169,8 @@
                         <th>
                             Verantwortlicher Mitarbeiter
                         </th>
+                        y<th>Status
+                            </th>
                         <th>Aktion</th>
                     </tr>
                     </thead>
@@ -199,6 +201,9 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Mitarbeiter.VollerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
                             </td>
 
                             <td>

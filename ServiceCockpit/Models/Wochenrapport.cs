@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,15 +12,15 @@ namespace ServiceCockpit.Models
     public class Wochenrapport
     {
         public int Id { get; set; }
-
+        [DisplayName("Kalenderwoche")]
         public string Kalenderwoche { get; set; }
-        
+        [DisplayName("Start-Datum")]
         public DateTime? StartDatum { get; set; }
-       
+        [DisplayName("End-Datum")]
         public DateTime? EndDate { get; set; }
         
         public string Status { get; set; }
-
+        [DisplayName("Stunden")]
         public decimal? StundenTotal { get; set; }
 
         public Mitarbeiter Mitarbeiter { get; set; }
@@ -35,7 +36,7 @@ namespace ServiceCockpit.Models
         public string Anzeige
         {
 
-            get { return Id + "  /  " + StartDatum.Value.ToString("M") + "  /  "+Kalenderwoche; }
+            get { return "Wochenrapport Nr."+ Id.ToString() + " /  "+"Kalenderwoche Nr." + Kalenderwoche ; }
         }
     }
 }

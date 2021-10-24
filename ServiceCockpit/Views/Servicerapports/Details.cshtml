@@ -11,44 +11,50 @@
     <h4>Servicerapport</h4>
     <hr />
     <dl class="dl-horizontal">
+
         <dt>
-            @Html.DisplayNameFor(model => model.Ausführungsadresse.Name)
+            Servicerapport Nr.
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Ausführungsadresse.Name)
+            @Html.DisplayFor(model => model.Id)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Eigentuemeradresse.Name)
+            Projekt Nr.
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Eigentuemeradresse.Name)
+            @Html.DisplayFor(model => model.Projekt.Nummer)
+        </dd>
+        <dt>
+            Ausführungsadresse
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ausführungsadresse.Anzeigeadresse)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Mitarbeiter.VorName)
+            Eigentümeradresse
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Mitarbeiter.VorName)
+            @Html.DisplayFor(model => model.Eigentuemeradresse.Anzeigeadresse)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.Projekt.Name)
+            Rechnungsadresse
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Projekt.Name)
+            @Html.DisplayFor(model => model.Rechnungsadresse.Anzeigeadresse)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.Rechnungsadresse.Name)
+            Mitarbeiter
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Rechnungsadresse.Name)
+            @Html.DisplayFor(model => model.Mitarbeiter.VollerName)
         </dd>
 
         <dt>
@@ -58,17 +64,8 @@
         <dd>
             @Html.DisplayFor(model => model.KundenTerminZeit)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.RapportAbgechlossenZeit)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RapportAbgechlossenZeit)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.VoranmeldungName)
+            Voranmeldung bei
         </dt>
 
         <dd>
@@ -76,11 +73,20 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.VoranmeldungNummer)
+            Telefon Nr.
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.VoranmeldungNummer)
+        <dt>
+            Abgeschlossen am
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RapportAbgechlossenZeit)
+        </dd>
+
+
         </dd>
 
         <dt>
@@ -116,7 +122,8 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.KostenZeit)
+            Kosten Arbeitszeit
+
         </dt>
 
         <dd>
@@ -142,6 +149,171 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Bearbeiten", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("zurück", "Index","RapporteUebertragen")
 </p>
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading2">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                    <h3 class="active">Servicerapport Zeiten</h3>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
+            <div class="panel-body">
+                <p>
+                    @Html.ActionLink("Create New", "Create", "ZeitKostens")
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Rapport Nr.
+                        </th>
+                        <th>
+                            Monteur
+                        </th>
+                        <th>
+                            Verrechnungsart
+                        </th>
+                        <th>
+                            Datum vor Ort
+                        </th>
+                        <th>
+                            Stunden vor Ort
+                        </th>
+                        <th>
+                            Stunden ink. Überzeit
+                        </th>
+                        <th>
+                            Kosten in CHF
+                        </th>
+                        <th></th>
+                    </tr>
+                    @if (Model.ZeitKosten != null)
+                    {
+                        foreach (var item in Model.ZeitKosten)
+                        {
+
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Servicerapport.Id)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Mitarbeiter.VollerName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Verrechnungsart.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Eintragsdatum)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AnzahlStunden)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AnzahlStundenTotal)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KostenTotal)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Bearbeiten", "Edit", "ZeitKostens", new { id = item.Id }, null)
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <th>Keine Daten Vorhanden</th>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading3">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                        <h3 class="active">Servicrapport Materialien</h3>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading3">
+                <div class="panel-body">
+                    <p>
+                        @Html.ActionLink("Create New", "Create", "MaterialKostens")
+                    </p>
+                    <table class="table">
+                        <tr>
+                            <th>
+                                Rapport Nr.
+                            </th>
+                            <th>
+                                Material
+                            </th>
+                            <th>
+                                EM-Nr.
+                            </th>
+                            <th>
+                                Menge
+                            </th>
+                            <th>
+                                Kosten in CHF
+                            </th>
+                            <th></th>
+                        </tr>
+                        @if (Model.MaterialKosten != null)
+                        {
+                            foreach (var item in Model.MaterialKosten)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Servicerapport.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Material.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Material.Nummer)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AnzahlMaterial)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.KostenTotal)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Bearbeiten", "Edit", "MaterialKostens", new { id = item.Id }, null)
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <th>Keine Daten Vorhanden</th>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+
+
+
+
+

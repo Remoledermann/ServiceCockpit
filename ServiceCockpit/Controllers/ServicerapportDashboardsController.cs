@@ -21,13 +21,13 @@ namespace ServiceCockpit.Controllers
 
             AddiereServicrapportDaten();
 
-            var servicerapport = db.Servicerapport.
+            servicrapporte.Servicerapports = db.Servicerapport.
                 Include(s => s.Ausführungsadresse).
                 Include(s => s.Eigentuemeradresse).
                 Include(s => s.Mitarbeiter).
                 Include(s => s.Projekt).
                 Include(s => s.Rechnungsadresse).ToList();
-            servicrapporte.Servicerapports = servicerapport;
+
             return View(servicrapporte);
         }
 
