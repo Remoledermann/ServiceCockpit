@@ -253,6 +253,10 @@
     <Compile Include="Migrations\202110222154229_DatetimeServicrapportEintragGeändert.Designer.cs">
       <DependentUpon>202110222154229_DatetimeServicrapportEintragGeändert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110242051537_SeedUsers.cs" />
+    <Compile Include="Migrations\202110242051537_SeedUsers.Designer.cs">
+      <DependentUpon>202110242051537_SeedUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Ausführungsadresse.cs" />
@@ -414,6 +418,12 @@
     <Content Include="Views\ZeitKostens\Edit.cshtml" />
     <Content Include="Views\ZeitKostens\Index.cshtml" />
     <Content Include="Views\RapporteUebertragen\Index.cshtml" />
+    <Content Include="Views\Wochenrapports\EditMitarbeiter.cshtml" />
+    <Content Include="Views\Servicerapports\EditMitarbeiter.cshtml" />
+    <Content Include="Views\Shared\_LoginPartialMitarbeiter.cshtml" />
+    <Content Include="Views\StammDaten\IndexMitarbeiter.cshtml" />
+    <Content Include="Views\ServicerapportDashboards\IndexMitarbeiter.cshtml" />
+    <Content Include="Views\RapporteUebertragen\IndexMitarbeiter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -467,6 +477,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110222154229_DatetimeServicrapportEintragGeändert.resx">
       <DependentUpon>202110222154229_DatetimeServicrapportEintragGeändert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110242051537_SeedUsers.resx">
+      <DependentUpon>202110242051537_SeedUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

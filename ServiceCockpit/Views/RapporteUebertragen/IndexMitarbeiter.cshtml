@@ -36,7 +36,7 @@
                                 Rapport Nr.
                             </th>
                             <th>
-                                Voranmeldung Bei
+                                Voranmeldung bei
                             </th>
                             <th>
                                 Kosten
@@ -77,8 +77,6 @@
                             </td>
 
                             <td>
-                                @Html.ActionLink("Übertragen", "Edit", "Servicerapports", new { id = item.Id }, null)
-                                @Html.ActionLink("Löschen", "Delete", "Servicerapports", new { id = item.Id }, null)
                                 @Html.ActionLink("Detais", "Details", "Servicerapports", new { id = item.Id }, null)
                             </td>
                         </tr>
@@ -167,8 +165,6 @@
                 </td>
                 <td>
                     @Html.ActionLink("Bearbeiten", "Edit", "Wochenrapports", new { id = item.Id }, null)
-                    @Html.ActionLink("Löschen", "Delete", "Wochenrapports", new { id = item.Id }, null)
-
                 </td>
             </tr>
         }

@@ -33,8 +33,18 @@ namespace ServiceCockpit.Controllers
                 {
                     VARIABLE.Mitarbeiter = db.Mitarbeiter.SingleOrDefault(s => s.Id == VARIABLE.MitarbeiterId);
                 }
+
+
+
+
+
+                if (User.IsInRole("CanManageAll"))
+                {
+                    return View("Index", alleRapporte);
+                }
+
+                return View("IndexMitarbeiter", alleRapporte);
            
-            return View(alleRapporte);
         }
     }
 }

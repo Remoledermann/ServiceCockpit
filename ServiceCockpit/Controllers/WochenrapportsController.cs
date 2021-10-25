@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Owin.Security;
+using Org.BouncyCastle.Math.Field;
 using ServiceCockpit.Models;
 
 namespace ServiceCockpit.Controllers
@@ -20,6 +21,7 @@ namespace ServiceCockpit.Controllers
         public ActionResult Index()
         {
             var wochenrapport = db.Wochenrapport.Include(w => w.Mitarbeiter);
+
             return View(wochenrapport.ToList());
         }
 
@@ -154,7 +156,14 @@ namespace ServiceCockpit.Controllers
             wrapport.StundenTotal = liststunden.Sum();
             db.SaveChanges();
 
-            return View(wrapport);
+            
+
+            if (User.IsInRole("CanManageAll"))
+            {
+                return View("Edit", wrapport);
+            }
+
+            return View("EditMitarbeiter", wrapport);
         }
 
         // POST: Wochenrapports/Edit/5
@@ -209,7 +218,13 @@ namespace ServiceCockpit.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+
+          
             Wochenrapport wochenrapport = db.Wochenrapport.Find(id);
+            if (wochenrapport.WochenrapportZeitEintrag == null || wochenrapport.WochenrapportSpesenEintrag == null)
+            {
+                return RedirectToAction("Index", "WochenrapportDashboards");
+            }
             db.Wochenrapport.Remove(wochenrapport);
             db.SaveChanges();
             return RedirectToAction("Index", "WochenrapportDashboards");

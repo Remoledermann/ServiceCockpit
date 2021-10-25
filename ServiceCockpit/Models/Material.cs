@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -14,5 +15,11 @@ namespace ServiceCockpit.Models
         public string Nummer { get; set; }
 
         public decimal? KostenProMaterial { get; set; }
+
+        [NotMapped]
+        public string NameUndNummer
+        {
+            get { return Name + " " + Nummer; }
+        }
     }
 }

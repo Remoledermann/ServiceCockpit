@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+#Loadtable {
+    margin: 0 auto;
+    clear: both;
+    width: 100%;
+    table-layout: fixed;
+}

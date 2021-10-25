@@ -5,722 +5,739 @@
 }
 
 <h2>Stammdaten erfassen</h2>
-
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
+        <div class="panel-heading" role="tab" id="11">
             <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <h3 class="active">Organisation</h3>
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse11" aria-expanded="true" aria-controls="collapse11">
+                    <h3 class="active">Neuer Account</h3>
                 </a>
             </h4>
         </div>
-        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+        <div id="collapse111" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="11">
             <div class="panel-body">
                 <h3>
-                    @Html.ActionLink("Neue Organisation hinzufügen", "Create", "Organisations", new { IsFromOrganisations = false }, null)
+                    <li>@Html.ActionLink("Registrieren", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
                 </h3>
-                <table class="display" id="Organisation">
-
-                    <thead>
-                        <tr>
-
-                            <th>
-                                Firmen Name
-                            </th>
-                            <th>
-                                Rapportierte Stunden in CHF
-                            </th>
-                            <th>
-                                Rapportierte Material in CHF
-                            </th>
-                            <th>
-                                Umsatz in CHF
-                            </th>
-                            <th>
-                                Status
-                            </th>
-
-                            <th>Aktionen</th>
-                        </tr>
-                    </thead>
-                    @foreach (var item in Model.Organisation)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.KostenZeit)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.KostenMaterial)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.KostenTotal)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-
-                            <td>
-                                @Html.ActionLink("Bearbeiten", "Edit", "Organisations", new { id = item.Id }, null) 
-                                @Html.ActionLink("Löschen", "Delete", "Organisations", new { id = item.Id }, null)
-                            </td>
-                        </tr>
-                    }
-
-                </table>
+          
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function() {
-            $('#Organisation').DataTable( {
-                "language": {
-                    "lengthMenu": "Zeige _MENU_ Einträge",
-                    "zeroRecords": "Keine Einträge vorhanden",
-                    "info": "Seite _PAGE_ von _PAGES_",
-                    "infoEmpty": "Keine Einträge Vorhanden",
-                    "infoFiltered": "(Gesucht von _MAX_ Einträge)"
-                }
-            } );
-        } );
-    </script>
 
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingTwo">
-            <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    <h3 class="active">Projekt</h3>
-                </a>
-            </h4>
-        </div>
-        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-            <div class="panel-body">
-                <h3>
-                    @Html.ActionLink("Neues Projekt hinzufügen", "Create", "Projekts", new { IsFromProjekts = false }, null)
-                </h3>
-                <table class="display" id="Projekt">
-                    <thead>
-                        <tr>
-                            <th>
-                                Projektleiter
-                            </th>
-                            <th>
-                                Organisation
-                            </th>
-                            <th>
-                                Projektname
-                            </th>
-                            <th>
-                                Projektnummer
-                            </th>
-                            <th>
-                                Rapportierte Stunden in CHF
-                            </th>
-                            <th>
-                                Rapportierte Material in CHF
-                            </th>
-                            <th>
-                                Umsatz in CHF
-                            </th>
-                            <th>Aktionen</th>
-                        </tr>
-                    </thead>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <h3 class="active">Organisation</h3>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <h3>
+                        @Html.ActionLink("Neue Organisation hinzufügen", "Create", "Organisations", new { IsFromOrganisations = false }, null)
+                    </h3>
+                    <table class="display" id="Organisation">
 
-                    @foreach (var item in Model.Projekt)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Mitarbeiter.VollerName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Organisation.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Nummer)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.KostenZeit)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.KostenMaterial)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.KostenTotal)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Bearbeiten", "Edit", "Projekts", new {id = item.Id}, null) 
-                                @Html.ActionLink("Löschen", "Delete", "Projekts", new {id = item.Id}, null)
-                            </td>
-                        </tr>
-                    }
+                        <thead>
+                            <tr>
 
-                </table>
+                                <th>
+                                    Firmen Name
+                                </th>
+                                <th>
+                                    Rapportierte Stunden in CHF
+                                </th>
+                                <th>
+                                    Rapportierte Material in CHF
+                                </th>
+                                <th>
+                                    Umsatz in CHF
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model.Organisation)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KostenZeit)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KostenMaterial)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KostenTotal)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+
+                                <td>
+                                    @Html.ActionLink("Bearbeiten", "Edit", "Organisations", new { id = item.Id }, null)
+                                    @Html.ActionLink("Löschen", "Delete", "Organisations", new { id = item.Id }, null)
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <script>
-        $(document).ready(function () {
-            $('#Projekt').DataTable({
-                "language": {
-                    "lengthMenu": "Zeige _MENU_ Einträge",
-                    "zeroRecords": "Keine Einträge vorhanden",
-                    "info": "Seite _PAGE_ von _PAGES_",
-                    "infoEmpty": "Keine Einträge Vorhanden",
-                    "infoFiltered": "(Gesucht von _MAX_ Einträge)"
-                }
+        <script>
+            $(document).ready(function () {
+                $('#Organisation').DataTable({
+                    "language": {
+                        "lengthMenu": "Zeige _MENU_ Einträge",
+                        "zeroRecords": "Keine Einträge vorhanden",
+                        "info": "Seite _PAGE_ von _PAGES_",
+                        "infoEmpty": "Keine Einträge Vorhanden",
+                        "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                    }
+                });
             });
-        });
-    </script>
+        </script>
 
-<div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingThree">
-        <h4 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                <h3 class="active">Mitarbeiter</h3>
-            </a>
-        </h4>
-    </div>
-    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-        <div class="panel-body">
-            <h3>
-                @Html.ActionLink("Neuer Mitarbeiter hinzufügen", "Create", "Mitarbeiters")
-            </h3>
-            <table class="display" id="Mitarbeiter">
-                <thead>
-                    <tr>
-                        <th>
-                            Vorname
-                        </th>
-                        <th>
-                            Nachname
-                        </th>
-                        <th>
-                            Telefon Geschäft
-                        </th>
-                        <th>
-                            Telefon Privat
-                        </th>
-                        <th>
-                            Kürzel
-                        </th>
-                        <th>
-                            GFE Nummer
-                        </th>
-                        <th>
-                            Email
-                        </th>
-                        <th>Aktionen</th>
-                    </tr>
-                </thead>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <h3 class="active">Projekt</h3>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                    <h3>
+                        @Html.ActionLink("Neues Projekt hinzufügen", "Create", "Projekts", new { IsFromProjekts = false }, null)
+                    </h3>
+                    <table class="display" id="Projekt">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Projektleiter
+                                </th>
+                                <th>
+                                    Organisation
+                                </th>
+                                <th>
+                                    Projektname
+                                </th>
+                                <th>
+                                    Projektnummer
+                                </th>
+                                <th>
+                                    Rapportierte Stunden in CHF
+                                </th>
+                                <th>
+                                    Rapportierte Material in CHF
+                                </th>
+                                <th>
+                                    Umsatz in CHF
+                                </th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
 
-                @foreach (var item in Model.Mitarbeiter)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.VorName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NachName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TelefonGeschäft)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TelefonPrivat)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Kürzel)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.GfeNummer)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Bearbeiten", "Edit", "Mitarbeiters", new {id = item.Id}, null) 
-                            @Html.ActionLink("Löschen", "Delete", "Mitarbeiters", new {id = item.Id}, null)
-                        </td>
-                    </tr>
-                }
+                        @foreach (var item in Model.Projekt)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Mitarbeiter.VollerName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Organisation.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nummer)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KostenZeit)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KostenMaterial)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KostenTotal)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Bearbeiten", "Edit", "Projekts", new { id = item.Id }, null)
+                                    @Html.ActionLink("Löschen", "Delete", "Projekts", new { id = item.Id }, null)
+                                </td>
+                            </tr>
+                        }
 
-            </table>
-        </div>
-    </div>
-</div>
-<script>
-    $(document).ready(function () {
-        $('#Mitarbeiter').DataTable({
-            "language": {
-                "lengthMenu": "Zeige _MENU_ Einträge",
-                "zeroRecords": "Keine Einträge vorhanden",
-                "info": "Seite _PAGE_ von _PAGES_",
-                "infoEmpty": "Keine Einträge Vorhanden",
-                "infoFiltered": "(Gesucht von _MAX_ Einträge)"
-            }
-        });
-    });
-</script>
-<div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="heading4">
-        <h4 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="false" aria-controls="collapseThree">
-                <h3 class="active">Material</h3>
-            </a>
-        </h4>
-    </div>
-    <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
-        <div class="panel-body">
-            <h3>
-                @Html.ActionLink("Neues Material hinzufügen", "Create", "Materials")
-            </h3>
-            <table class="display" id="Material">
-                <thead>
-                    <tr>
-                        <th>
-                            Beschreibung
-                        </th>
-                        <th>
-                            EM-Nr.
-                        </th>
-                        <th>
-                            Kosten in CHF
-                        </th>
-                        <th>Aktionen</th>
-                    </tr>
-                </thead>
-
-                @foreach (var item in Model.Material)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nummer)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.KostenProMaterial)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Bearbeiten", "Edit", "Materials", new {id = item.Id}, null)
-                            @Html.ActionLink("Löschen", "Delete", "Materials", new {id = item.Id}, null)
-                        </td>
-                    </tr>
-                }
-
-            </table>
-        </div>
-    </div>
-</div>
-<script>
-    $(document).ready(function () {
-        $('#Material').DataTable({
-            "language": {
-                "lengthMenu": "Zeige _MENU_ Einträge",
-                "zeroRecords": "Keine Einträge vorhanden",
-                "info": "Seite _PAGE_ von _PAGES_",
-                "infoEmpty": "Keine Einträge Vorhanden",
-                "infoFiltered": "(Gesucht von _MAX_ Einträge)"
-            }
-        });
-    });
-</script>
-<div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="heading5">
-        <h4 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="false" aria-controls="collapse5">
-                <h3 class="active">Verrechnungsarten</h3>
-            </a>
-        </h4>
-    </div>
-    <div id="collapse5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading5">
-        <div class="panel-body">
-            <h3>
-                @Html.ActionLink("Neue Verrechnungsart hinzufügen", "Create", "Verrechnungsarts")
-            </h3>
-            <table class="display" id="Verrechnungsarten">
-                <thead>
-                    <tr>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Nummer
-                        </th>
-                        <th>
-                            Kosten Pro Stunde in CHF
-                        </th>
-                        <th>Aktionen</th>
-                    </tr>
-                </thead>
-
-                @foreach (var item in Model.Verrechnungsart)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nummer)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.KostenProStunde)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Bearbeiten", "Edit", "Verrechnungsarts", new {id = item.Id}, null) 
-                            @Html.ActionLink("Löschen", "Delete", "Verrechnungsarts", new {id = item.Id}, null)
-                        </td>
-                    </tr>
-                }
-
-            </table>
-        </div>
-    </div>
-</div>
-<script>
-    $(document).ready(function () {
-        $('#Verrechnungsarten').DataTable({
-            "language": {
-                "lengthMenu": "Zeige _MENU_ Einträge",
-                "zeroRecords": "Keine Einträge vorhanden",
-                "info": "Seite _PAGE_ von _PAGES_",
-                "infoEmpty": "Keine Einträge Vorhanden",
-                "infoFiltered": "(Gesucht von _MAX_ Einträge)"
-            }
-        });
-    });
-</script>
-
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading8>
-            <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse8" aria-expanded="false" aria-controls="collapse8">
-                    <h3 class="active">Überzeitfacktor</h3>
-                </a>
-            </h4>
-        </div>
-        <div id="collapse8" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading8">
-            <div class="panel-body">
-                <h3>
-                    @Html.ActionLink("Neuer Überzeitfaktor hinzufügen", "Create", "ZeitKostenUeberzeitFaktors")
-                </h3>
-                <table class="display" id="Überzeitfaktoren">
-                    <thead>
-                        <tr>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Faktor
-                            </th>
-                            <th>Aktionen</th>
-                        </tr>
-                    </thead>
-
-                    @foreach (var item in Model.ZeitKostenUeberzeitFaktor)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Faktor)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Bearbeiten", "Edit", "ZeitKostenUeberzeitFaktors", new {id = item.Id}, null) 
-                                @Html.ActionLink("Löschen", "Delete", "ZeitKostenUeberzeitFaktors", new {id = item.Id}, null)
-                            </td>
-                        </tr>
-                    }
-
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <script>
-        $(document).ready(function () {
-            $('#Überzeitfaktoren').DataTable({
-                "language": {
-                    "lengthMenu": "Zeige _MENU_ Einträge",
-                    "zeroRecords": "Keine Einträge vorhanden",
-                    "info": "Seite _PAGE_ von _PAGES_",
-                    "infoEmpty": "Keine Einträge Vorhanden",
-                    "infoFiltered": "(Gesucht von _MAX_ Einträge)"
-                }
+        <script>
+            $(document).ready(function () {
+                $('#Projekt').DataTable({
+                    "language": {
+                        "lengthMenu": "Zeige _MENU_ Einträge",
+                        "zeroRecords": "Keine Einträge vorhanden",
+                        "info": "Seite _PAGE_ von _PAGES_",
+                        "infoEmpty": "Keine Einträge Vorhanden",
+                        "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                    }
+                });
             });
-        });
-    </script>
+        </script>
 
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading9>
-            <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse9" aria-expanded="false" aria-controls="collapse9">
-                    <h3 class="active">Adressen</h3>
-                </a>
-            </h4>
-        </div>
-        <div id="collapse9" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading9">
-            <div class="panel-body">
-                <h2>
-                @Html.ActionLink("Neue Adressen hinzufügen", "Create", "StammDaten")
-                </h2>
-                
-            <h1>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <h3 class="active">Mitarbeiter</h3>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                    <h3>
+                        @Html.ActionLink("Neuer Mitarbeiter hinzufügen", "Create", "Mitarbeiters")
+                    </h3>
+                    <table class="display" id="Mitarbeiter">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Vorname
+                                </th>
+                                <th>
+                                    Nachname
+                                </th>
+                                <th>
+                                    Telefon Geschäft
+                                </th>
+                                <th>
+                                    Telefon Privat
+                                </th>
+                                <th>
+                                    Kürzel
+                                </th>
+                                <th>
+                                    GFE Nummer
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
 
-            </h1>
-                <h3>
-                    @Html.ActionLink("Neue Ausführungsadresse hinzufügen", "Create", "Ausführungsadresses")
-                </h3>
-                <table class="display" id="Ausführungsadressen">
-                    <thead>
-                        <tr>
-                           
-                            <th>
-                                Vorname
-                            </th>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Strasse
-                            </th>
-                            <th>
-                                Plz
-                            </th>
-                            <th>
-                                Ort
-                            </th>
-                            <th>
-                                Telefon Geschäft
-                            </th>
-                            <th>
-                                Telefon Privat
-                            </th>
-                            <th>Aktionen</th>
-                        </tr>
-                    </thead>
-
-                    @foreach (var itemAusführungsadresses in Model.Ausführungsadresse)
-                    {
-                        <tr>
-                           
-                            <td>
-                                @Html.DisplayFor(modelItem => itemAusführungsadresses.Vornamne)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => itemAusführungsadresses.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => itemAusführungsadresses.Strasse)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => itemAusführungsadresses.Plz)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => itemAusführungsadresses.Ort)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => itemAusführungsadresses.TelefonGeschäft)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => itemAusführungsadresses.TelefonPrivat)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Bearbeiten", "Edit", "Ausführungsadresses", new { id = itemAusführungsadresses.Id }, null)
-                                @Html.ActionLink("Löschen", "Delete", "Ausführungsadresses", new { id = itemAusführungsadresses.Id }, null)
-                            </td>
-                        </tr>
-                    }
-
-                </table>
-            <script>
-                $(document).ready(function () {
-                    $('#Ausführungsadressen').DataTable({
-                        "language": {
-                            "lengthMenu": "Zeige _MENU_ Einträge",
-                            "zeroRecords": "Keine Einträge vorhanden",
-                            "info": "Seite _PAGE_ von _PAGES_",
-                            "infoEmpty": "Keine Einträge Vorhanden",
-                            "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                        @foreach (var item in Model.Mitarbeiter)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.VorName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NachName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TelefonGeschäft)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TelefonPrivat)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Kürzel)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GfeNummer)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Bearbeiten", "Edit", "Mitarbeiters", new { id = item.Id }, null)
+                                    @Html.ActionLink("Löschen", "Delete", "Mitarbeiters", new { id = item.Id }, null)
+                                </td>
+                            </tr>
                         }
-                    });
-                });
-            </script>
 
-                
-
-                <h3>
-                    @Html.ActionLink("Neue Eigentümeradresse hinzufügen", "Create", "Eigentuemeradresses")
-                </h3>
-            <table class="display" id="Eigentümeradressen">
-                <thead>
-                    <tr>
-                       
-                        <th>
-                            Vorname
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Strasse
-                        </th>
-                        <th>
-                            Plz
-                        </th>
-                        <th>
-                            Ort
-                        </th>
-                        <th>
-                            Telefon Geschäft
-                        </th>
-                        <th>
-                            Telefon Privat
-                        </th>
-                        <th>Aktionen</th>
-                    </tr>
-                </thead>
-
-                @foreach (var itemEigentuemeradress in Model.Eigentuemeradresse)
-                {
-                    <tr>
-                       
-                        <td>
-                            @Html.DisplayFor(modelItem => itemEigentuemeradress.Vornamne)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemEigentuemeradress.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemEigentuemeradress.Strasse)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemEigentuemeradress.Plz)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemEigentuemeradress.Ort)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemEigentuemeradress.TelefonGeschäft)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemEigentuemeradress.TelefonPrivat)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Bearbeiten", "Edit", "Eigentuemeradresses", new {id = itemEigentuemeradress.Id}, null)
-                            @Html.ActionLink("Löschen", "Delete", "Eigentuemeradresses", new {id = itemEigentuemeradress.Id}, null)
-                        </td>
-                    </tr>
-                }
-
-            </table>
-            <script>
-                $(document).ready(function () {
-                    $('#Eigentümeradressen').DataTable({
-                        "language": {
-                            "lengthMenu": "Zeige _MENU_ Einträge",
-                            "zeroRecords": "Keine Einträge vorhanden",
-                            "info": "Seite _PAGE_ von _PAGES_",
-                            "infoEmpty": "Keine Einträge Vorhanden",
-                            "infoFiltered": "(Gesucht von _MAX_ Einträge)"
-                        }
-                    });
-                });
-            </script>
-                
-                
-
-            <h3>
-                @Html.ActionLink("Neue Rechnungsadresse hinzufügen", "Create", "Rechnungsadresses")
-            </h3>
-
-            <table class="display" id="Rechnungsadressen">
-                <thead>
-                    <tr>
-                      
-                        <th>
-                            Vorname
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Strasse
-                        </th>
-                        <th>
-                            Plz
-                        </th>
-                        <th>
-                            Ort
-                        </th>
-                        <th>
-                            Telefon Geschäft
-                        </th>
-                        <th>
-                            Telefon Privat
-                        </th>
-                        <th>Aktionen</th>
-                    </tr>
-                </thead>
-
-                @foreach (var itemRechnungsadresse in Model.Rechnungsadresse)
-                {
-                    <tr>
-                       
-                        <td>
-                            @Html.DisplayFor(modelItem => itemRechnungsadresse.Vornamne)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemRechnungsadresse.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemRechnungsadresse.Strasse)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemRechnungsadresse.Plz)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemRechnungsadresse.Ort)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemRechnungsadresse.TelefonGeschäft)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => itemRechnungsadresse.TelefonPrivat)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Bearbeiten", "Edit", "Rechnungsadresses", new {id = itemRechnungsadresse.Id}, null) 
-                            @Html.ActionLink("Löschen", "Delete", "Rechnungsadresses", new {id = itemRechnungsadresse.Id}, null)
-                        </td>
-                    </tr>
-                }
-
-            </table>
-            <script>
-                $(document).ready(function () {
-                    $('#Rechnungsadressen').DataTable({
-                        "language": {
-                            "lengthMenu": "Zeige _MENU_ Einträge",
-                            "zeroRecords": "Keine Einträge vorhanden",
-                            "info": "Seite _PAGE_ von _PAGES_",
-                            "infoEmpty": "Keine Einträge Vorhanden",
-                            "infoFiltered": "(Gesucht von _MAX_ Einträge)"
-                        }
-                    });
-                });
-            </script>
+                    </table>
+                </div>
             </div>
         </div>
+        <script>
+            $(document).ready(function () {
+                $('#Mitarbeiter').DataTable({
+                    "language": {
+                        "lengthMenu": "Zeige _MENU_ Einträge",
+                        "zeroRecords": "Keine Einträge vorhanden",
+                        "info": "Seite _PAGE_ von _PAGES_",
+                        "infoEmpty": "Keine Einträge Vorhanden",
+                        "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                    }
+                });
+            });
+        </script>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading4">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="false" aria-controls="collapseThree">
+                        <h3 class="active">Material</h3>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+                <div class="panel-body">
+                    <h3>
+                        @Html.ActionLink("Neues Material hinzufügen", "Create", "Materials")
+                    </h3>
+                    <table class="display" id="Material">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Beschreibung
+                                </th>
+                                <th>
+                                    EM-Nr.
+                                </th>
+                                <th>
+                                    Kosten in CHF
+                                </th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
 
+                        @foreach (var item in Model.Material)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nummer)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KostenProMaterial)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Bearbeiten", "Edit", "Materials", new { id = item.Id }, null)
+                                    @Html.ActionLink("Löschen", "Delete", "Materials", new { id = item.Id }, null)
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#Material').DataTable({
+                    "language": {
+                        "lengthMenu": "Zeige _MENU_ Einträge",
+                        "zeroRecords": "Keine Einträge vorhanden",
+                        "info": "Seite _PAGE_ von _PAGES_",
+                        "infoEmpty": "Keine Einträge Vorhanden",
+                        "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                    }
+                });
+            });
+        </script>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading5">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                        <h3 class="active">Verrechnungsarten</h3>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading5">
+                <div class="panel-body">
+                    <h3>
+                        @Html.ActionLink("Neue Verrechnungsart hinzufügen", "Create", "Verrechnungsarts")
+                    </h3>
+                    <table class="display" id="Verrechnungsarten">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Nummer
+                                </th>
+                                <th>
+                                    Kosten Pro Stunde in CHF
+                                </th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+
+                        @foreach (var item in Model.Verrechnungsart)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nummer)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KostenProStunde)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Bearbeiten", "Edit", "Verrechnungsarts", new { id = item.Id }, null)
+                                    @Html.ActionLink("Löschen", "Delete", "Verrechnungsarts", new { id = item.Id }, null)
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#Verrechnungsarten').DataTable({
+                    "language": {
+                        "lengthMenu": "Zeige _MENU_ Einträge",
+                        "zeroRecords": "Keine Einträge vorhanden",
+                        "info": "Seite _PAGE_ von _PAGES_",
+                        "infoEmpty": "Keine Einträge Vorhanden",
+                        "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                    }
+                });
+            });
+        </script>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading8>
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                        <h3 class="active">Überzeitfacktor</h3>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse8" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading8">
+                <div class="panel-body">
+                    <h3>
+                        @Html.ActionLink("Neuer Überzeitfaktor hinzufügen", "Create", "ZeitKostenUeberzeitFaktors")
+                    </h3>
+                    <table class="display" id="Überzeitfaktoren">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Faktor
+                                </th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+
+                        @foreach (var item in Model.ZeitKostenUeberzeitFaktor)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Faktor)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Bearbeiten", "Edit", "ZeitKostenUeberzeitFaktors", new { id = item.Id }, null)
+                                    @Html.ActionLink("Löschen", "Delete", "ZeitKostenUeberzeitFaktors", new { id = item.Id }, null)
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#Überzeitfaktoren').DataTable({
+                    "language": {
+                        "lengthMenu": "Zeige _MENU_ Einträge",
+                        "zeroRecords": "Keine Einträge vorhanden",
+                        "info": "Seite _PAGE_ von _PAGES_",
+                        "infoEmpty": "Keine Einträge Vorhanden",
+                        "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                    }
+                });
+            });
+        </script>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading9>
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                        <h3 class="active">Adressen</h3>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse9" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading9">
+                <div class="panel-body">
+                    <h2>
+                        @Html.ActionLink("Neue Adressen hinzufügen", "Create", "StammDaten")
+                    </h2>
+
+                    <h1>
+                    </h1>
+                    <h3>
+                        @Html.ActionLink("Neue Ausführungsadresse hinzufügen", "Create", "Ausführungsadresses")
+                    </h3>
+                    <table class="display" id="Ausführungsadressen">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    Vorname
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Strasse
+                                </th>
+                                <th>
+                                    Plz
+                                </th>
+                                <th>
+                                    Ort
+                                </th>
+                                <th>
+                                    Telefon Geschäft
+                                </th>
+                                <th>
+                                    Telefon Privat
+                                </th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+
+                        @foreach (var itemAusführungsadresses in Model.Ausführungsadresse)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemAusführungsadresses.Vornamne)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemAusführungsadresses.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemAusführungsadresses.Strasse)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemAusführungsadresses.Plz)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemAusführungsadresses.Ort)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemAusführungsadresses.TelefonGeschäft)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemAusführungsadresses.TelefonPrivat)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Bearbeiten", "Edit", "Ausführungsadresses", new { id = itemAusführungsadresses.Id }, null)
+                                    @Html.ActionLink("Löschen", "Delete", "Ausführungsadresses", new { id = itemAusführungsadresses.Id }, null)
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                    <script>
+                        $(document).ready(function () {
+                            $('#Ausführungsadressen').DataTable({
+                                "language": {
+                                    "lengthMenu": "Zeige _MENU_ Einträge",
+                                    "zeroRecords": "Keine Einträge vorhanden",
+                                    "info": "Seite _PAGE_ von _PAGES_",
+                                    "infoEmpty": "Keine Einträge Vorhanden",
+                                    "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                                }
+                            });
+                        });
+                    </script>
+
+
+
+                    <h3>
+                        @Html.ActionLink("Neue Eigentümeradresse hinzufügen", "Create", "Eigentuemeradresses")
+                    </h3>
+                    <table class="display" id="Eigentümeradressen">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    Vorname
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Strasse
+                                </th>
+                                <th>
+                                    Plz
+                                </th>
+                                <th>
+                                    Ort
+                                </th>
+                                <th>
+                                    Telefon Geschäft
+                                </th>
+                                <th>
+                                    Telefon Privat
+                                </th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+
+                        @foreach (var itemEigentuemeradress in Model.Eigentuemeradresse)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemEigentuemeradress.Vornamne)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemEigentuemeradress.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemEigentuemeradress.Strasse)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemEigentuemeradress.Plz)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemEigentuemeradress.Ort)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemEigentuemeradress.TelefonGeschäft)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemEigentuemeradress.TelefonPrivat)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Bearbeiten", "Edit", "Eigentuemeradresses", new { id = itemEigentuemeradress.Id }, null)
+                                    @Html.ActionLink("Löschen", "Delete", "Eigentuemeradresses", new { id = itemEigentuemeradress.Id }, null)
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                    <script>
+                        $(document).ready(function () {
+                            $('#Eigentümeradressen').DataTable({
+                                "language": {
+                                    "lengthMenu": "Zeige _MENU_ Einträge",
+                                    "zeroRecords": "Keine Einträge vorhanden",
+                                    "info": "Seite _PAGE_ von _PAGES_",
+                                    "infoEmpty": "Keine Einträge Vorhanden",
+                                    "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                                }
+                            });
+                        });
+                    </script>
+
+
+
+                    <h3>
+                        @Html.ActionLink("Neue Rechnungsadresse hinzufügen", "Create", "Rechnungsadresses")
+                    </h3>
+
+                    <table class="display" id="Rechnungsadressen">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    Vorname
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Strasse
+                                </th>
+                                <th>
+                                    Plz
+                                </th>
+                                <th>
+                                    Ort
+                                </th>
+                                <th>
+                                    Telefon Geschäft
+                                </th>
+                                <th>
+                                    Telefon Privat
+                                </th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+
+                        @foreach (var itemRechnungsadresse in Model.Rechnungsadresse)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemRechnungsadresse.Vornamne)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemRechnungsadresse.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemRechnungsadresse.Strasse)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemRechnungsadresse.Plz)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemRechnungsadresse.Ort)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemRechnungsadresse.TelefonGeschäft)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => itemRechnungsadresse.TelefonPrivat)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Bearbeiten", "Edit", "Rechnungsadresses", new { id = itemRechnungsadresse.Id }, null)
+                                    @Html.ActionLink("Löschen", "Delete", "Rechnungsadresses", new { id = itemRechnungsadresse.Id }, null)
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                    <script>
+                        $(document).ready(function () {
+                            $('#Rechnungsadressen').DataTable({
+                                "language": {
+                                    "lengthMenu": "Zeige _MENU_ Einträge",
+                                    "zeroRecords": "Keine Einträge vorhanden",
+                                    "info": "Seite _PAGE_ von _PAGES_",
+                                    "infoEmpty": "Keine Einträge Vorhanden",
+                                    "infoFiltered": "(Gesucht von _MAX_ Einträge)"
+                                }
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+
+        </div>
     </div>
-</div>
 
 
 

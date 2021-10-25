@@ -30,9 +30,14 @@ namespace ServiceCockpit.Controllers
             stammdaten.Ausführungsadresse = db.Ausführungsadresse.ToList();
             stammdaten.Rechnungsadresse = db.Rechnungsadresse.ToList();
             stammdaten.Eigentuemeradresse = db.Eigentuemeradresse.ToList();
-            
 
-            return View(stammdaten);
+
+            if (User.IsInRole("CanManageAll"))
+            {
+                return View("Index", stammdaten);
+            }
+
+            return View("IndexMitarbeiter", stammdaten);
         }
 
 

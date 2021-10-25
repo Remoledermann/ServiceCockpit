@@ -30,7 +30,18 @@
                     <li>@Html.ActionLink("Wochen Dashboard", "Index", "WochenrapportDashboards")</li>
                     <li>@Html.ActionLink("Rapporte übertragen", "Index", "RapporteUebertragen")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
+                @{
+                    if (User.IsInRole("CanManageAll"))
+                    {
+                        @Html.Partial("_LoginPartial")
+                    }
+                    else
+                    {
+                        @Html.Partial("_LoginPartialMitarbeiter")
+                    }
+                   
+                }
+
             </div>
         </div>
     </div>

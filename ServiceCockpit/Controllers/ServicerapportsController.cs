@@ -25,6 +25,10 @@ namespace ServiceCockpit.Controllers
         // GET: Servicerapports
         public ActionResult Index()
         {
+
+            
+
+
             var servicerapport = db.Servicerapport.Include(s => s.Ausführungsadresse).Include(s => s.Eigentuemeradresse)
                 .Include(s => s.Mitarbeiter).Include(s => s.Projekt).Include(s => s.Rechnungsadresse);
 
@@ -39,7 +43,8 @@ namespace ServiceCockpit.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Servicerapport servicerapport = db.Servicerapport.Include(s => s.Mitarbeiter).Include(s => s.Rechnungsadresse).Include(s => s.Eigentuemeradresse)
+            Servicerapport servicerapport = db.Servicerapport.Include(s => s.Mitarbeiter)
+                .Include(s => s.Rechnungsadresse).Include(s => s.Eigentuemeradresse)
                 .Include(s => s.Ausführungsadresse).Include(s => s.Rechnungsadresse).Include(s => s.Projekt)
                 .Include(s => s.ZeitKosten).Include(s => s.MaterialKosten).SingleOrDefault(s => s.Id == id);
 
@@ -95,7 +100,7 @@ namespace ServiceCockpit.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
             Servicerapport servicerapport = db.Servicerapport.Find(id);
             if (servicerapport == null)
             {
@@ -111,6 +116,7 @@ namespace ServiceCockpit.Controllers
             ViewBag.RechnungsadresseId = new SelectList(db.Rechnungsadresse, "Id", "Anzeigeadresse",
                 servicerapport.RechnungsadresseId);
 
+
             var zeitKosten = db.ZeitKosten.Include(z => z.Mitarbeiter).Include(z => z.Servicerapport)
                 .Include(z => z.Verrechnungsart).Include(z => z.ZeitKostenUeberzeitFaktor)
                 .Where(z => z.ServicerapportFK == id);
@@ -120,7 +126,49 @@ namespace ServiceCockpit.Controllers
                 .Where(z => z.ServicerapportFK == id);
             servicerapport.MaterialKosten = materialKosten.ToList();
 
-            return View(servicerapport);
+            // Additon kosten
+            List<decimal> listAnzahlStunden = new List<decimal>();
+            foreach (var VARIABLE in servicerapport.ZeitKosten)
+            {
+                if (VARIABLE.KostenTotal == null)
+                {
+
+                }
+                else
+                {
+                    listAnzahlStunden.Add(VARIABLE.KostenTotal.Value);
+                }
+
+            }
+
+            servicerapport.KostenZeit = listAnzahlStunden.Sum();
+           
+            List<decimal> listAnzahlMaterial = new List<decimal>();
+            foreach (var VARIABLE in servicerapport.MaterialKosten)
+            {
+                if (VARIABLE.KostenTotal == null)
+                {
+
+                }
+                else
+                {
+                    listAnzahlMaterial.Add(VARIABLE.KostenTotal.Value);
+                }
+            }
+
+            servicerapport.KostenMaterial = listAnzahlMaterial.Sum();
+            servicerapport.KostenTotal = servicerapport.KostenMaterial + servicerapport.KostenZeit;
+
+
+
+
+
+            if (User.IsInRole("CanManageAll"))
+            {
+                return View("Edit", servicerapport);
+            }
+
+            return View("EditMitarbeiter", servicerapport);
         }
 
         // POST: Servicerapports/Edit/5
@@ -130,28 +178,33 @@ namespace ServiceCockpit.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(
             [Bind(Include =
-                "Id,KundenTerminZeit,RapportAbgechlossenZeit,VoranmeldungName,VoranmeldungNummer,Status,Beschreibung,EmailAdresse,Unterschrift,KostenZeit,KostenMaterial,KostenTotal,EigentuemeradresseId,AusführungsadresseId,RechnungsadresseId,MitarbeiterId,ProjektFK")]
+                "Id,KundenTerminZeit,RapportAbgechlossenZeit,VoranmeldungName,VoranmeldungNummer,Beschreibung,EmailAdresse,Unterschrift,KostenZeit,KostenMaterial,KostenTotal,EigentuemeradresseId,AusführungsadresseId,RechnungsadresseId,MitarbeiterId,ProjektFK,Status")]
             Servicerapport servicerapport, string rapportSpeichern, string mailSenden, string übertragen)
         {
+            
 
             if (mailSenden == "Abschliessen" && servicerapport.Status == "Bearbeiten")
             {
-                
-                if (servicerapport.EmailAdresse != null && servicerapport.Unterschrift != null &&  servicerapport.KostenTotal != null && servicerapport.Status == "Bearbeiten")
+
+                if (servicerapport.EmailAdresse != null && servicerapport.Unterschrift != null &&
+                    servicerapport.KostenTotal != null && servicerapport.Status == "Bearbeiten")
                 {
+                    
                     MailAnKundensenden(servicerapport);
                     MailAmServicMitarbeiterSenden(servicerapport);
                     SaveServicrapportEinträgeInWochenrapport(servicerapport);
-                   
+
                     db.Entry(servicerapport).State = EntityState.Modified;
                     db.SaveChanges();
 
                     return RedirectToAction("Index", "ServicerapportDashboards");
                 }
+
                 return RedirectToAction("Index", "ServicerapportDashboards");
             }
 
-            if (rapportSpeichern == "Speichern" && servicerapport.Status == "Bearbeiten" || servicerapport.Status == "Offen")
+            if (rapportSpeichern == "Speichern" && servicerapport.Status == "Bearbeiten" ||
+                servicerapport.Status == "Offen")
             {
 
                 RapportSpeichernUndStatusSetzten(servicerapport);
@@ -172,7 +225,7 @@ namespace ServiceCockpit.Controllers
                 return RedirectToAction("Index", "ServicerapportDashboards");
             }
 
-            
+
         }
 
 
@@ -187,7 +240,8 @@ namespace ServiceCockpit.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Servicerapport servicerapport = db.Servicerapport.Include(s => s.Mitarbeiter).Include(s => s.Rechnungsadresse).Include(s => s.Eigentuemeradresse)
+            Servicerapport servicerapport = db.Servicerapport.Include(s => s.Mitarbeiter)
+                .Include(s => s.Rechnungsadresse).Include(s => s.Eigentuemeradresse)
                 .Include(s => s.Ausführungsadresse).Include(s => s.Rechnungsadresse).Include(s => s.Projekt)
                 .Include(s => s.ZeitKosten).Include(s => s.MaterialKosten).SingleOrDefault(s => s.Id == id);
             if (servicerapport == null)
@@ -204,9 +258,25 @@ namespace ServiceCockpit.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Servicerapport servicerapport = db.Servicerapport.Find(id);
-            db.Servicerapport.Remove(servicerapport);
-            db.SaveChanges();
-            return RedirectToAction("Index", "Servicerapports");
+
+            Servicerapport servicerapport2 = db.Servicerapport.Include(s => s.Mitarbeiter)
+                .Include(s => s.Rechnungsadresse).Include(s => s.Eigentuemeradresse)
+                .Include(s => s.Ausführungsadresse).Include(s => s.Rechnungsadresse).Include(s => s.Projekt)
+                .Include(s => s.ZeitKosten).Include(s => s.MaterialKosten).SingleOrDefault(s => s.Id == id);
+
+            if (servicerapport2.ZeitKosten.ToList().Count == 0 && servicerapport2.MaterialKosten.Count == 0)
+            {
+
+                db.Servicerapport.Remove(servicerapport);
+                db.SaveChanges();
+                return RedirectToAction("Index", "RapporteUebertragen");
+                
+            }
+            else
+            {
+                return RedirectToAction("Index", "RapporteUebertragen");
+            }
+            
         }
 
         protected override void Dispose(bool disposing)
@@ -219,9 +289,9 @@ namespace ServiceCockpit.Controllers
             base.Dispose(disposing);
         }
 
-        
-        
-        
+
+
+
         public void SaveServicrapportEinträgeInWochenrapport(Servicerapport servicerapport)
         {
             servicerapport.RapportAbgechlossenZeit = DateTime.Now;
@@ -234,7 +304,8 @@ namespace ServiceCockpit.Controllers
             Ausführungsadresse ausführungsadresse =
                 db.Ausführungsadresse.SingleOrDefault(a => a.Id == servicerapport.AusführungsadresseId);
 
-            var zeitkostenvonDb = db.ZeitKosten.Include(z => z.Mitarbeiter).Where(z => z.ServicerapportFK == servicerapport.Id);
+            var zeitkostenvonDb = db.ZeitKosten.Include(z => z.Mitarbeiter)
+                .Where(z => z.ServicerapportFK == servicerapport.Id);
 
             servicerapport.ZeitKosten = zeitkostenvonDb.ToList();
 
@@ -247,11 +318,11 @@ namespace ServiceCockpit.Controllers
                         .Include(sw => sw.WochenrapportZeitEintrag)
                         .Include(sw => sw.Mitarbeiter).ToList();
 
-                    List<Wochenrapport> gefundeneWr = listWochenrapport.Where(w => 
+                    List<Wochenrapport> gefundeneWr = listWochenrapport.Where(w =>
                         s.Eintragsdatum >= w.StartDatum &&
                         s.Eintragsdatum <= w.EndDate &&
                         s.MitarbeiterId == w.MitarbeiterId).ToList();
-                    
+
                     if (gefundeneWr.Count() == 1)
                     {
                         var w = gefundeneWr.First();
@@ -291,7 +362,7 @@ namespace ServiceCockpit.Controllers
 
 
                             DateTime jan1 = new DateTime(year, 1, 1);
-                            int daysOffset = (int)us.DateTimeFormat.FirstDayOfWeek - (int)jan1.DayOfWeek;
+                            int daysOffset = (int) us.DateTimeFormat.FirstDayOfWeek - (int) jan1.DayOfWeek;
                             DateTime firstWeekDay = jan1.AddDays(daysOffset);
                             int firstWeek = us.Calendar.GetWeekOfYear(jan1,
                                 us.DateTimeFormat.CalendarWeekRule,
@@ -380,7 +451,7 @@ namespace ServiceCockpit.Controllers
                         db.SaveChanges();
                     }
 
-                   
+
                 }
 
 
@@ -419,12 +490,11 @@ namespace ServiceCockpit.Controllers
             {
                 client.Disconnect(true);
                 client.Dispose();
-                db.Entry(servicerapport).State = EntityState.Modified;
+                
                 db.SaveChanges();
             }
 
 
-            SaveServicrapportEinträgeInWochenrapport(servicerapport);
         }
 
         public void MailAmServicMitarbeiterSenden(Servicerapport servicerapport)
@@ -433,44 +503,38 @@ namespace ServiceCockpit.Controllers
                 db.Mitarbeiter.SingleOrDefault(s => servicerapport.MitarbeiterId == s.Id);
             if (servicerapport.Mitarbeiter != null)
             {
-                
-           
 
-            MimeMessage message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Gfeller Elektro", "gfellerelektroservicrapport@gmail.com"));
-            message.To.Add(MailboxAddress.Parse(servicerapport.Mitarbeiter.Email));
 
-            message.Subject = "Rapport Nr." + servicerapport.Id.ToString() + "ist abgeschlossen";
-            message.Body = new TextPart(TextFormat.Html)
-            {
-                Text = $@"Wir bedanken uns bei Ihnen für den Aufrag.
-                
 
-                Ausführungsadresse:           {servicerapport.Ausführungsadresse.Anzeigeadresse}
-                Die Materialkosten belaufen sich auf: {servicerapport.KostenMaterial.ToString()} 
-                Die Arbeitskosten belaufen sich auf : {servicerapport.KostenMaterial.ToString()}
+                MimeMessage message = new MimeMessage();
+                message.From.Add(new MailboxAddress("Gfeller Elektro", "gfellerelektroservicrapport@gmail.com"));
+                message.To.Add(MailboxAddress.Parse(servicerapport.Mitarbeiter.Email));
 
-                Bei Fragen zum Rapport stehen wir Ihnen jederzeit zurverfügung"
-            };
+                message.Subject = "Rapport Nr." + servicerapport.Id.ToString() + "ist abgeschlossen";
+                message.Body = new TextPart(TextFormat.Html)
+                {
+                    Text = $@"Wir bedanken uns bei Ihnen für den Aufrag"
+              
+                };
 
-            SmtpClient client = new SmtpClient();
-            try
-            {
-                client.Connect("smtp.gmail.com", 465, true);
-                client.Authenticate("gfellerelektroservicrapport@gmail.com", "Gfeller_1234");
-                client.Send(message);
+                SmtpClient client = new SmtpClient();
+                try
+                {
+                    client.Connect("smtp.gmail.com", 465, true);
+                    client.Authenticate("gfellerelektroservicrapport@gmail.com", "Gfeller_1234");
+                    client.Send(message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    throw;
+                }
+                finally
+                {
+                    client.Disconnect(true);
+                    client.Dispose();
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                throw;
-            }
-            finally
-            {
-                client.Disconnect(true);
-                client.Dispose();
-            }
-        }
         }
 
         public void RapportSpeichernUndStatusSetzten(Servicerapport servicerapport)
@@ -486,6 +550,12 @@ namespace ServiceCockpit.Controllers
 
             db.Entry(servicerapport).State = EntityState.Modified;
             db.SaveChanges();
+        }
+
+        public void AktuallisiereKosten(Servicerapport rapport)
+        {
+
+        
         }
     }
 }

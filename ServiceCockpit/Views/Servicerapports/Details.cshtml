@@ -164,9 +164,6 @@
         </div>
         <div id="collapse2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2">
             <div class="panel-body">
-                <p>
-                    @Html.ActionLink("Create New", "Create", "ZeitKostens")
-                </p>
                 <table class="table">
                     <tr>
                         <th>
@@ -190,7 +187,7 @@
                         <th>
                             Kosten in CHF
                         </th>
-                        <th></th>
+                        
                     </tr>
                     @if (Model.ZeitKosten != null)
                     {
@@ -220,9 +217,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.KostenTotal)
                                 </td>
-                                <td>
-                                    @Html.ActionLink("Bearbeiten", "Edit", "ZeitKostens", new { id = item.Id }, null)
-                                </td>
+                               
                             </tr>
                         }
                     }
@@ -249,9 +244,7 @@
             </div>
             <div id="collapse3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading3">
                 <div class="panel-body">
-                    <p>
-                        @Html.ActionLink("Create New", "Create", "MaterialKostens")
-                    </p>
+                   
                     <table class="table">
                         <tr>
                             <th>
@@ -269,7 +262,7 @@
                             <th>
                                 Kosten in CHF
                             </th>
-                            <th></th>
+                           
                         </tr>
                         @if (Model.MaterialKosten != null)
                         {
@@ -291,9 +284,6 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.KostenTotal)
-                                    </td>
-                                    <td>
-                                        @Html.ActionLink("Bearbeiten", "Edit", "MaterialKostens", new { id = item.Id }, null)
                                     </td>
                                 </tr>
                             }
