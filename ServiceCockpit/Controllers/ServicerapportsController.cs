@@ -78,7 +78,7 @@ namespace ServiceCockpit.Controllers
             Servicerapport servicerapport)
         {
 
-            if (servicerapport.MitarbeiterId == 3)
+            if (servicerapport.MitarbeiterId == 1)
             {
                 servicerapport.Status = "Offen";
             }
@@ -539,7 +539,7 @@ namespace ServiceCockpit.Controllers
 
         public void RapportSpeichernUndStatusSetzten(Servicerapport servicerapport)
         {
-            if (servicerapport.MitarbeiterId == 3)
+            if (servicerapport.MitarbeiterId == 1)
             {
                 servicerapport.Status = "Offen";
             }
